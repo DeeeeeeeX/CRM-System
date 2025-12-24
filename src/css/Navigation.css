@@ -1,0 +1,23 @@
+nav {
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+a {
+    font-weight: 600;
+    color: gray;
+    text-decoration: none
+}
+
+.active {
+    color: #5594f1;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px
+}
+
+.inActive {
+
+}
