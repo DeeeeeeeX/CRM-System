@@ -22,7 +22,7 @@
 }
 
 .addPanel button:active {
-    box-shadow: 1px 1px gray;
+    border: 2px solid black;
 }
 
 .notification-fail {
