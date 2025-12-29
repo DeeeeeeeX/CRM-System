@@ -9,6 +9,11 @@ import {useEffect, useState} from "react";
 
 function App() {
 
+    const [rerender, setRerender] = useState(false)
+
+    function render()  {
+        setRerender(!rerender)
+    }
 
     const [dataTasks, setDataTasks] = useState({
         data: [],
@@ -30,16 +35,15 @@ function App() {
                 }
             )
             .catch(error => console.log('Ошибка', error))
-    }, )
+    }, [rerender])
 
     return (
         <Router>
             <div className='wrapper'>
-                <Input/>
+                <Input render={render}/>
                 <Navigation quantity={dataTasks.info}/>
-
             <Routes>
-                <Route path='/' element={<Home className='tasks'/>}/>
+                <Route path='/' element={<Home rerender={rerender} render={render} className='tasks'/>}/>
                 <Route path='/inWork' element={<InWork className='tasks'/>}/>
                 <Route path='/complete' element={<Complete className='tasks'/>}/>
             </Routes>

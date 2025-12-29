@@ -1,7 +1,10 @@
-import React, {use, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './../css/home.css'
 
-const Home = () => {
+const Home = ({rerender, render}) => {
+
+    const [editingId, setIsEditingId] = useState(null)
+    const [inputValue, setInputValue] = useState('')
 
     const [dataTasks, setDataTasks] = useState({
         data: [],
@@ -24,10 +27,9 @@ const Home = () => {
                 }
             )
             .catch(error => console.log('Ошибка', error))
-    }, )
+    }, [rerender])
 
-    const [editingId, setIsEditingId] = useState(null)
-    const [inputValue, setInputValue] = useState('')
+
 
     const handleEditing = (task) => {
         setIsEditingId(task.id)
@@ -44,8 +46,10 @@ const Home = () => {
             .then(res => res.json())
             .then(data => console.log('Успешно', data))
             .catch(error => console.log('Ошибка', error))
+            .then(() => render())
 
         setIsEditingId(null)
+
     }
 
     const handleDeleting = (task) => {
@@ -57,8 +61,22 @@ const Home = () => {
             .then(res => res.json())
             .then(data => console.log('Успешно', data))
             .catch(error => console.log('Ошибка', error))
+            .then(() => render())
     }
 
+
+    const handleCompleted = (task, targetValue) => {
+
+        fetch(`https://easydev.club/api/v1/todos/${task.id}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({isDone: targetValue})
+        })
+            .then(res => res.json())
+            .then(data => console.log('Успешно', data))
+            .catch(error => console.log('Ошибка', error))
+            .then(() => render())
+    }
 
 
 
@@ -66,11 +84,11 @@ const Home = () => {
         <div>
             {dataTasks.data.map((task) => (
                 <div key={task.id} className='taskEl'>
-                    <input type="checkbox"/>
+                    <input checked={task.isDone} onChange={(e) => handleCompleted(task, e.target.checked)} type="checkbox"/>
                     {editingId === task.id ? (
                         <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
                     ) : (
-                        <div className='title'>{task.title}</div>
+                        <div className={!task.isDone ? 'title' : 'title-completed'}>{task.title}</div>
                     )}
                     {editingId === task.id ? (
                     <button className='buttonEdit' onClick={() => handleSave(task)}>save</button>

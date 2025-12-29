@@ -16,6 +16,14 @@
     align-items: center;
 }
 
+.title-completed {
+    padding: 10px;
+    display: flex;
+    width: 150px;
+    align-items: center;
+    text-decoration: line-through;
+}
+
 .buttonEdit {
     background-color: #5196f5;
     
