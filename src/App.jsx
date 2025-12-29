@@ -1,6 +1,6 @@
 import './App.css'
 import Input from "./components/Input.jsx";
-import {Route, BrowserRouter as Router, Routes, Link, data} from 'react-router-dom';
+import {Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 import Home from "./components/Home.jsx";
 import InWork from "./components/InWork.jsx";
 import Complete from "./components/Complete.jsx";
@@ -9,20 +9,23 @@ import {useEffect, useState} from "react";
 
 function App() {
 
+    const [editingId, setIsEditingId] = useState(null)
+    const [inputValue, setInputValue] = useState('')
     const [rerender, setRerender] = useState(false)
-
-    function render()  {
-        setRerender(!rerender)
-    }
-
     const [dataTasks, setDataTasks] = useState({
-        data: [],
-        info: {
-            all: 0,
-            completed: 0,
-            inWork: 0
+        data: [], info: {
+            all: 0, completed: 0, inWork: 0
         }
     })
+
+    const handleEditing = (task) => {
+        setIsEditingId(task.id)
+        setInputValue(task.title)
+    }
+
+    function render() {
+        setRerender(!rerender)
+    }
 
     useEffect(() => {
         fetch('https://easydev.club/api/v1/todos', {
@@ -30,23 +33,87 @@ function App() {
         })
             .then(res => res.json())
             .then(data => {
-                    setDataTasks(data)
-                    console.log('Успешно', data)
-                }
-            )
+                setDataTasks(data)
+                console.log('Успешно', data)
+            })
             .catch(error => console.log('Ошибка', error))
     }, [rerender])
 
-    return (
-        <Router>
+    const handleSave = (task) => {
+
+        fetch(`https://easydev.club/api/v1/todos/${task.id}`, {
+            method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({title: inputValue})
+        })
+            .then(res => res.json())
+            .then(data => console.log('Успешно', data))
+            .catch(error => console.log('Ошибка', error))
+            .then(() => render())
+
+        setIsEditingId(null)
+
+    }
+
+    const handleDeleting = (task) => {
+
+        fetch(`https://easydev.club/api/v1/todos/${task.id}`, {
+            method: 'DELETE', headers: {'Content-Type': 'application/json'},
+        })
+            .then(res => res.json())
+            .then(data => console.log('Успешно', data))
+            .catch(error => console.log('Ошибка', error))
+            .then(() => render())
+    }
+
+    const handleCompleted = (task, targetValue) => {
+
+        fetch(`https://easydev.club/api/v1/todos/${task.id}`, {
+            method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({isDone: targetValue})
+        })
+            .then(res => res.json())
+            .then(data => console.log('Успешно', data))
+            .catch(error => console.log('Ошибка', error))
+            .then(() => render())
+    }
+
+    return (<Router>
             <div className='wrapper'>
                 <Input render={render}/>
                 <Navigation quantity={dataTasks.info}/>
-            <Routes>
-                <Route path='/' element={<Home rerender={rerender} render={render} className='tasks'/>}/>
-                <Route path='/inWork' element={<InWork className='tasks'/>}/>
-                <Route path='/complete' element={<Complete className='tasks'/>}/>
-            </Routes>
+                <Routes>
+                    <Route path='/' element={<Home
+                        rerender={rerender}
+                        editingId={editingId}
+                        inputValue={inputValue}
+                        setInputValue={setInputValue}
+                        handleEditing={handleEditing}
+                        handleSave={handleSave}
+                        handleDeleting={handleDeleting}
+                        handleCompleted={handleCompleted}
+                        className='tasks'
+                    />}/>
+                    <Route path='/inWork' element={<InWork
+                        rerender={rerender}
+                        editingId={editingId}
+                        inputValue={inputValue}
+                        setInputValue={setInputValue}
+                        handleEditing={handleEditing}
+                        handleSave={handleSave}
+                        handleDeleting={handleDeleting}
+                        handleCompleted={handleCompleted}
+                        className='tasks'
+                    />}/>
+                    <Route path='/complete' element={<Complete
+                        rerender={rerender}
+                        editingId={editingId}
+                        inputValue={inputValue}
+                        setInputValue={setInputValue}
+                        handleEditing={handleEditing}
+                        handleSave={handleSave}
+                        handleDeleting={handleDeleting}
+                        handleCompleted={handleCompleted}
+                        className='tasks'
+                    />}/>
+                </Routes>
             </div>
         </Router>
 
