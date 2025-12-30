@@ -42,16 +42,16 @@ const Complete = ({
                                              onChange={(e) => setInputValue(e.target.value)}/>) : (
                 <div className={!task.isDone ? 'title' : 'title-completed'}>{task.title}</div>)}
             {editingId === task.id ? (<>
-                <button className='buttonEdit' onClick={() => handleSave(task)}>Save</button>
-                <button className='buttonBack' onClick={() => handleBackEditing()}>Back</button>
+                <button className='buttonEdit' onClick={() => handleSave(task)}><div className='saveSvg'></div></button>
+                <button className='buttonBack' onClick={() => handleBackEditing()}><div className='backSvg'></div></button>
             </>) : (<>
                 <button className='buttonEdit' onClick={() => {
                     handleEditing(task)
-                }}>Edit
+                }}><div className='editSvg'></div>
                 </button>
                 <button className='buttonDelete' onClick={() => {
                     handleDeleting(task)
-                }}>Delete
+                }}><div className='deleteSvg'></div>
                 </button>
             </>)}
         </div>))}
