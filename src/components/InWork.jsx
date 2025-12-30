@@ -9,7 +9,8 @@ const InWork = ({
                     handleEditing,
                     handleSave,
                     handleDeleting,
-                    handleCompleted
+                    handleCompleted,
+                    handleBackEditing
                 }) => {
 
     let urlGetInWorkTask = 'https://easydev.club/api/v1/todos?filter=inWork'
@@ -33,20 +34,26 @@ const InWork = ({
 
     return (<div>
         {dataTasksInWork.data.map((task) => (<div key={task.id} className='taskEl'>
-            <input checked={task.isDone} onChange={(e) => handleCompleted(task, e.target.checked)}
-                   type="checkbox"/>
-            {editingId === task.id ? (
-                <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>) : (
+            <label className='checkbox'>
+                <input className='checkbox' checked={task.isDone}
+                       onChange={(e) => handleCompleted(task, e.target.checked)} type="checkbox"/>
+            </label>
+            {editingId === task.id ? (<input className='text-editing' type="text" value={inputValue}
+                                             onChange={(e) => setInputValue(e.target.value)}/>) : (
                 <div className={!task.isDone ? 'title' : 'title-completed'}>{task.title}</div>)}
-            {editingId === task.id ? (<button className='buttonEdit' onClick={() => handleSave(task)}>save</button>) : (
+            {editingId === task.id ? (<>
+                <button className='buttonEdit' onClick={() => handleSave(task)}>Save</button>
+                <button className='buttonBack' onClick={() => handleBackEditing()}>Back</button>
+            </>) : (<>
                 <button className='buttonEdit' onClick={() => {
                     handleEditing(task)
-                }}>Edit</button>)}
-            <button className='buttonDelete' onClick={() => {
-                handleDeleting(task)
-            }}>Delete
-            </button>
-
+                }}>Edit
+                </button>
+                <button className='buttonDelete' onClick={() => {
+                    handleDeleting(task)
+                }}>Delete
+                </button>
+            </>)}
         </div>))}
     </div>)
 };

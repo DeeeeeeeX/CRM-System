@@ -18,9 +18,17 @@ function App() {
         }
     })
 
+    let textTask = ''
+
     const handleEditing = (task) => {
+        textTask = inputValue
         setIsEditingId(task.id)
         setInputValue(task.title)
+    }
+
+    const handleBackEditing = () => {
+        setInputValue(textTask)
+        setIsEditingId(null)
     }
 
     function render() {
@@ -89,6 +97,7 @@ function App() {
                         handleSave={handleSave}
                         handleDeleting={handleDeleting}
                         handleCompleted={handleCompleted}
+                        handleBackEditing={handleBackEditing}
                         className='tasks'
                     />}/>
                     <Route path='/inWork' element={<InWork
@@ -100,6 +109,7 @@ function App() {
                         handleSave={handleSave}
                         handleDeleting={handleDeleting}
                         handleCompleted={handleCompleted}
+                        handleBackEditing={handleBackEditing}
                         className='tasks'
                     />}/>
                     <Route path='/complete' element={<Complete
@@ -111,6 +121,7 @@ function App() {
                         handleSave={handleSave}
                         handleDeleting={handleDeleting}
                         handleCompleted={handleCompleted}
+                        handleBackEditing={handleBackEditing}
                         className='tasks'
                     />}/>
                 </Routes>
