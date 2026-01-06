@@ -48,17 +48,19 @@ function App() {
     }, [rerender])
 
     const handleSave = (task) => {
-
-        fetch(`https://easydev.club/api/v1/todos/${task.id}`, {
-            method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({title: inputValue})
-        })
-            .then(res => res.json())
-            .then(data => console.log('Успешно', data))
-            .catch(error => console.log('Ошибка', error))
-            .then(() => render())
-
-        setIsEditingId(null)
-
+        console.log(inputValue.trim().length)
+        if (inputValue.trim().length < 2 || inputValue.trim().length > 64) {
+            alert('Количество символов должно быть не менее 2 и не более 64')
+        } else {
+            fetch(`https://easydev.club/api/v1/todos/${task.id}`, {
+                method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({title: inputValue})
+            })
+                .then(res => res.json())
+                .then(data => console.log('Успешно', data))
+                .catch(error => console.log('Ошибка', error))
+                .then(() => render())
+            setIsEditingId(null)
+        }
     }
 
     const handleDeleting = (task) => {

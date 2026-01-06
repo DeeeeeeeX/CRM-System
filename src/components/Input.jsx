@@ -10,7 +10,7 @@ const Input = ({render}) => {
 
     function dispatchHandler(text) {
 
-        if (text.length < 2 || text.length > 64) {
+        if (text.trim().length < 2 || text.trim().length > 64) {
             setNotification(1)
         } else {
             setNotification(0)
