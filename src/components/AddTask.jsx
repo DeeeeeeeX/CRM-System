@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import './../css/Input.css'
+import '../css/AddTask.css'
+import {postToDo} from "../api/api.js";
 
-const Input = ({render}) => {
+const AddTask = ({render}) => {
 
-    let urlCreateTask = 'https://easydev.club/api/v1/todos'
     const [textTask, setTextTask] = useState('');
     const [notification, setNotification] = useState(2)
 
@@ -14,15 +14,7 @@ const Input = ({render}) => {
             setNotification(1)
         } else {
             setNotification(0)
-            fetch(urlCreateTask, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({isDone: false, title: text})
-            })
-                .then(res => res.json())
-                .then(data => console.log('Успешно', data))
-                .catch(error => console.log('Ошибка', error))
-                .then(() => render())
+            postToDo(text, render)
         }
         setTimeout(() => {
             setNotification(2)
@@ -43,4 +35,4 @@ const Input = ({render}) => {
         </>);
 };
 
-export default Input;
+export default AddTask;
