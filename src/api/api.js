@@ -1,8 +1,6 @@
 export const baseUrl = 'https://easydev.club/api/v1/todos';
-export const urlGetCompletedTask = 'https://easydev.club/api/v1/todos?filter=completed';
-export const urlGetInWorkTask = 'https://easydev.club/api/v1/todos?filter=inWork';
 
-export function getToDo(url, set) {
+export async function getToDos(url, set) {
   try {
     fetch(url, {
       method: 'GET',
@@ -12,7 +10,7 @@ export function getToDo(url, set) {
         set(data);
       });
   } catch (error) {
-    console.log('Ошибка', error);
+    console.log(error);
   }
 }
 

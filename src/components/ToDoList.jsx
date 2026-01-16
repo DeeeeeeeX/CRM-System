@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '../css/ToDolist.css';
 import ToDoItem from './ToDoItem.jsx';
-import { baseUrl, getToDo } from '../api/api.js';
+import { baseUrl, getToDos } from '../api/api.js';
 
 const ToDoList = (props) => {
   const urlGetCompletedTask = 'https://easydev.club/api/v1/todos?filter=completed';
@@ -17,7 +17,11 @@ const ToDoList = (props) => {
   }
 
   useEffect(() => {
-    getToDo(urlFetch, props.setDataTasksAll);
+    try {
+      getToDos(urlFetch, props.setDataTasksAll);
+    } catch (error) {
+      alert('bbb');
+    }
   }, [props.rerender]);
 
   return (
