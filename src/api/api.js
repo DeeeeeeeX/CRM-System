@@ -1,4 +1,4 @@
-export const urlGetAll = 'https://easydev.club/api/v1/todos'
+export const baseUrl = 'https://easydev.club/api/v1/todos'
 export const urlGetCompletedTask = 'https://easydev.club/api/v1/todos?filter=completed'
 export const urlGetInWorkTask = 'https://easydev.club/api/v1/todos?filter=inWork'
 
@@ -18,7 +18,7 @@ export function getToDo(url, set) {
 
 export function putToDoSave(id, titleValue, render) {
     try {
-        fetch(`https://easydev.club/api/v1/todos/${id}`, {
+        fetch(`${baseUrl}/${id}`, {
             method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({title: titleValue})
         })
             .then(() => render())
@@ -29,7 +29,7 @@ export function putToDoSave(id, titleValue, render) {
 
 export function deleteToDo(id, render) {
     try {
-        fetch(`https://easydev.club/api/v1/todos/${id}`, {
+        fetch(`${baseUrl}/${id}`, {
             method: 'DELETE', headers: {'Content-Type': 'application/json'},
         })
             .then(() => render())
@@ -40,7 +40,7 @@ export function deleteToDo(id, render) {
 
 export function putTodoCompleted(id, value, render) {
     try {
-        fetch(`https://easydev.club/api/v1/todos/${id}`, {
+        fetch(`${baseUrl}/${id}`, {
             method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({isDone: value})
         })
             .then(() => render())
@@ -51,7 +51,7 @@ export function putTodoCompleted(id, value, render) {
 
 export function postToDo(text, render) {
     try {
-        fetch('https://easydev.club/api/v1/todos', {
+        fetch(baseUrl, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({isDone: false, title: text})

@@ -1,12 +1,15 @@
 import React, {useEffect} from 'react';
 import '../css/ToDolist.css'
 import ToDoItem from "./ToDoItem.jsx";
-import {urlGetAll, urlGetCompletedTask, urlGetInWorkTask, getToDo} from "../api/api.js";
+import {baseUrl, getToDo} from "../api/api.js";
 
 const ToDoList = (props) => {
 
+    const urlGetCompletedTask = 'https://easydev.club/api/v1/todos?filter=completed'
+    const urlGetInWorkTask = 'https://easydev.club/api/v1/todos?filter=inWork'
+
     let urlFetch
-    if (props.activeTab === 1) {urlFetch = urlGetAll}
+    if (props.activeTab === 1) {urlFetch = baseUrl}
     else if (props.activeTab === 2) {urlFetch = urlGetInWorkTask}
     else if (props.activeTab === 3) {urlFetch = urlGetCompletedTask}
 
