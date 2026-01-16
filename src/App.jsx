@@ -1,9 +1,8 @@
-import './App.css'
-import TooDooListPage from "./pages/TooDooListPage.jsx";
+import './App.css';
+import TooDooListPage from './pages/TooDooListPage.jsx';
 
 function App() {
-
-    return (<TooDooListPage/>)
+  return <TooDooListPage />;
 }
 
-export default App
+export default App;
