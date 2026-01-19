@@ -1,4 +1,6 @@
 export const baseUrl = 'https://easydev.club/api/v1/todos';
+export const urlGetCompletedTask = 'https://easydev.club/api/v1/todos?filter=completed';
+export const urlGetInWorkTask = 'https://easydev.club/api/v1/todos?filter=inWork';
 
 export async function getToDos(url) {
   let data;
@@ -9,7 +11,7 @@ export async function getToDos(url) {
     console.log('Ошибка', error);
     throw error;
   }
-  return data;
+  return await data;
 }
 
 export async function deleteToDo(id) {

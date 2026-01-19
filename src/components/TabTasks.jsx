@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import '../css/TabTasks.css';
 
-const TabTasks = ({ quantity = {}, setActiveTab, activeTab, rerender }) => {
+const TabTasks = ({ quantity = {}, setActiveTab, activeTab, getAndSetToDos }) => {
   let active = 'active';
   let inActive = 'inActive';
 
   let tabHandler = (tab) => {
     setActiveTab(tab);
-    rerender();
+    getAndSetToDos();
   };
 
   const { all = 0, completed = 0, inWork = 0 } = quantity;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../css/AddTask.css';
 import { postToDo } from '../api/api.js';
 
-const AddTask = ({ render }) => {
+const AddTask = ({ getAndSetToDos }) => {
   const [textTask, setTextTask] = useState('');
   const [notification, setNotification] = useState(2);
 
@@ -13,7 +13,7 @@ const AddTask = ({ render }) => {
       try {
         setNotification(0);
         await postToDo(text);
-        await render();
+        await getAndSetToDos();
       } catch (error) {
         alert(`Не удалось добавить задачу ${error}`);
       }
