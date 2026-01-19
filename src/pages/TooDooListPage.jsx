@@ -6,7 +6,7 @@ import AddTask from '../components/AddTask.jsx';
 
 const TooDooListPage = () => {
   const [editingId, setIsEditingId] = useState(null);
-  const [inputValue, setInputValue] = useState('');
+  const [toDoTitle, setToDoTitle] = useState('');
   const [rerender, setRerender] = useState(false);
   const [activeTab, setActiveTab] = useState(1);
   const [dataTasks, setDataTasks] = useState({
@@ -21,13 +21,13 @@ const TooDooListPage = () => {
   let textTask = '';
 
   const handleEditing = (task) => {
-    textTask = inputValue;
+    textTask = toDoTitle;
     setIsEditingId(task.id);
-    setInputValue(task.title);
+    setToDoTitle(task.title);
   };
 
   const handleBackEditing = () => {
-    setInputValue(textTask);
+    setToDoTitle(textTask);
     setIsEditingId(null);
   };
 
@@ -36,11 +36,11 @@ const TooDooListPage = () => {
   }
 
   const handleSave = async (task) => {
-    if (inputValue.trim().length < 2 || inputValue.trim().length > 64) {
+    if (toDoTitle.trim().length < 2 || toDoTitle.trim().length > 64) {
       alert('Количество символов должно быть не менее 2 и не более 64');
     } else {
       try {
-        await putToDo(task.id, inputValue);
+        await putToDo(task.id, toDoTitle);
         await render();
         setIsEditingId(null);
       } catch (error) {
@@ -79,8 +79,8 @@ const TooDooListPage = () => {
       <ToDoList
         rerender={rerender}
         editingId={editingId}
-        inputValue={inputValue}
-        setInputValue={setInputValue}
+        toDoTitle={toDoTitle}
+        setToDoTitle={setToDoTitle}
         handleEditing={handleEditing}
         handleSave={handleSave}
         handleDeleting={handleDeleting}

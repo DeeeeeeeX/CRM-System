@@ -36,8 +36,8 @@ const ToDoList = (props) => {
           key={task.id}
           task={task}
           editingId={props.editingId}
-          inputValue={props.inputValue}
-          setInputValue={props.setInputValue}
+          toDoTitle={props.toDoTitle}
+          setToDoTitle={props.setToDoTitle}
           handleEditing={props.handleEditing}
           handleSave={props.handleSave}
           handleDeleting={props.handleDeleting}

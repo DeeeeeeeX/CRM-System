@@ -3,8 +3,8 @@ import React from 'react';
 const ToDoItem = ({
   task,
   editingId,
-  inputValue,
-  setInputValue,
+  toDoTitle,
+  setToDoTitle,
   handleEditing,
   handleSave,
   handleDeleting,
@@ -25,8 +25,8 @@ const ToDoItem = ({
         <input
           className="text-editing"
           type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          value={toDoTitle}
+          onChange={(e) => setToDoTitle(e.target.value)}
         />
       ) : (
         <div className={!task.isDone ? 'title' : 'title-completed'}>{task.title}</div>
