@@ -6,12 +6,16 @@ const AddTask = ({ render }) => {
   const [textTask, setTextTask] = useState('');
   const [notification, setNotification] = useState(2);
 
-  function dispatchHandler(text) {
+  async function dispatchHandler(text) {
     if (text.trim().length < 2 || text.trim().length > 64) {
       setNotification(1);
     } else {
-      setNotification(0);
-      postToDo(text, render);
+      try {
+        setNotification(0);
+        await postToDo(text, render);
+      } catch (error) {
+        alert(`Не удалось добавить задачу ${error}`);
+      }
     }
     setTimeout(() => {
       setNotification(2);

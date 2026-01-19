@@ -16,12 +16,17 @@ const ToDoList = (props) => {
     urlFetch = urlGetCompletedTask;
   }
 
-  useEffect(() => {
+  async function getAndSetToDos() {
     try {
-      getToDos(urlFetch, props.setDataTasksAll);
+      let dataTask = await getToDos(urlFetch);
+      props.setDataTasksAll(dataTask);
     } catch (error) {
-      alert('bbb');
+      alert(`Не удалось запросить данные с сервера ${error}`);
     }
+  }
+
+  useEffect(() => {
+    getAndSetToDos();
   }, [props.rerender]);
 
   return (

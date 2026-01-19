@@ -1,62 +1,68 @@
 export const baseUrl = 'https://easydev.club/api/v1/todos';
 
-export async function getToDos(url, set) {
+export async function getToDos(url) {
+  let data;
   try {
-    fetch(url, {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        set(data);
-      });
+    let response = await fetch(url, { method: 'GET' });
+    data = await response.json();
   } catch (error) {
-    console.log(error);
+    console.log('Ошибка', error);
+    throw error;
   }
+  return data;
 }
 
-export function putToDoSave(id, titleValue, render) {
+export async function putToDoSave(id, titleValue, render) {
   try {
-    fetch(`${baseUrl}/${id}`, {
+    await fetch(`${baseUrl}/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: titleValue }),
-    }).then(() => render());
+    });
+    await render();
   } catch (error) {
     console.log('Ошибка', error);
+    throw error;
   }
 }
 
-export function deleteToDo(id, render) {
+export async function deleteToDo(id, render) {
   try {
-    fetch(`${baseUrl}/${id}`, {
+    await fetch(`${baseUrl}/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-    }).then(() => render());
+    });
+    await render();
   } catch (error) {
     console.log('Ошибка', error);
+    throw error;
   }
 }
 
-export function putTodoCompleted(id, value, render) {
+export async function putTodoCompleted(id, value, render) {
   try {
-    fetch(`${baseUrl}/${id}`, {
+    await fetch(`${baseUrl}/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ isDone: value }),
-    }).then(() => render());
+    });
+    await render();
   } catch (error) {
     console.log('Ошибка', error);
+    throw error;
   }
 }
 
-export function postToDo(text, render) {
+export async function postToDo(text, render) {
   try {
-    fetch(baseUrl, {
+    await fetch(baseUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ isDone: false, title: text }),
-    }).then(() => render());
+    });
+    await render();
   } catch (error) {
     console.log('Ошибка', error);
+    throw error;
   }
 }
