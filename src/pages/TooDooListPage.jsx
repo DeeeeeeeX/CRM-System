@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TabTasks from '../components/TabTasks.jsx';
 import ToDoList from '../components/ToDoList.jsx';
-import { deleteToDo, putTodoCompleted, putToDoSave } from '../api/api.js';
+import { deleteToDo, putToDo } from '../api/api.js';
 import AddTask from '../components/AddTask.jsx';
 
 const TooDooListPage = () => {
@@ -40,12 +40,21 @@ const TooDooListPage = () => {
       alert('Количество символов должно быть не менее 2 и не более 64');
     } else {
       try {
-        await putToDoSave(task.id, inputValue);
+        await putToDo(task.id, inputValue);
         await render();
         setIsEditingId(null);
       } catch (error) {
         alert(`Не удалось отправить запрос ${error}`);
       }
+    }
+  };
+
+  const handleCompleted = async (task, targetValue) => {
+    try {
+      await putToDo(task.id, targetValue);
+      await render();
+    } catch (error) {
+      alert(`не удалось отправить запрос о смене статуса задачи ${error}`);
     }
   };
 
@@ -55,15 +64,6 @@ const TooDooListPage = () => {
       await render();
     } catch (error) {
       alert(`не удалось отправить запрос об удалении ${error}`);
-    }
-  };
-
-  const handleCompleted = async (task, targetValue) => {
-    try {
-      await putTodoCompleted(task.id, targetValue);
-      await render();
-    } catch (error) {
-      alert(`не удалось отправить запрос о смене статуса задачи ${error}`);
     }
   };
 

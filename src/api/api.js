@@ -12,19 +12,6 @@ export async function getToDos(url) {
   return data;
 }
 
-export async function putToDoSave(id, titleValue) {
-  try {
-    await fetch(`${baseUrl}/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: titleValue }),
-    });
-  } catch (error) {
-    console.log('Ошибка', error);
-    throw error;
-  }
-}
-
 export async function deleteToDo(id) {
   try {
     await fetch(`${baseUrl}/${id}`, {
@@ -37,12 +24,16 @@ export async function deleteToDo(id) {
   }
 }
 
-export async function putTodoCompleted(id, value) {
+export async function putToDo(id, titleValue, isDoneValue) {
+  if (typeof titleValue === 'boolean') {
+    isDoneValue = titleValue;
+    titleValue = null;
+  }
   try {
     await fetch(`${baseUrl}/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ isDone: value }),
+      body: JSON.stringify({ title: titleValue, isDone: isDoneValue }),
     });
   } catch (error) {
     console.log('Ошибка', error);
