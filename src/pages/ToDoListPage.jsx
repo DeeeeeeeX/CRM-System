@@ -37,8 +37,6 @@ const ToDoListPage = () => {
     getAndSetToDos();
   }, []);
 
-  let textTask = '';
-
   let urlFetch;
   if (activeTab === 1) {
     urlFetch = baseUrl;
@@ -49,13 +47,12 @@ const ToDoListPage = () => {
   }
 
   const handleEditing = (task) => {
-    textTask = toDoTitle;
     setIsEditingId(task.id);
     setToDoTitle(task.title);
   };
 
   const handleBackEditing = () => {
-    setToDoTitle(textTask);
+    setToDoTitle('');
     setIsEditingId(null);
   };
 
