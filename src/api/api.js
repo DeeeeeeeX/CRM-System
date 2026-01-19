@@ -12,55 +12,51 @@ export async function getToDos(url) {
   return data;
 }
 
-export async function putToDoSave(id, titleValue, render) {
+export async function putToDoSave(id, titleValue) {
   try {
     await fetch(`${baseUrl}/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: titleValue }),
     });
-    await render();
   } catch (error) {
     console.log('Ошибка', error);
     throw error;
   }
 }
 
-export async function deleteToDo(id, render) {
+export async function deleteToDo(id) {
   try {
     await fetch(`${baseUrl}/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     });
-    await render();
   } catch (error) {
     console.log('Ошибка', error);
     throw error;
   }
 }
 
-export async function putTodoCompleted(id, value, render) {
+export async function putTodoCompleted(id, value) {
   try {
     await fetch(`${baseUrl}/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ isDone: value }),
     });
-    await render();
   } catch (error) {
     console.log('Ошибка', error);
     throw error;
   }
 }
 
-export async function postToDo(text, render) {
+export async function postToDo(text) {
   try {
     await fetch(baseUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ isDone: false, title: text }),
     });
-    await render();
   } catch (error) {
     console.log('Ошибка', error);
     throw error;

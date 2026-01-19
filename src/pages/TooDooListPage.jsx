@@ -40,7 +40,8 @@ const TooDooListPage = () => {
       alert('Количество символов должно быть не менее 2 и не более 64');
     } else {
       try {
-        await putToDoSave(task.id, inputValue, render);
+        await putToDoSave(task.id, inputValue);
+        await render();
         setIsEditingId(null);
       } catch (error) {
         alert(`Не удалось отправить запрос ${error}`);
@@ -50,7 +51,8 @@ const TooDooListPage = () => {
 
   const handleDeleting = async (task) => {
     try {
-      await deleteToDo(task.id, render);
+      await deleteToDo(task.id);
+      await render();
     } catch (error) {
       alert(`не удалось отправить запрос об удалении ${error}`);
     }
@@ -58,7 +60,8 @@ const TooDooListPage = () => {
 
   const handleCompleted = async (task, targetValue) => {
     try {
-      await putTodoCompleted(task.id, targetValue, render);
+      await putTodoCompleted(task.id, targetValue);
+      await render();
     } catch (error) {
       alert(`не удалось отправить запрос о смене статуса задачи ${error}`);
     }

@@ -12,7 +12,8 @@ const AddTask = ({ render }) => {
     } else {
       try {
         setNotification(0);
-        await postToDo(text, render);
+        await postToDo(text);
+        await render();
       } catch (error) {
         alert(`Не удалось добавить задачу ${error}`);
       }
