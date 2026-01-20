@@ -9,14 +9,15 @@ const ToDoList = (props) => {
         <ToDoItem
           key={task.id}
           task={task}
-          editingId={props.editingId}
-          toDoTitle={props.toDoTitle}
           setToDoTitle={props.setToDoTitle}
           handleEditing={props.handleEditing}
           handleSave={props.handleSave}
           handleDeleting={props.handleDeleting}
           handleCompleted={props.handleCompleted}
           handleBackEditing={props.handleBackEditing}
+          editingIdArray={props.editingIdArray}
+          editingTitles={props.editingTitles}
+          setTitleMap={props.setTitleMap}
         />
       ))}
     </div>

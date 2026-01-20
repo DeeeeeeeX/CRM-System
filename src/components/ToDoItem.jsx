@@ -2,14 +2,14 @@ import React from 'react';
 
 const ToDoItem = ({
   task,
-  editingId,
-  toDoTitle,
-  setToDoTitle,
   handleEditing,
   handleSave,
   handleDeleting,
   handleCompleted,
   handleBackEditing,
+  editingIdArray,
+  editingTitles,
+  setTitleMap,
 }) => {
   return (
     <div className="taskEl">
@@ -21,22 +21,22 @@ const ToDoItem = ({
           type="checkbox"
         />
       </label>
-      {editingId === task.id ? (
+      {editingIdArray.includes(task.id) ? (
         <input
           className="text-editing"
           type="text"
-          value={toDoTitle}
-          onChange={(e) => setToDoTitle(e.target.value)}
+          value={editingTitles.get(task.id)}
+          onChange={(e) => setTitleMap(task.id, e.target.value)}
         />
       ) : (
         <div className={!task.isDone ? 'title' : 'title-completed'}>{task.title}</div>
       )}
-      {editingId === task.id ? (
+      {editingIdArray.includes(task.id) ? (
         <>
           <button className="buttonEdit" onClick={() => handleSave(task)}>
             <div className="saveSvg"></div>
           </button>
-          <button className="buttonBack" onClick={() => handleBackEditing()}>
+          <button className="buttonBack" onClick={() => handleBackEditing(task)}>
             <div className="backSvg"></div>
           </button>
         </>
