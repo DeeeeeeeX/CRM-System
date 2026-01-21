@@ -77,11 +77,10 @@ const ToDoListPage = () => {
   };
 
   const handleSave = async (task) => {
-    if (
-      editingTitles.get(task.id).trim().length < 2 ||
-      editingTitles.get(task.id).trim().length > 64
-    ) {
-      alert('Количество символов должно быть не менее 2 и не более 64');
+    if (editingTitles.get(task.id).trim().length < 2) {
+      alert('Количество символов должно быть более 2');
+    } else if (editingTitles.get(task.id).trim().length > 64) {
+      alert('Количество символов должно быть менее 64');
     } else {
       try {
         await putToDo(task.id, editingTitles.get(task.id));
