@@ -4,23 +4,20 @@ import { postToDo } from '../api/api.js';
 
 const AddTask = ({ getAndSetToDos }) => {
   const [textTask, setTextTask] = useState('');
-  const [notification, setNotification] = useState(2);
 
   async function dispatchHandler(text) {
-    if (text.trim().length < 2 || text.trim().length > 64) {
-      setNotification(1);
+    if (text.trim().length < 2) {
+      alert('Количество символов должно быть более 2');
+    } else if (text.trim().length > 64) {
+      alert('Количество символов должно быть менее 64');
     } else {
       try {
-        setNotification(0);
         await postToDo(text);
         await getAndSetToDos();
       } catch (error) {
         alert(`Не удалось добавить задачу ${error}`);
       }
     }
-    setTimeout(() => {
-      setNotification(2);
-    }, 2500);
   }
 
   return (
@@ -34,16 +31,6 @@ const AddTask = ({ getAndSetToDos }) => {
         />
         <button onClick={() => dispatchHandler(textTask)}>Add</button>
       </div>
-      {notification === 1 ? (
-        <div className="notification-fail">
-          {' '}
-          Не удалось добавить задачу количество символов минимум 2 максимум 64
-        </div>
-      ) : notification === 0 ? (
-        <div className="notification-success"> Задача успешно добавлена </div>
-      ) : (
-        <div></div>
-      )}
     </>
   );
 };
