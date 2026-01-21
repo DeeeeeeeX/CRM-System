@@ -6,13 +6,13 @@ const AddTask = ({ getAndSetToDos }) => {
   const [textTask, setTextTask] = useState('');
 
   async function submitToDo(event, text) {
+    event.preventDefault();
     if (text.trim().length < 2) {
       alert('Количество символов должно быть более 2');
     } else if (text.trim().length > 64) {
       alert('Количество символов должно быть менее 64');
     } else {
       try {
-        event.preventDefault();
         await postToDo(text);
         await getAndSetToDos();
       } catch (error) {

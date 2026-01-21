@@ -1,16 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { deleteToDo, putToDo } from '../api/api.js';
 
-const ToDoItem = ({
-  task,
-  handleEditing,
-  handleSave,
-  handleDeleting,
-  handleCompleted,
-  handleBackEditing,
-  editingIdArray,
-  editingTitles,
-  setTitleMap,
-}) => {
+const ToDoItem = ({ task, getAndSetToDos }) => {
+  const [editingIdArray, setEditingArrayId] = useState([]);
+  const [editingTitles, setEditingTitles] = useState(new Map());
+
+  const deletingIdArray = (item) => {
+    setEditingArrayId((prev) => prev.filter((i) => i !== item.id));
+  };
+
+  const pushIdArray = (item) => {
+    setEditingArrayId((prev) => [...prev, item]);
+  };
+
+  const setTitleMap = (id, title) => {
+    setEditingTitles((prev) => {
+      return new Map(prev).set(id, title);
+    });
+  };
+  const handleEditing = (task) => {
+    pushIdArray(task.id);
+    setTitleMap(task.id, task.title);
+  };
+
+  const handleSave = async (task) => {
+    if (editingTitles.get(task.id).trim().length < 2) {
+      alert('Количество символов должно быть более 2');
+    } else if (editingTitles.get(task.id).trim().length > 64) {
+      alert('Количество символов должно быть менее 64');
+    } else {
+      try {
+        await putToDo(task.id, editingTitles.get(task.id));
+        await getAndSetToDos();
+        deletingIdArray(task);
+      } catch (error) {
+        alert(`Не удалось отправить запрос ${error}`);
+      }
+    }
+  };
+
+  const handleBackEditing = (task) => {
+    deletingIdArray(task);
+  };
+
+  const handleCompleted = async (task, targetValue) => {
+    try {
+      await putToDo(task.id, targetValue);
+      await getAndSetToDos();
+    } catch (error) {
+      alert(`не удалось отправить запрос о смене статуса задачи ${error}`);
+    }
+  };
+
+  const handleDeleting = async (task) => {
+    try {
+      await deleteToDo(task.id);
+      await getAndSetToDos();
+    } catch (error) {
+      alert(`не удалось отправить запрос об удалении ${error}`);
+    }
+  };
+
   return (
     <div className="taskEl">
       <label className="checkbox">
@@ -52,8 +102,8 @@ const ToDoItem = ({
           </button>
           <button
             className="buttonDelete"
-            onClick={() => {
-              handleDeleting(task);
+            onClick={async () => {
+              await handleDeleting(task);
             }}
           >
             <div className="deleteSvg"></div>
