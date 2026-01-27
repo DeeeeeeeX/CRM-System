@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import TabTasks from '../components/TabTasks.jsx';
-import ToDoList from '../components/ToDoList.jsx';
-import { baseUrl, getToDos, urlGetCompletedTask, urlGetInWorkTask } from '../api/api.js';
-import AddTask from '../components/AddTask.jsx';
+import TabTasks from '../components/TabTasks';
+import ToDoList from '../components/ToDoList';
+import { baseUrl, getToDos, urlGetCompletedTask, urlGetInWorkTask } from '../api/api';
+import AddTask from '../components/AddTask';
+import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
 
-const ToDoListPage = () => {
-  const [activeTab, setActiveTab] = useState('all');
-  const [dataTasks, setDataTasks] = useState({
+const ToDoListPage: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<ActiveTabs>('all');
+  const [dataTasks, setDataTasks] = useState<MetaResponse<Todo, TodoInfo>>({
     data: [],
     info: {
       all: 0,
       completed: 0,
       inWork: 0,
     },
+    meta: { totalAmount: 0 },
   });
 
   let urlFetch;
@@ -28,7 +30,7 @@ const ToDoListPage = () => {
     getAndSetToDos();
   }, [activeTab]);
 
-  async function getAndSetToDos() {
+  async function getAndSetToDos(): Promise<void> {
     try {
       let dataTask = await getToDos(urlFetch);
       setDataTasks(dataTask);

@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import '../css/TabTasks.css';
+import { TodoInfo } from '../types/types';
 
-const TabTasks = ({ quantity = {}, setActiveTab, activeTab }) => {
+const TabTasks: React.FC<{
+  quantity: TodoInfo;
+  setActiveTab: Dispatch<SetStateAction<string>>;
+  activeTab: string;
+}> = ({ quantity = {}, setActiveTab, activeTab }) => {
   let active = 'active';
   let inActive = 'inActive';
 

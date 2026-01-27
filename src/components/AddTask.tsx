@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import '../css/AddTask.css';
-import { postToDo } from '../api/api.js';
+import { postToDo } from '../api/api.ts';
+import { FetchFunc } from '../types/types';
 
-const AddTask = ({ getAndSetToDos }) => {
-  const [textTask, setTextTask] = useState('');
+const AddTask: React.FC<{ getAndSetToDos: FetchFunc }> = ({ getAndSetToDos }) => {
+  const [textTask, setTextTask] = useState<string>('');
 
-  async function submitToDo(event, text) {
+  async function submitToDo(
+    event: React.SubmitEvent<HTMLFormElement>,
+    text: string,
+  ): Promise<void> {
     event.preventDefault();
     if (text.trim().length < 2) {
       alert('Количество символов должно быть более 2');

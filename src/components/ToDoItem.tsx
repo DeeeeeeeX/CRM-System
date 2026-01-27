@@ -1,29 +1,33 @@
 import React, { useState } from 'react';
-import { deleteToDo, putToDo } from '../api/api.js';
+import { deleteToDo, putToDo } from '../api/api.ts';
+import { FetchFunc, Todo } from '../types/types';
 
-const ToDoItem = ({ task, getAndSetToDos }) => {
-  const [editingIdArray, setEditingArrayId] = useState([]);
-  const [editingTitles, setEditingTitles] = useState(new Map());
+const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
+  task,
+  getAndSetToDos,
+}) => {
+  const [editingIdArray, setEditingArrayId] = useState<number[]>([]);
+  const [editingTitles, setEditingTitles] = useState<Map<number, string>>(new Map());
 
-  const deletingIdArray = (item) => {
+  const deletingIdArray = (item: Todo) => {
     setEditingArrayId((prev) => prev.filter((i) => i !== item.id));
   };
 
-  const pushIdArray = (item) => {
+  const pushIdArray = (item: number) => {
     setEditingArrayId((prev) => [...prev, item]);
   };
 
-  const setTitleMap = (id, title) => {
+  const setTitleMap = (id: number, title: string) => {
     setEditingTitles((prev) => {
       return new Map(prev).set(id, title);
     });
   };
-  const handleEditing = (task) => {
+  const handleEditing = (task: Todo) => {
     pushIdArray(task.id);
     setTitleMap(task.id, task.title);
   };
 
-  const handleSave = async (task) => {
+  const handleSave = async (task: Todo): Promise<void> => {
     if (editingTitles.get(task.id).trim().length < 2) {
       alert('Количество символов должно быть более 2');
     } else if (editingTitles.get(task.id).trim().length > 64) {
@@ -39,11 +43,11 @@ const ToDoItem = ({ task, getAndSetToDos }) => {
     }
   };
 
-  const handleBackEditing = (task) => {
+  const handleBackEditing = (task: Todo) => {
     deletingIdArray(task);
   };
 
-  const handleCompleted = async (task, targetValue) => {
+  const handleCompleted = async (task: Todo, targetValue: string) => {
     try {
       await putToDo(task.id, targetValue);
       await getAndSetToDos();
@@ -52,7 +56,7 @@ const ToDoItem = ({ task, getAndSetToDos }) => {
     }
   };
 
-  const handleDeleting = async (task) => {
+  const handleDeleting = async (task: Todo) => {
     try {
       await deleteToDo(task.id);
       await getAndSetToDos();

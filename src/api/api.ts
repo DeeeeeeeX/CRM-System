@@ -1,8 +1,10 @@
+import { MetaResponse, Todo, TodoInfo } from '../types/types';
+
 export const baseUrl = 'https://easydev.club/api/v1/todos';
 export const urlGetCompletedTask = 'https://easydev.club/api/v1/todos?filter=completed';
 export const urlGetInWorkTask = 'https://easydev.club/api/v1/todos?filter=inWork';
 
-export async function getToDos(url) {
+export async function getToDos(url: string): Promise<MetaResponse<Todo, TodoInfo>> {
   let data;
   try {
     let response = await fetch(url, { method: 'GET' });
@@ -11,10 +13,10 @@ export async function getToDos(url) {
     console.log('Ошибка', error);
     throw error;
   }
-  return await data;
+  return data;
 }
 
-export async function deleteToDo(id) {
+export async function deleteToDo(id: number): Promise<void> {
   try {
     await fetch(`${baseUrl}/${id}`, {
       method: 'DELETE',
@@ -26,7 +28,11 @@ export async function deleteToDo(id) {
   }
 }
 
-export async function putToDo(id, titleValue, isDoneValue) {
+export async function putToDo(
+  id: number,
+  titleValue: string | boolean | null,
+  isDoneValue?: boolean,
+): Promise<void> {
   if (typeof titleValue === 'boolean') {
     isDoneValue = titleValue;
     titleValue = null;
@@ -43,7 +49,7 @@ export async function putToDo(id, titleValue, isDoneValue) {
   }
 }
 
-export async function postToDo(text) {
+export async function postToDo(text: string): Promise<void> {
   try {
     await fetch(baseUrl, {
       method: 'POST',
