@@ -26,10 +26,6 @@ const ToDoListPage: React.FC = () => {
     urlFetch = urlGetCompletedTask;
   }
 
-  useEffect(() => {
-    getAndSetToDos();
-  }, [activeTab]);
-
   async function getAndSetToDos(): Promise<void> {
     try {
       let dataTask = await getToDos(urlFetch);
@@ -38,6 +34,17 @@ const ToDoListPage: React.FC = () => {
       alert(`Не удалось запросить данные с сервера ${error}`);
     }
   }
+
+  useEffect(() => {
+    getAndSetToDos();
+  }, [activeTab]);
+
+  useEffect(() => {
+    const fetchInterval = setInterval(() => {
+      getAndSetToDos();
+    }, 5000);
+    return () => clearInterval(fetchInterval);
+  }, [activeTab]);
 
   return (
     <div className="wrapper">

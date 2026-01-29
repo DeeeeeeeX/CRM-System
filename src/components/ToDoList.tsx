@@ -8,7 +8,7 @@ const ToDoList: React.FC<{
   getAndSetToDos: FetchFunc;
 }> = ({ dataTasksAll, getAndSetToDos }) => {
   return (
-    <div>
+    <div className="todo-box">
       {dataTasksAll.data.map((task) => (
         <ToDoItem key={task.id} task={task} getAndSetToDos={getAndSetToDos} />
       ))}

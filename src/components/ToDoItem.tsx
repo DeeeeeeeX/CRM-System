@@ -1,53 +1,32 @@
 import React, { useState } from 'react';
 import { deleteToDo, putToDo } from '../api/api.ts';
 import { FetchFunc, Todo } from '../types/types';
+import { Button, Checkbox, Form, Input } from 'antd';
 
 const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
   task,
   getAndSetToDos,
 }) => {
-  const [editingIdArray, setEditingArrayId] = useState<number[]>([]);
-  const [editingTitles, setEditingTitles] = useState<Map<number, string>>(new Map());
+  const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(task.title);
 
-  const deletingIdArray = (item: Todo) => {
-    setEditingArrayId((prev) => prev.filter((i) => i !== item.id));
-  };
-
-  const pushIdArray = (item: number) => {
-    setEditingArrayId((prev) => [...prev, item]);
-  };
-
-  const setTitleMap = (id: number, title: string) => {
-    setEditingTitles((prev) => {
-      return new Map(prev).set(id, title);
-    });
-  };
-  const handleEditing = (task: Todo) => {
-    pushIdArray(task.id);
-    setTitleMap(task.id, task.title);
-  };
-
-  const handleSave = async (task: Todo): Promise<void> => {
-    if (editingTitles.get(task.id).trim().length < 2) {
+  const handleSave = async () => {
+    if (title.trim().length < 2) {
       alert('Количество символов должно быть более 2');
-    } else if (editingTitles.get(task.id).trim().length > 64) {
+    } else if (title.trim().length > 64) {
       alert('Количество символов должно быть менее 64');
     } else {
       try {
-        await putToDo(task.id, editingTitles.get(task.id));
+        await putToDo(task.id, title.trim());
+        setIsEditing(false);
         await getAndSetToDos();
-        deletingIdArray(task);
       } catch (error) {
         alert(`Не удалось отправить запрос ${error}`);
       }
     }
   };
 
-  const handleBackEditing = (task: Todo) => {
-    deletingIdArray(task);
-  };
-
-  const handleCompleted = async (task: Todo, targetValue: string) => {
+  const handleCompleted = async (targetValue: boolean) => {
     try {
       await putToDo(task.id, targetValue);
       await getAndSetToDos();
@@ -56,7 +35,7 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
     }
   };
 
-  const handleDeleting = async (task: Todo) => {
+  const handleDeleting = async () => {
     try {
       await deleteToDo(task.id);
       await getAndSetToDos();
@@ -67,51 +46,36 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
 
   return (
     <div className="taskEl">
-      <label className="checkbox">
-        <input
-          className="checkbox"
-          checked={task.isDone}
-          onChange={(e) => handleCompleted(task, e.target.checked)}
-          type="checkbox"
-        />
-      </label>
-      {editingIdArray.includes(task.id) ? (
-        <input
-          className="text-editing"
-          type="text"
-          value={editingTitles.get(task.id)}
-          onChange={(e) => setTitleMap(task.id, e.target.value)}
-        />
+      <Checkbox
+        checked={task.isDone}
+        onChange={(e) => handleCompleted(e.target.checked)}
+      ></Checkbox>
+
+      {isEditing ? (
+        <Input value={title} onChange={(e) => setTitle(e.target.value)} />
       ) : (
         <div className={!task.isDone ? 'title' : 'title-completed'}>{task.title}</div>
       )}
-      {editingIdArray.includes(task.id) ? (
+
+      {isEditing ? (
         <>
-          <button className="buttonEdit" onClick={() => handleSave(task)}>
+          <Button type="primary" className="buttonEdit" onClick={handleSave}>
             <div className="saveSvg"></div>
-          </button>
-          <button className="buttonBack" onClick={() => handleBackEditing(task)}>
+          </Button>
+
+          <Button type="primary" className="buttonBack" onClick={() => setIsEditing(false)}>
             <div className="backSvg"></div>
-          </button>
+          </Button>
         </>
       ) : (
         <>
-          <button
-            className="buttonEdit"
-            onClick={() => {
-              handleEditing(task);
-            }}
-          >
+          <Button type="primary" className="buttonEdit" onClick={() => setIsEditing(true)}>
             <div className="editSvg"></div>
-          </button>
-          <button
-            className="buttonDelete"
-            onClick={async () => {
-              await handleDeleting(task);
-            }}
-          >
+          </Button>
+
+          <Button type="primary" className="buttonDelete" onClick={handleDeleting}>
             <div className="deleteSvg"></div>
-          </button>
+          </Button>
         </>
       )}
     </div>

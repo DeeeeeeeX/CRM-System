@@ -3,6 +3,7 @@
     margin-top: 15px;
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 350px;
     min-height: 60px;
     box-shadow: 3px 3px #8d8080;
@@ -118,4 +119,11 @@ button {
 
 input[type=checkbox] {
     cursor: pointer;
+}
+
+.todo-box {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
