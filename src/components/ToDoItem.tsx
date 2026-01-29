@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { deleteToDo, putToDo } from '../api/api.ts';
 import { FetchFunc, Todo } from '../types/types';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Input } from 'antd';
 
 const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
   task,
@@ -24,6 +24,11 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
         alert(`Не удалось отправить запрос ${error}`);
       }
     }
+  };
+
+  const handleBackEditing = () => {
+    setTitle(task.title);
+    setIsEditing(false);
   };
 
   const handleCompleted = async (targetValue: boolean) => {
@@ -52,7 +57,16 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
       ></Checkbox>
 
       {isEditing ? (
-        <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+        <Input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          status={title.length < 2 || title.length > 64 ? 'error' : 'success'}
+          count={{
+            show: true,
+            max: 64,
+            min: 2,
+          }}
+        />
       ) : (
         <div className={!task.isDone ? 'title' : 'title-completed'}>{task.title}</div>
       )}
@@ -63,7 +77,7 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
             <div className="saveSvg"></div>
           </Button>
 
-          <Button type="primary" className="buttonBack" onClick={() => setIsEditing(false)}>
+          <Button type="primary" className="buttonBack" onClick={handleBackEditing}>
             <div className="backSvg"></div>
           </Button>
         </>
