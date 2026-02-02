@@ -13,15 +13,16 @@ const AddTask: React.FC<{ getAndSetToDos: FetchFunc }> = ({ getAndSetToDos }) =>
     event.preventDefault();
     if (title.trim().length < 2) {
       alert('Количество символов должно быть более 2');
+      return;
     } else if (title.trim().length > 64) {
       alert('Количество символов должно быть менее 64');
-    } else {
-      try {
-        await postToDo(title);
-        await getAndSetToDos();
-      } catch (error) {
-        alert(`Не удалось добавить задачу ${error}`);
-      }
+      return;
+    }
+    try {
+      await postToDo(title);
+      await getAndSetToDos();
+    } catch (error) {
+      alert(`Не удалось добавить задачу ${error}`);
     }
   }
 
