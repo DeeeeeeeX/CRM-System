@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { deleteToDo, putToDo } from '../api/api.ts';
-import { FetchFunc, Todo } from '../types/types';
+import { FetchFunc, Todo, ValidatorFunc } from '../types/types';
 
-const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
+const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc; validator: ValidatorFunc }> = ({
   task,
   getAndSetToDos,
+  validator,
 }) => {
   const [editingIdArray, setEditingArrayId] = useState<number[]>([]);
   const [editingTitles, setEditingTitles] = useState<Map<number, string>>(new Map());
@@ -28,18 +29,16 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
   };
 
   const handleSave = async (task: Todo): Promise<void> => {
-    if (editingTitles.get(task.id).trim().length < 2) {
-      alert('Количество символов должно быть более 2');
-    } else if (editingTitles.get(task.id).trim().length > 64) {
-      alert('Количество символов должно быть менее 64');
-    } else {
-      try {
-        await putToDo(task.id, { title: editingTitles.get(task.id) });
-        await getAndSetToDos();
-        deletingIdArray(task);
-      } catch (error) {
-        alert(`Не удалось отправить запрос ${error}`);
-      }
+    if (validator(editingTitles.get(task.id))) {
+      alert(validator(editingTitles.get(task.id)));
+      return;
+    }
+    try {
+      await putToDo(task.id, { title: editingTitles.get(task.id) });
+      await getAndSetToDos();
+      deletingIdArray(task);
+    } catch (error) {
+      alert(`Не удалось отправить запрос ${error}`);
     }
   };
 

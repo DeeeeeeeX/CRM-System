@@ -22,3 +22,4 @@ export interface MetaResponse<T, N> {
 }
 
 export type FetchFunc = () => Promise<void>;
+export type ValidatorFunc = (string) => string;

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import '../css/AddTask.css';
 import { postToDo } from '../api/api.ts';
-import { FetchFunc } from '../types/types';
+import { FetchFunc, ValidatorFunc } from '../types/types';
 
-const AddTask: React.FC<{ getAndSetToDos: FetchFunc }> = ({ getAndSetToDos }) => {
+const AddTask: React.FC<{
+  getAndSetToDos: FetchFunc;
+  validator: ValidatorFunc;
+}> = ({ getAndSetToDos, validator }) => {
   const [textTask, setTextTask] = useState<string>('');
 
   async function submitToDo(
@@ -11,11 +14,8 @@ const AddTask: React.FC<{ getAndSetToDos: FetchFunc }> = ({ getAndSetToDos }) =>
     title: string,
   ): Promise<void> {
     event.preventDefault();
-    if (title.trim().length < 2) {
-      alert('Количество символов должно быть более 2');
-      return;
-    } else if (title.trim().length > 64) {
-      alert('Количество символов должно быть менее 64');
+    if (validator(title)) {
+      alert(validator(title));
       return;
     }
     try {
