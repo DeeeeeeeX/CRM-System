@@ -1,11 +1,19 @@
-import { MetaResponse, Todo, TodoInfo } from '../types/types';
+import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
 
 export const baseUrl = 'https://easydev.club/api/v1/todos';
 
-export async function getToDos(url: string): Promise<MetaResponse<Todo, TodoInfo>> {
+export async function getToDos(activeTab: ActiveTabs): Promise<MetaResponse<Todo, TodoInfo>> {
   let data;
+  let urlFetch;
+  if (activeTab === 'all') {
+    urlFetch = baseUrl;
+  } else if (activeTab === 'inWork') {
+    urlFetch = baseUrl + '?filter=inWork';
+  } else if (activeTab === 'complete') {
+    urlFetch = baseUrl + '?filter=completed';
+  }
   try {
-    let response = await fetch(url, { method: 'GET' });
+    let response = await fetch(urlFetch, { method: 'GET' });
     data = await response.json();
   } catch (error) {
     console.log('Ошибка', error);

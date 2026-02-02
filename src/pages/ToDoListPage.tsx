@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TabTasks from '../components/TabTasks';
 import ToDoList from '../components/ToDoList';
-import { baseUrl, getToDos } from '../api/api';
+import { getToDos } from '../api/api';
 import AddTask from '../components/AddTask';
 import { ActiveTabs, MetaResponse, Todo, TodoInfo, ValidatorFunc } from '../types/types';
 
@@ -17,27 +17,18 @@ const ToDoListPage: React.FC = () => {
     meta: { totalAmount: 0 },
   });
 
-  let urlFetch;
-  if (activeTab === 'all') {
-    urlFetch = baseUrl;
-  } else if (activeTab === 'inWork') {
-    urlFetch = baseUrl + '?filter=inWork';
-  } else if (activeTab === 'complete') {
-    urlFetch = baseUrl + '?filter=completed';
-  }
-
   useEffect(() => {
     getAndSetToDos();
   }, [activeTab]);
 
-  async function getAndSetToDos(): Promise<void> {
+  const getAndSetToDos = async (): Promise<void> => {
     try {
-      let dataTask = await getToDos(urlFetch);
+      const dataTask = await getToDos(activeTab);
       setDataTasks(dataTask);
     } catch (error) {
       alert(`Не удалось запросить данные с сервера ${error}`);
     }
-  }
+  };
 
   const validator: ValidatorFunc = (text) => {
     if (text.trim().length < 2) {
@@ -50,7 +41,7 @@ const ToDoListPage: React.FC = () => {
 
   return (
     <div className="wrapper">
-      <AddTask getAndSetToDos={getAndSetToDos} validator={validator} />
+      <AddTask onUpdate={getAndSetToDos} validator={validator} />
       <TabTasks quantity={dataTasks.info} activeTab={activeTab} setActiveTab={setActiveTab} />
       <ToDoList
         dataTasksAll={dataTasks}

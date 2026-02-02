@@ -4,30 +4,27 @@ import { postToDo } from '../api/api.ts';
 import { FetchFunc, ValidatorFunc } from '../types/types';
 
 const AddTask: React.FC<{
-  getAndSetToDos: FetchFunc;
+  onUpdate: FetchFunc;
   validator: ValidatorFunc;
-}> = ({ getAndSetToDos, validator }) => {
+}> = ({ onUpdate, validator }) => {
   const [textTask, setTextTask] = useState<string>('');
 
-  async function submitToDo(
-    event: React.SubmitEvent<HTMLFormElement>,
-    title: string,
-  ): Promise<void> {
+  async function submitToDo(event: React.SubmitEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
-    if (validator(title)) {
-      alert(validator(title));
+    if (validator(textTask)) {
+      alert(validator(textTask));
       return;
     }
     try {
-      await postToDo(title);
-      await getAndSetToDos();
+      await postToDo(textTask);
+      await onUpdate();
     } catch (error) {
       alert(`Не удалось добавить задачу ${error}`);
     }
   }
 
   return (
-    <form onSubmit={(event) => submitToDo(event, textTask)} className="addPanel">
+    <form onSubmit={submitToDo} className="addPanel">
       <input
         type="text"
         value={textTask}

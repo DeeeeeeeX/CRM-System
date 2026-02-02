@@ -9,11 +9,11 @@ const ToDoList: React.FC<{
   validator: ValidatorFunc;
 }> = ({ dataTasksAll, getAndSetToDos, validator }) => {
   return (
-    <div>
+    <ul>
       {dataTasksAll.data.map((task) => (
         <ToDoItem key={task.id} task={task} getAndSetToDos={getAndSetToDos} validator={validator} />
       ))}
-    </div>
+    </ul>
   );
 };
 

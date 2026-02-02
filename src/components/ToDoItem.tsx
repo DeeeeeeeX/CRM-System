@@ -65,7 +65,7 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc; validator: Val
   };
 
   return (
-    <div className="taskEl">
+    <li className="taskEl">
       <label className="checkbox">
         <input
           className="checkbox"
@@ -113,7 +113,7 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc; validator: Val
           </button>
         </>
       )}
-    </div>
+    </li>
   );
 };
 
