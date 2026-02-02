@@ -28,18 +28,16 @@ export async function deleteToDo(id: number): Promise<void> {
 
 export async function putToDo(
   id: number,
-  titleValue: string | boolean | null,
-  isDoneValue?: boolean,
+  taskState: {
+    title?: string;
+    isDone?: boolean;
+  },
 ): Promise<void> {
-  if (typeof titleValue === 'boolean') {
-    isDoneValue = titleValue;
-    titleValue = null;
-  }
   try {
     await fetch(`${baseUrl}/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: titleValue, isDone: isDoneValue }),
+      body: JSON.stringify(taskState),
     });
   } catch (error) {
     console.log('Ошибка', error);

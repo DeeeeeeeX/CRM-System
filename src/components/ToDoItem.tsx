@@ -34,7 +34,7 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
       alert('Количество символов должно быть менее 64');
     } else {
       try {
-        await putToDo(task.id, editingTitles.get(task.id));
+        await putToDo(task.id, { title: editingTitles.get(task.id) });
         await getAndSetToDos();
         deletingIdArray(task);
       } catch (error) {
@@ -47,9 +47,9 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
     deletingIdArray(task);
   };
 
-  const handleCompleted = async (task: Todo, targetValue: string) => {
+  const handleCompleted = async (task: Todo, targetValue: boolean) => {
     try {
-      await putToDo(task.id, targetValue);
+      await putToDo(task.id, { isDone: targetValue });
       await getAndSetToDos();
     } catch (error) {
       alert(`не удалось отправить запрос о смене статуса задачи ${error}`);
