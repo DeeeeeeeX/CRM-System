@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TabTasks from '../components/TabTasks';
 import ToDoList from '../components/ToDoList';
-import { baseUrl, getToDos, urlGetCompletedTask, urlGetInWorkTask } from '../api/api';
+import { baseUrl, getToDos } from '../api/api';
 import AddTask from '../components/AddTask';
 import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
 
@@ -21,9 +21,9 @@ const ToDoListPage: React.FC = () => {
   if (activeTab === 'all') {
     urlFetch = baseUrl;
   } else if (activeTab === 'inWork') {
-    urlFetch = urlGetInWorkTask;
+    urlFetch = baseUrl + '?filter=inWork';
   } else if (activeTab === 'complete') {
-    urlFetch = urlGetCompletedTask;
+    urlFetch = baseUrl + '?filter=completed';
   }
 
   useEffect(() => {

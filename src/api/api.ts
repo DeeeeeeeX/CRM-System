@@ -1,8 +1,6 @@
 import { MetaResponse, Todo, TodoInfo } from '../types/types';
 
 export const baseUrl = 'https://easydev.club/api/v1/todos';
-export const urlGetCompletedTask = 'https://easydev.club/api/v1/todos?filter=completed';
-export const urlGetInWorkTask = 'https://easydev.club/api/v1/todos?filter=inWork';
 
 export async function getToDos(url: string): Promise<MetaResponse<Todo, TodoInfo>> {
   let data;
