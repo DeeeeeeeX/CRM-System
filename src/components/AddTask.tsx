@@ -8,16 +8,16 @@ const AddTask: React.FC<{ getAndSetToDos: FetchFunc }> = ({ getAndSetToDos }) =>
 
   async function submitToDo(
     event: React.SubmitEvent<HTMLFormElement>,
-    text: string,
+    title: string,
   ): Promise<void> {
     event.preventDefault();
-    if (text.trim().length < 2) {
+    if (title.trim().length < 2) {
       alert('Количество символов должно быть более 2');
-    } else if (text.trim().length > 64) {
+    } else if (title.trim().length > 64) {
       alert('Количество символов должно быть менее 64');
     } else {
       try {
-        await postToDo(text);
+        await postToDo(title);
         await getAndSetToDos();
       } catch (error) {
         alert(`Не удалось добавить задачу ${error}`);

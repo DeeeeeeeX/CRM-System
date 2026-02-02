@@ -45,12 +45,12 @@ export async function putToDo(
   }
 }
 
-export async function postToDo(text: string): Promise<void> {
+export async function postToDo(title: string): Promise<void> {
   try {
     await fetch(baseUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ isDone: false, title: text }),
+      body: JSON.stringify({ isDone: false, title: title }),
     });
   } catch (error) {
     console.log('Ошибка', error);
