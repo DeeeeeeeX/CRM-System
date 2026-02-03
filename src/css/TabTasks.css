@@ -5,10 +5,11 @@ nav {
     align-items: center;
 }
 
-a {
+nav div {
     font-weight: 600;
     color: gray;
-    text-decoration: none
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .active {
