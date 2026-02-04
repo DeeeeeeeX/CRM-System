@@ -1,28 +1,25 @@
 import '../css/AddTask.css';
 import { postToDo } from '../api/api.ts';
-import { FetchFunc } from '../types/types';
+import { FetchFunc, FieldType } from '../types/types';
 import { Button, Form, FormProps, Input } from 'antd';
+import React, { memo } from 'react';
 
-const AddTask: React.FC<{ getAndSetToDos: FetchFunc }> = ({ getAndSetToDos }) => {
-  async function submitToDo(text: string): Promise<void> {
+const AddTask: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
+  async function submitToDo(title: string): Promise<void> {
     try {
-      await postToDo(text);
-      await getAndSetToDos();
+      await postToDo(title);
+      await onUpdate();
     } catch (error) {
-      alert(`Не удалось добавить задачу ${error}`);
+      console.log(error);
     }
   }
-
-  type FieldType = {
-    taskInput?: string;
-  };
 
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     submitToDo(values.task);
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    alert(`'Failed:, ${errorInfo.message}`);
+    alert(`Failed:, ${errorInfo.message}`);
   };
 
   return (
@@ -63,4 +60,4 @@ const AddTask: React.FC<{ getAndSetToDos: FetchFunc }> = ({ getAndSetToDos }) =>
   );
 };
 
-export default AddTask;
+export default memo(AddTask);

@@ -1,13 +1,29 @@
-import { MetaResponse, Todo, TodoInfo } from '../types/types';
+import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
 import axios from 'axios';
 
-export const baseUrl = 'https://easydev.club/api/v1/todos';
-export const urlGetCompletedTask = 'https://easydev.club/api/v1/todos?filter=completed';
-export const urlGetInWorkTask = 'https://easydev.club/api/v1/todos?filter=inWork';
+const baseFetch = axios.create({
+  baseURL: 'https://easydev.club/api/v1/todos',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-export async function getToDos(url: string): Promise<MetaResponse<Todo, TodoInfo>> {
+export async function getToDos(activeTab?: ActiveTabs): Promise<MetaResponse<Todo, TodoInfo>> {
+  let filter;
+  if (activeTab === 'all') {
+    filter = '';
+  } else if (activeTab === 'inWork') {
+    filter = 'inWork';
+  } else if (activeTab === 'complete') {
+    filter = 'completed';
+  }
   try {
-    let response = await axios.get(url);
+    let response = await baseFetch.get('', {
+      params: {
+        filter: filter,
+      },
+    });
     return response.data;
   } catch (error) {
     console.log('Ошибка', error);
@@ -17,33 +33,31 @@ export async function getToDos(url: string): Promise<MetaResponse<Todo, TodoInfo
 
 export async function deleteToDo(id: number): Promise<void> {
   try {
-    await axios.delete(`${baseUrl}/${id}`);
+    await baseFetch.delete(`/${id}`);
   } catch (error) {
     console.log('Ошибка', error);
-    throw error;
+    console.log(error);
   }
 }
 
 export async function putToDo(
   id: number,
-  titleValue: string | boolean | null,
-  isDoneValue?: boolean,
+  taskState: {
+    title?: string;
+    isDone?: boolean;
+  },
 ): Promise<void> {
-  if (typeof titleValue === 'boolean') {
-    isDoneValue = titleValue;
-    titleValue = null;
-  }
   try {
-    await axios.put(`${baseUrl}/${id}`, { title: titleValue, isDone: isDoneValue });
+    await baseFetch.put(`/${id}`, taskState);
   } catch (error) {
     console.log('Ошибка', error);
     throw error;
   }
 }
 
-export async function postToDo(text: string): Promise<void> {
+export async function postToDo(title: string): Promise<void> {
   try {
-    await axios.post(baseUrl, { isDone: false, title: text });
+    await baseFetch.post('', { isDone: false, title: title });
   } catch (error) {
     console.log('Ошибка', error);
     throw error;

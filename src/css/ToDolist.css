@@ -11,6 +11,10 @@
     border-radius: 10px;
 }
 
+ul {
+    padding: 0;
+}
+
 .title  {
     padding: 10px;
     display: flex;
@@ -31,13 +35,13 @@
 .buttonEdit {
     margin-left: 30px;
     height: 50px;
-    width: 15%;
+    width: 55px;
     border-radius: 5px;
     background-color: rgba(86,149,243,0.8);
 }
 
 .buttonBack {
-    width: 15%;
+    width: 55px;
     margin-left: 10px;
     height: 50px;
     border-radius: 5px;
@@ -46,7 +50,7 @@
 
 .buttonDelete {
     margin-left: 10px;
-    width: 15%;
+    width: 55px;
     height: 50px;
     border-radius: 5px;
     background-color: rgba(254,106,91,0.8)
@@ -124,6 +128,13 @@ input[type=checkbox] {
 .todo-box {
     flex-direction: column;
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editingForm {
+    display: flex;
+    box-sizing: border-box;
     justify-content: center;
     align-items: center;
 }
