@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import '../css/AddTask.css';
-import { postToDo } from '../api/api.ts';
-import { FetchFunc, ValidatorFunc } from '../types/types';
+import { createToDo } from '../api/api.ts';
+import { FetchFunc } from '../types/types';
+import { validator } from '../functions/helpersFunc';
 
-const AddTask: React.FC<{
+const AddToDo: React.FC<{
   onUpdate: FetchFunc;
-  validator: ValidatorFunc;
-}> = ({ onUpdate, validator }) => {
+}> = ({ onUpdate }) => {
   const [textTask, setTextTask] = useState<string>('');
 
-  async function submitToDo(event: React.SubmitEvent<HTMLFormElement>): Promise<void> {
+  async function handleCreateTodo(event: React.SubmitEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     if (validator(textTask)) {
       alert(validator(textTask));
       return;
     }
     try {
-      await postToDo(textTask);
+      await createToDo(textTask);
       await onUpdate();
     } catch (error) {
       alert(`Не удалось добавить задачу ${error}`);
@@ -24,7 +24,7 @@ const AddTask: React.FC<{
   }
 
   return (
-    <form onSubmit={submitToDo} className="addPanel">
+    <form onSubmit={handleCreateTodo} className="addPanel">
       <input
         type="text"
         value={textTask}
@@ -36,4 +36,4 @@ const AddTask: React.FC<{
   );
 };
 
-export default AddTask;
+export default AddToDo;

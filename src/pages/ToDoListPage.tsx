@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import TabTasks from '../components/TabTasks';
+import TabsToDos from '../components/TabsToDos';
 import ToDoList from '../components/ToDoList';
 import { getToDos } from '../api/api';
-import AddTask from '../components/AddTask';
+import AddToDo from '../components/AddToDo';
 import { ActiveTabs, MetaResponse, Todo, TodoInfo, ValidatorFunc } from '../types/types';
 
 const ToDoListPage: React.FC = () => {
@@ -18,10 +18,10 @@ const ToDoListPage: React.FC = () => {
   });
 
   useEffect(() => {
-    getAndSetToDos();
+    updateToDos();
   }, [activeTab]);
 
-  const getAndSetToDos = async (): Promise<void> => {
+  const updateToDos = async (): Promise<void> => {
     try {
       const dataTask = await getToDos(activeTab);
       setDataTasks(dataTask);
@@ -30,25 +30,11 @@ const ToDoListPage: React.FC = () => {
     }
   };
 
-  const validator: ValidatorFunc = (text) => {
-    if (text.trim().length < 2) {
-      return 'Количество символов должно быть более 2';
-    } else if (text.trim().length > 64) {
-      return 'Количество символов должно быть менее 64';
-    }
-    return '';
-  };
-
   return (
     <div className="wrapper">
-      <AddTask onUpdate={getAndSetToDos} validator={validator} />
-      <TabTasks quantity={dataTasks.info} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <ToDoList
-        dataTasksAll={dataTasks}
-        getAndSetToDos={getAndSetToDos}
-        validator={validator}
-        className="tasks"
-      />
+      <AddToDo onUpdate={updateToDos} />
+      <TabsToDos quantity={dataTasks.info} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <ToDoList dataTasksAll={dataTasks} updateToDos={updateToDos} className="tasks" />
     </div>
   );
 };

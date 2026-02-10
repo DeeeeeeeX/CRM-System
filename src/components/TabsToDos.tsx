@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import '../css/TabTasks.css';
 import { TodoInfo } from '../types/types';
 
-const TabTasks: React.FC<{
+const TabsToDos: React.FC<{
   quantity: TodoInfo;
   setActiveTab: Dispatch<SetStateAction<string>>;
   activeTab: string;
@@ -21,8 +21,8 @@ const TabTasks: React.FC<{
         В работе ({inWork})
       </div>
       <div
-        onClick={() => setActiveTab('complete')}
-        className={activeTab === 'complete' ? 'active' : ''}
+        onClick={() => setActiveTab('completed')}
+        className={activeTab === 'completed' ? 'active' : ''}
       >
         Сделано ({completed})
       </div>
@@ -30,4 +30,4 @@ const TabTasks: React.FC<{
   );
 };
 
-export default TabTasks;
+export default TabsToDos;

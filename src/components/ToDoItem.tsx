@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { deleteToDo, putToDo } from '../api/api.ts';
+import { deleteToDo, editToDo } from '../api/api.ts';
 import { FetchFunc, Todo, ValidatorFunc } from '../types/types';
+import { validator } from '../functions/helpersFunc';
 
-const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc; validator: ValidatorFunc }> = ({
-  task,
-  getAndSetToDos,
-  validator,
-}) => {
+const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, updateToDos }) => {
   const [editingIdArray, setEditingArrayId] = useState<number[]>([]);
   const [editingTitles, setEditingTitles] = useState<Map<number, string>>(new Map());
 
@@ -34,8 +31,8 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc; validator: Val
       return;
     }
     try {
-      await putToDo(task.id, { title: editingTitles.get(task.id) });
-      await getAndSetToDos();
+      await editToDo(task.id, { title: editingTitles.get(task.id) });
+      await updateToDos();
       deletingIdArray(task);
     } catch (error) {
       alert(`Не удалось отправить запрос ${error}`);
@@ -48,8 +45,8 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc; validator: Val
 
   const handleCompleted = async (task: Todo, targetValue: boolean) => {
     try {
-      await putToDo(task.id, { isDone: targetValue });
-      await getAndSetToDos();
+      await editToDo(task.id, { isDone: targetValue });
+      await updateToDos();
     } catch (error) {
       alert(`не удалось отправить запрос о смене статуса задачи ${error}`);
     }
@@ -58,7 +55,7 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc; validator: Val
   const handleDeleting = async (task: Todo) => {
     try {
       await deleteToDo(task.id);
-      await getAndSetToDos();
+      await updateToDos();
     } catch (error) {
       alert(`не удалось отправить запрос об удалении ${error}`);
     }

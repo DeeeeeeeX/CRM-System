@@ -3,23 +3,12 @@ import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
 export const baseUrl = 'https://easydev.club/api/v1/todos';
 
 export async function getToDos(activeTab: ActiveTabs): Promise<MetaResponse<Todo, TodoInfo>> {
-  let data;
-  let urlFetch;
-  if (activeTab === 'all') {
-    urlFetch = baseUrl;
-  } else if (activeTab === 'inWork') {
-    urlFetch = baseUrl + '?filter=inWork';
-  } else if (activeTab === 'complete') {
-    urlFetch = baseUrl + '?filter=completed';
-  }
   try {
-    let response = await fetch(urlFetch, { method: 'GET' });
-    data = await response.json();
+    let response = await fetch(baseUrl + `?filter=${activeTab}`, { method: 'GET' });
+    return await response.json();
   } catch (error) {
-    console.log('Ошибка', error);
     throw error;
   }
-  return data;
 }
 
 export async function deleteToDo(id: number): Promise<void> {
@@ -29,12 +18,11 @@ export async function deleteToDo(id: number): Promise<void> {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.log('Ошибка', error);
     throw error;
   }
 }
 
-export async function putToDo(
+export async function editToDo(
   id: number,
   taskState: {
     title?: string;
@@ -48,20 +36,18 @@ export async function putToDo(
       body: JSON.stringify(taskState),
     });
   } catch (error) {
-    console.log('Ошибка', error);
     throw error;
   }
 }
 
-export async function postToDo(title: string): Promise<void> {
+export async function createToDo(title: string): Promise<void> {
   try {
     await fetch(baseUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ isDone: false, title: title }),
+      body: JSON.stringify({ isDone: false, title }),
     });
   } catch (error) {
-    console.log('Ошибка', error);
     throw error;
   }
 }

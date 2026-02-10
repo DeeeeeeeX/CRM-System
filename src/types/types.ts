@@ -1,4 +1,4 @@
-export type ActiveTabs = 'all' | 'inWork' | 'complete';
+export type ActiveTabs = 'all' | 'inWork' | 'completed';
 
 export interface Todo {
   id: number;
