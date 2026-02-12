@@ -1,14 +1,297 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+body {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
 .wrapper {
-  width: 350px;
-  height: 100%;
-  background-color: #fff;
-  margin: 50px auto;
-  border-radius: 10px;
-  max-width: 1400px;
+    width: 400px;
+    height: 100%;
+    background-color: #fff;
+    margin: 50px auto;
+    border-radius: 10px;
+    max-width: 1400px;
 }
 
 .tasks {
-  display: flex;
-  justify-content: center;
-  align-items: start;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+.app-wrapper {
+    display: flex;
+}
+
+.menu {
+    background-color: rgba(249, 249, 249, 1);
+    border: 1px;
+    border-right: 1px solid rgba(228, 228, 228, 1);
+    width: 248px;
+    height: 944px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.pages {
+    margin-top: 120px;
+    display: flex;
+    width: 100%;
+}
+
+.menu-header {
+    width: 248px;
+    height: 72px;
+    box-sizing: border-box;
+    padding: 20px 28px;
+    border-bottom: 1px solid rgba(228, 228, 228, 1);
+}
+
+
+.menu-header-item img {
+    display: block;
+    width: 28px;
+    height: 24px;
+}
+
+.menu-header-item span {
+    display: flex;
+    align-items: center;
+    color: rgba(0, 0, 0, 1);
+    margin: 0 0 0 12px;
+    width: 75px;
+    height: 28px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 140%;
+}
+
+.menu-header-item {
+    display: flex;
+    width: 115px;
+    height: 28px;
+}
+
+.menu-navigation {
+    width: 248px;
+    height: 542px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 150%;
+    color: rgba(114, 114, 114, 1);
+}
+
+a {
+    text-decoration: none;
+    margin-left: 12px;
+}
+
+a:visited {
+    color: rgba(114, 114, 114, 1);;
+}
+
+a:hover {
+    color: rgb(26, 26, 26);;
+}
+
+.menu-main {
+    box-sizing: border-box;
+    height: 236px;
+    margin: 20px 0;
+    border-bottom: 1px solid rgba(228, 228, 228, 1);
+}
+
+.menu-main ul {
+    margin: 0;
+}
+
+.menu-main li {
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    width: 216px;
+    height: 36px;
+}
+
+.menu-main h3 {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 140%;
+    margin: 0 0 9px 24px;
+}
+
+.menu-database {
+    height: 146px;
+}
+
+.menu-settings {
+    height: 80px;
+    padding-bottom: 360px;
+}
+
+.menu-profile {
+    margin-top: 258px;
+    box-sizing: border-box;
+    height: 72px;
+    width: 248px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-profile a {
+    margin: 0;
+    font-size: 16px;
+    line-height: 150%;
+    color: rgba(0, 0, 0, 1);
+}
+
+.link-active a {
+    color: black;
+}
+
+.imgBack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1109px;
+    height: 1080px;
+}
+
+.authBack {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+
+}
+
+.authBack h3 {
+    position: absolute;
+    z-index: 1;
+    top: 879px;
+    left: 295px;
+    font-size: 40px;
+    line-height: 100%;
+    font-weight: 800;
+    color: rgba(115, 17, 75, 1);
+}
+
+.authBack span {
+    position: absolute;
+    z-index: 1;
+    color: rgba(115, 17, 75, 1);
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 100%;
+    top: 968px;
+    left: 223px;
+}
+
+.circle {
+    position: absolute;
+    z-index: 1;
+    top: 998px;
+    left: 1003px;
+}
+
+.loginLayer {
+    margin-left: 1109px;
+    width: 811px;
+    height: 1080px;
+}
+
+.loginImg {
+    margin: 170px 0 0 201px;
+}
+
+.formBlock {
+    display: flex;
+    flex-wrap: wrap;
+    width: 420px;
+    height: 376px;
+    margin: 36px 0 0 201px;
+    justify-content: center;
+}
+
+.loginTitle {
+    margin-bottom: 36px;
+    width: 367px;
+    height: 74px;
+    color: rgba(82, 82, 82, 1);
+    font-family: "Nunito Sans", sans-serif;
+}
+
+.loginTitle h3 {
+    display: block;
+    margin: 0;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+    height: 49px;
+
+}
+
+.loginTitle span {
+    display: block;
+    margin-top: 3px;
+    font-weight: 400;
+    line-height: 100%;
+    font-size: 16px;
+    height: 22px;
+}
+
+.formBlock form {
+    width: 100%;
+}
+.formBlock button {
+    width: 100%;
+    height: 50px;
+    background-color: rgba(127, 38, 91, 1);
+}
+
+.underAuthData {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 16px;
+    margin: 8px 0 32px 0;
+}
+
+.underAuthData a {
+    color: rgba(127, 38, 91, 1);
+}
+
+.underAuthData input {
+    color: rgba(161, 161, 161, 1);
+}
+
+.loginLayer .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: rgba(127, 38, 91, 1);
+    border-color: rgba(127, 38, 91, 1);
+}
+
+.createTitle {
+    margin: 317px 0 0 253px;
+    width: 317px;
+    height: 25px;
+    font-family: "Nunito Sans", sans-serif;
+}
+
+.createTitle span {
+    font-weight: 400;
+    color: rgba(130, 130, 130, 1);
+    font-size: 18px;
+    line-height: 100%;
+}
+
+.createTitle a {
+    margin-left: 10px;
+    font-weight: 600;
+    color: rgba(127, 38, 91, 1);
+    font-size: 18px;
+    line-height: 100%;
 }
