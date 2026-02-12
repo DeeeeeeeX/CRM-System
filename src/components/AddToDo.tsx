@@ -1,7 +1,7 @@
 import '../css/AddTask.css';
 import { createToDo } from '../api/api.ts';
 import { FetchFunc, FieldType } from '../types/types';
-import { Button, Form, FormProps, Input } from 'antd';
+import { Button, Form, FormProps, Input, message } from 'antd';
 import React, { memo } from 'react';
 
 const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
@@ -10,7 +10,7 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
       await createToDo(title);
       await onUpdate();
     } catch (error) {
-      console.log(error);
+      message.error(`Failed:, ${error.message}`);
     }
   }
 
@@ -19,7 +19,7 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    alert(`Failed:, ${errorInfo.message}`);
+    message.error(`Failed:, ${errorInfo.message}`);
   };
 
   return (

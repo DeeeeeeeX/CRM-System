@@ -25,9 +25,7 @@ export async function getToDos(activeTab?: ActiveTabs): Promise<MetaResponse<Tod
 export async function deleteToDo(id: number): Promise<void> {
   try {
     await baseFetch.delete(`/${id}`);
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }
 
 export async function editToDo(

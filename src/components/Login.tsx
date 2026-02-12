@@ -2,7 +2,7 @@ import React from 'react';
 import authBack from '../assets/auth/authback.png';
 import circle from '../assets/auth/Vector.svg';
 import loginImg from '../assets/auth/loginImg.svg';
-import { Button, Checkbox, Form, FormProps, Input } from 'antd';
+import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
@@ -12,12 +12,12 @@ const Login = () => {
     remember?: string;
   };
 
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values);
+  const onFinish: FormProps<FieldType>['onFinish'] = () => {
+    message.success('Successful login');
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    message.error(`Failed:, ${errorInfo.message}`);
   };
 
   return (
