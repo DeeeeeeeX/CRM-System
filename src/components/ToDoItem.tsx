@@ -7,7 +7,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(task.title);
 
-  const handleSave = async (task: Todo): Promise<void> => {
+  const handleSave = async (): Promise<void> => {
     if (validator(title)) {
       alert(validator(title));
       return;
@@ -21,9 +21,9 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
     }
   };
 
-  const handleCompleted = async (targetValue: boolean) => {
+  const handleCompleted = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
-      await editToDo(task.id, { isDone: targetValue });
+      await editToDo(task.id, { isDone: e.target.checked });
       await updateToDos();
     } catch (error) {
       alert(`не удалось отправить запрос о смене статуса задачи ${error}`);
@@ -50,7 +50,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
         <input
           className="checkbox"
           checked={task.isDone}
-          onChange={(e) => handleCompleted(e.target.checked)}
+          onChange={handleCompleted}
           type="checkbox"
         />
       </label>
@@ -66,7 +66,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
       )}
       {isEditing ? (
         <>
-          <button className="buttonEdit" onClick={() => handleSave(task)}>
+          <button className="buttonEdit" onClick={handleSave}>
             <div className="saveSvg"></div>
           </button>
           <button className="buttonBack" onClick={handleBackEditing}>
