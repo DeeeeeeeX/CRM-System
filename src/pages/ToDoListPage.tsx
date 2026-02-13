@@ -33,7 +33,7 @@ const ToDoListPage: React.FC = () => {
       updateToDos();
     }, 5000);
     return () => clearInterval(fetchInterval);
-  }, [activeTab]);
+  }, [updateToDos]);
 
   return (
     <div className="wrapper">

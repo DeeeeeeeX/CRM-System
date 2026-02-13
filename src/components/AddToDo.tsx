@@ -1,4 +1,3 @@
-import '../css/AddTask.css';
 import { createToDo } from '../api/api.ts';
 import { FetchFunc, FieldType } from '../types/types';
 import { Button, Form, FormProps, Input, message } from 'antd';
@@ -15,6 +14,7 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
   }
 
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    if (!values.task) return;
     handleCreateTodo(values.task);
   };
 
@@ -29,8 +29,8 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        style={{ maxWidth: 800, justifyContent: 'right' }}
         validateTrigger={['onChange']}
+        layout="inline"
       >
         <Form.Item<FieldType>
           name="task"

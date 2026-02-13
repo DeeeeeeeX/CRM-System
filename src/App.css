@@ -10,7 +10,6 @@ body {
 .wrapper {
     width: 400px;
     height: 100%;
-    background-color: #fff;
     margin: 50px auto;
     border-radius: 10px;
     max-width: 1400px;
@@ -38,6 +37,7 @@ body {
 }
 
 .pages {
+    background-color: #fff;
     margin-top: 120px;
     display: flex;
     width: 100%;

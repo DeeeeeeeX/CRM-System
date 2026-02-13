@@ -9,7 +9,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
 
   const handleSave = async (modifiedTodoTitle: FieldType) => {
     try {
-      await editToDo(task.id, { title: modifiedTodoTitle.title?.trim() });
+      await editToDo(task.id, { title: modifiedTodoTitle.task?.trim() });
       setIsEditing(false);
       await updateToDos();
     } catch (error) {
@@ -40,7 +40,6 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
   };
 
   const onFinish: FormProps<FieldType>['onFinish'] = (modifiedTodoTitle) => {
-    console.log(modifiedTodoTitle.title);
     handleSave(modifiedTodoTitle);
   };
 
@@ -49,7 +48,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
   };
 
   useEffect(() => {
-    form.setFieldsValue({ title: task.title });
+    form.setFieldsValue({ task: task.title });
   }, [isEditing]);
 
   return (
@@ -67,11 +66,11 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
           onFinishFailed={onFinishFailed}
           autoComplete="off"
           validateTrigger={['onChange']}
-          initialValues={{ title: task.title }}
+          initialValues={{ task: task.title }}
           className="editingForm"
         >
           <Form.Item<FieldType>
-            name="title"
+            name="task"
             style={{ width: 174, paddingLeft: 5, marginBottom: 0 }}
             rules={[
               {
