@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import TabsToDos from '../components/TabsToDos';
 import ToDoList from '../components/ToDoList';
-import { getToDos } from '../api/api';
+import {getToDos} from '../api/api';
 import AddToDo from '../components/AddToDo';
-import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
-import { message } from 'antd';
+import {ActiveTabs, MetaResponse, Todo, TodoInfo} from '../types/types';
+import {Flex, message} from 'antd';
 
 const ToDoListPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTabs>('all');
@@ -15,7 +15,7 @@ const ToDoListPage: React.FC = () => {
       completed: 0,
       inWork: 0,
     },
-    meta: { totalAmount: 0 },
+    meta: {totalAmount: 0},
   });
 
   const updateToDos = useCallback(async (): Promise<void> => {
@@ -36,11 +36,11 @@ const ToDoListPage: React.FC = () => {
   }, [updateToDos]);
 
   return (
-    <div className="wrapper">
-      <AddToDo onUpdate={updateToDos} />
-      <TabsToDos quantity={dataTasks.info} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <ToDoList dataTasksAll={dataTasks} updateToDos={updateToDos} className="tasks" />
-    </div>
+    <Flex vertical align='center'>
+      <AddToDo onUpdate={updateToDos}/>
+      <TabsToDos quantity={dataTasks.info} activeTab={activeTab} setActiveTab={setActiveTab}/>
+      <ToDoList dataTasksAll={dataTasks} updateToDos={updateToDos} className="tasks"/>
+    </Flex>
   );
 };
 

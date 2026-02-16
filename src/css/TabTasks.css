@@ -1,4 +1,6 @@
 nav {
+    margin-top: 20px;
+    width: 350px;
     height: 50px;
     display: flex;
     justify-content: space-around;
@@ -14,5 +16,8 @@ nav {
 }
 
 .tabTasks div {
+
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
 }

@@ -26,6 +26,7 @@ export async function deleteToDo(id: number): Promise<void> {
     try {
         await baseFetch.delete(`/${id}`);
     } catch (error) {
+      throw error
     }
 }
 
