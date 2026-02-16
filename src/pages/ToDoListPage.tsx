@@ -9,7 +9,7 @@ import {Flex, message} from 'antd';
 const ToDoListPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTabs>('all');
   const [dataTasks, setDataTasks] = useState<MetaResponse<Todo, TodoInfo>>({
-    data: [],
+    data: [{id: 1, title: 'loading ...', created: '2026-02-16T13:02:32.953831Z', isDone: false}],
     info: {
       all: 0,
       completed: 0,

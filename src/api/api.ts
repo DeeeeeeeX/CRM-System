@@ -16,7 +16,9 @@ export async function getToDos(activeTab?: ActiveTabs): Promise<MetaResponse<Tod
         filter: activeTab,
       },
     });
+    console.log(response.data)
     return response.data;
+
   } catch (error) {
     throw error;
   }
@@ -30,7 +32,7 @@ export async function deleteToDo(id: number): Promise<void> {
   }
 }
 
-export async function editToDo(id: number, taskState: Todo): Promise<void> {
+export async function editToDo(id: number, taskState: Partial<Pick<Todo, 'title' | 'isDone'>>): Promise<void> {
   try {
     await baseFetch.put(`/${id}`, taskState);
   } catch (error) {
