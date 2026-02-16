@@ -1,60 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { deleteToDo, putToDo } from '../api/api.ts';
+import { deleteToDo, editToDo } from '../api/api.ts';
 import { FetchFunc, FieldType, Todo } from '../types/types';
-import { Button, Checkbox, Form, FormProps, Input } from 'antd';
+import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
 
-const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
-  task,
-  getAndSetToDos,
-}) => {
+const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, updateToDos }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(task.title);
   const [form] = Form.useForm();
 
-  const handleSave = async () => {
+  const handleSave = async (modifiedTodoTitle: FieldType) => {
     try {
-      await putToDo(task.id, { title: title.trim() });
+      await editToDo(task.id, { title: modifiedTodoTitle.task?.trim() });
       setIsEditing(false);
-      await getAndSetToDos();
+      await updateToDos();
     } catch (error) {
-      alert(`Не удалось отправить запрос ${error}`);
+      message.error(`Не удалось отправить запрос ${error}`);
     }
   };
 
   const handleBackEditing = () => {
-    setTitle(task.title);
     setIsEditing(false);
   };
 
   const handleCompleted = async (targetValue: boolean) => {
     try {
-      await putToDo(task.id, { isDone: targetValue });
-      await getAndSetToDos();
+      await editToDo(task.id, { isDone: targetValue });
+      await updateToDos();
     } catch (error) {
-      alert(`не удалось отправить запрос о смене статуса задачи ${error}`);
+      message.error(`не удалось отправить запрос о смене статуса задачи ${error}`);
     }
   };
 
   const handleDeleting = async () => {
     try {
       await deleteToDo(task.id);
-      await getAndSetToDos();
+      await updateToDos();
     } catch (error) {
-      alert(`не удалось отправить запрос об удалении ${error}`);
+      message.error(`не удалось отправить запрос об удалении ${error}`);
     }
   };
 
-  const onFinish: FormProps<FieldType>['onFinish'] = () => {
-    handleSave();
+  const onFinish: FormProps<FieldType>['onFinish'] = (modifiedTodoTitle) => {
+    handleSave(modifiedTodoTitle);
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    alert(`Failed:, ${errorInfo.message}`);
+    message.error(`Failed:, ${errorInfo.message}`);
   };
 
   useEffect(() => {
-    form.setFieldsValue({ title });
-  }, [title]);
+    form.setFieldsValue({ task: task.title });
+  }, [isEditing]);
 
   return (
     <li className="taskEl">
@@ -65,16 +60,17 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
 
       {isEditing ? (
         <Form
+          form={form}
           name="edit"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
           validateTrigger={['onChange']}
-          initialValues={{ title }}
+          initialValues={{ task: task.title }}
           className="editingForm"
         >
           <Form.Item<FieldType>
-            name="title"
+            name="task"
             style={{ width: 174, paddingLeft: 5, marginBottom: 0 }}
             rules={[
               {
@@ -90,10 +86,7 @@ const ToDoItem: React.FC<{ task: Todo; getAndSetToDos: FetchFunc }> = ({
               },
             ]}
           >
-            <Input
-              onChange={(e) => setTitle(e.target.value)}
-              status={title.length < 2 || title.length > 64 ? 'error' : 'success'}
-            />
+            <Input />
           </Form.Item>
           <>
             <Form.Item style={{ margin: 0 }}>

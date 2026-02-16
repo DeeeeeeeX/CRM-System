@@ -1,4 +1,4 @@
-export type ActiveTabs = 'all' | 'inWork' | 'complete' | null;
+export type ActiveTabs = 'all' | 'inWork' | 'completed' | null;
 
 export interface Todo {
   id: number;
@@ -24,4 +24,6 @@ export interface MetaResponse<T, N> {
 export type FetchFunc = (tabTask?: ActiveTabs) => Promise<void>;
 export type FieldType = {
   taskInput?: string;
+  title?: string;
+  task?: string;
 };

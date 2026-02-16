@@ -1,25 +1,25 @@
-import '../css/AddTask.css';
-import { postToDo } from '../api/api.ts';
+import { createToDo } from '../api/api.ts';
 import { FetchFunc, FieldType } from '../types/types';
-import { Button, Form, FormProps, Input } from 'antd';
+import { Button, Form, FormProps, Input, message } from 'antd';
 import React, { memo } from 'react';
 
-const AddTask: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
-  async function submitToDo(title: string): Promise<void> {
+const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
+  async function handleCreateTodo(title: string): Promise<void> {
     try {
-      await postToDo(title);
+      await createToDo(title);
       await onUpdate();
     } catch (error) {
-      console.log(error);
+      message.error(`Failed:, ${error.message}`);
     }
   }
 
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    submitToDo(values.task);
+    if (!values.task) return;
+    handleCreateTodo(values.task);
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    alert(`Failed:, ${errorInfo.message}`);
+    message.error(`Failed:, ${errorInfo.message}`);
   };
 
   return (
@@ -29,8 +29,8 @@ const AddTask: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        style={{ maxWidth: 800, justifyContent: 'right' }}
         validateTrigger={['onChange']}
+        layout="inline"
       >
         <Form.Item<FieldType>
           name="task"
@@ -60,4 +60,4 @@ const AddTask: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
   );
 };
 
-export default memo(AddTask);
+export default memo(AddToDo);

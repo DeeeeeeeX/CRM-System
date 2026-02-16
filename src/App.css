@@ -1,36 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+body {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    margin: 0;
+}
+
 .wrapper {
-  width: 400px;
-  height: 100%;
-  background-color: #fff;
-  margin: 50px auto;
-  border-radius: 10px;
-  max-width: 1400px;
+    width: 400px;
+    margin: 50px auto;
+    border-radius: 10px;
+    max-width: 1400px;
 }
 
 .tasks {
-  display: flex;
-  justify-content: center;
-  align-items: start;
+    display: flex;
+    justify-content: center;
+    align-items: start;
 }
 
 .app-wrapper {
-  display: flex;
+    display: flex;
+    min-height: 100vh;
 }
 
 .menu {
-  background-color: #5196f5;
-  margin-top: 300px;
-  width: 200px;
-  height: 50px;
-  display: flex;
-  flex-direction: column;
+    background-color: rgba(249, 249, 249, 1);
+    border: 1px;
+    border-right: 1px solid rgba(228, 228, 228, 1);
+    width: 248px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
 }
 
-.Pages {
-  margin: 2% 25%;
-  width: 600px;
-}
-
-Link {
-  border: 1px black dashed;
+.pages {
+    margin: 120px auto;
+    background-color: #fff;
+    display: flex;
 }

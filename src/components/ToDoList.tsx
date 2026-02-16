@@ -5,12 +5,12 @@ import React from 'react';
 
 const ToDoList: React.FC<{
   dataTasksAll: MetaResponse<Todo, TodoInfo>;
-  getAndSetToDos: FetchFunc;
-}> = ({ dataTasksAll, getAndSetToDos }) => {
+  updateToDos: FetchFunc;
+}> = ({ dataTasksAll, updateToDos }) => {
   return (
     <ul className="todo-box">
       {dataTasksAll.data.map((task) => (
-        <ToDoItem key={task.id} task={task} getAndSetToDos={getAndSetToDos} />
+        <ToDoItem key={task.id} task={task} updateToDos={updateToDos} />
       ))}
     </ul>
   );

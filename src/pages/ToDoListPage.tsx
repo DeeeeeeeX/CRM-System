@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import TabTasks from '../components/TabTasks';
+import TabsToDos from '../components/TabsToDos';
 import ToDoList from '../components/ToDoList';
 import { getToDos } from '../api/api';
-import AddTask from '../components/AddTask';
+import AddToDo from '../components/AddToDo';
 import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
+import { message } from 'antd';
 
 const ToDoListPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTabs>('all');
@@ -17,28 +18,28 @@ const ToDoListPage: React.FC = () => {
     meta: { totalAmount: 0 },
   });
 
-  const getAndSetToDos = useCallback(async (): Promise<void> => {
+  const updateToDos = useCallback(async (): Promise<void> => {
     try {
       let dataTask = await getToDos(activeTab);
       setDataTasks(dataTask);
     } catch (error) {
-      alert(`Не удалось запросить данные с сервера ${error}`);
+      message.error(`Не удалось запросить данные с сервера ${error}`);
     }
   }, [activeTab]);
 
   useEffect(() => {
-    getAndSetToDos();
+    updateToDos();
     const fetchInterval = setInterval(() => {
-      getAndSetToDos();
+      updateToDos();
     }, 5000);
     return () => clearInterval(fetchInterval);
-  }, [activeTab]);
+  }, [updateToDos]);
 
   return (
     <div className="wrapper">
-      <AddTask onUpdate={getAndSetToDos} />
-      <TabTasks quantity={dataTasks.info} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <ToDoList dataTasksAll={dataTasks} getAndSetToDos={getAndSetToDos} className="tasks" />
+      <AddToDo onUpdate={updateToDos} />
+      <TabsToDos quantity={dataTasks.info} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <ToDoList dataTasksAll={dataTasks} updateToDos={updateToDos} className="tasks" />
     </div>
   );
 };
