@@ -22,7 +22,7 @@ export async function deleteToDo(id: number): Promise<void> {
   }
 }
 
-export async function editToDo(id: number, taskState: Todo): Promise<void> {
+export async function editToDo(id: number, taskState: Partial<Pick<Todo, 'title' | 'isDone'>>): Promise<void> {
   try {
     await fetch(`${baseUrl}/${id}`, {
       method: 'PUT',
