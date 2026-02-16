@@ -1,4 +1,4 @@
-import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
+import {ActiveTabs, MetaResponse, Todo, TodoInfo} from '../types/types';
 import axios from 'axios';
 
 const baseFetch = axios.create({
@@ -25,16 +25,12 @@ export async function getToDos(activeTab?: ActiveTabs): Promise<MetaResponse<Tod
 export async function deleteToDo(id: number): Promise<void> {
   try {
     await baseFetch.delete(`/${id}`);
-  } catch (error) {}
+  } catch (error) {
+    throw error
+  }
 }
 
-export async function editToDo(
-  id: number,
-  taskState: {
-    title?: string;
-    isDone?: boolean;
-  },
-): Promise<void> {
+export async function editToDo(id: number, taskState: Todo): Promise<void> {
   try {
     await baseFetch.put(`/${id}`, taskState);
   } catch (error) {
@@ -44,7 +40,7 @@ export async function editToDo(
 
 export async function createToDo(title: string): Promise<void> {
   try {
-    await baseFetch.post('', { isDone: false, title });
+    await baseFetch.post('', {isDone: false, title});
   } catch (error) {
     throw error;
   }

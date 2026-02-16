@@ -4,7 +4,7 @@ import ToDoList from '../components/ToDoList';
 import { getToDos } from '../api/api';
 import AddToDo from '../components/AddToDo';
 import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
-import { message } from 'antd';
+import {Flex, message} from 'antd';
 
 const ToDoListPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTabs>('all');
@@ -36,11 +36,11 @@ const ToDoListPage: React.FC = () => {
   }, [updateToDos]);
 
   return (
-    <div className="wrapper">
+    <Flex vertical align='center'>
       <AddToDo onUpdate={updateToDos} />
       <TabsToDos quantity={dataTasks.info} activeTab={activeTab} setActiveTab={setActiveTab} />
       <ToDoList dataTasksAll={dataTasks} updateToDos={updateToDos} className="tasks" />
-    </div>
+    </Flex>
   );
 };
 

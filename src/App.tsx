@@ -1,14 +1,14 @@
 import './App.css';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import {Route, Routes, useLocation} from 'react-router-dom';
 import ToDoListPage from './pages/ToDoListPage';
 import React from 'react';
 import ProfilePage from './pages/ProfilePage';
 import Login from './components/Login';
 import Register from './components/Register';
 import Navigation from './components/Navigation';
-import { Layout } from 'antd';
+import {Layout} from 'antd';
 import Sider from 'antd/es/layout/Sider';
-import { Content } from 'antd/es/layout/layout';
+import {Content, Header} from 'antd/es/layout/layout';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -16,8 +16,8 @@ const App: React.FC = () => {
   return (
     <>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
       </Routes>
       {location.pathname === '/login' ? (
         ''
@@ -26,18 +26,17 @@ const App: React.FC = () => {
           {location.pathname === '/login' ? (
             ''
           ) : (
-            <Sider width="15%" style={{ backgroundColor: '#fff' }}>
-              <Navigation />
+            <Sider width="15%" style={{backgroundColor: '#fff'}}>
+              <Navigation/>
             </Sider>
           )}
           <Layout>
-            <Content style={{ backgroundColor: '#fff' }}>
-              <div className="pages">
-                <Routes>
-                  <Route path="/" element={<ToDoListPage />} />
-                  <Route path="/profile" element={<ProfilePage />} />{' '}
-                </Routes>
-              </div>
+            <Header style={{backgroundColor: '#fff'}}></Header>
+            <Content style={{backgroundColor: '#fff'}}>
+              <Routes>
+                <Route path="/" element={<ToDoListPage/>}/>
+                <Route path="/profile" element={<ProfilePage/>}/>{' '}
+              </Routes>
             </Content>
           </Layout>
         </Layout>
