@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { deleteToDo, editToDo } from '../api/api.ts';
 import { FetchFunc, FieldType, Todo } from '../types/types';
 import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
+import {validating} from "../functions/functions";
 
 const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, updateToDos }) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  const handleSave = async (modifiedTodoTitle: FieldType) => {
+  const handleSaveTitle = async (modifiedTodoTitle: FieldType) => {
     try {
       await editToDo(task.id, { title: modifiedTodoTitle.task?.trim() });
       setIsEditing(false);
@@ -40,7 +41,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
   };
 
   const onFinish: FormProps<FieldType>['onFinish'] = (modifiedTodoTitle) => {
-    handleSave(modifiedTodoTitle);
+    handleSaveTitle(modifiedTodoTitle);
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -75,13 +76,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
             rules={[
               {
                 validator(_, value) {
-                  if (value?.trim().length < 2) {
-                    return Promise.reject(new Error('must be at least 2 characters'));
-                  }
-                  if (value?.trim().length > 64) {
-                    return Promise.reject(new Error('cannot be longer than 64 characters'));
-                  }
-                  return Promise.resolve();
+                  return validating(value)
                 },
               },
             ]}
@@ -102,7 +97,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
         </Form>
       ) : (
         <>
-          <div className={!task.isDone ? 'title' : 'title-completed'}>{task.title}</div>
+          <div className={!task.isDone ? 'title' : 'titleCompleted'}>{task.title}</div>
           <Button type="primary" className="buttonEdit" onClick={() => setIsEditing(true)}>
             <div className="editSvg"></div>
           </Button>

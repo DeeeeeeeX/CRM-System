@@ -8,22 +8,10 @@ body {
     margin: 0;
 }
 
-.wrapper {
-    width: 400px;
-    margin: 50px auto;
-    border-radius: 10px;
-    max-width: 1400px;
-}
-
 .tasks {
     display: flex;
     justify-content: center;
     align-items: start;
-}
-
-.app-wrapper {
-    display: flex;
-    min-height: 100vh;
 }
 
 .menu {
@@ -35,10 +23,4 @@ body {
     flex-direction: column;
     justify-content: center;
     height: 100vh;
-}
-
-.pages {
-    margin: 120px auto;
-    background-color: #fff;
-    display: flex;
 }

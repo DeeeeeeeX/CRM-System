@@ -23,7 +23,7 @@ ul {
     word-break: break-all;
 }
 
-.title-completed {
+.titleCompleted {
     padding: 10px;
     display: flex;
     width: 154px;
@@ -54,14 +54,6 @@ ul {
     height: 50px;
     border-radius: 5px;
     background-color: rgba(254,106,91,0.8)
-}
-
-.text-editing {
-    padding: 10px;
-    display: flex;
-    width: 150px;
-    align-items: center;
-    word-break: break-all;
 }
 
 .checkbox label {
@@ -125,7 +117,7 @@ input[type=checkbox] {
     cursor: pointer;
 }
 
-.todo-box {
+.todoBox {
     flex-direction: column;
     display: flex;
     justify-content: center;

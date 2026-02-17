@@ -2,6 +2,7 @@ import {createToDo} from '../api/api.ts';
 import {FetchFunc, FieldType} from '../types/types';
 import {Button, Form, FormProps, Input, message} from 'antd';
 import React, {memo} from 'react';
+import {validating} from "../functions/functions";
 
 const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({onUpdate}) => {
   async function handleCreateTodo(title: string): Promise<void> {
@@ -9,7 +10,7 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({onUpdate}) => {
       await createToDo(title);
       await onUpdate();
     } catch (error) {
-      message.error(`Failed:, ${error.message}`);
+      message.error(`Не удалось создать задачу:, ${error.message}`);
     }
   }
 
@@ -36,13 +37,7 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({onUpdate}) => {
         rules={[
           {
             validator(_, value) {
-              if (value?.trim().length < 2) {
-                return Promise.reject(new Error('must be at least 2 characters'));
-              }
-              if (value?.trim().length > 64) {
-                return Promise.reject(new Error('cannot be longer than 64 characters'));
-              }
-              return Promise.resolve();
+             return validating(value)
             },
           },
         ]}

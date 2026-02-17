@@ -2,7 +2,6 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-
 }
 
 .addPanel input {
@@ -23,12 +22,4 @@
 
 .addPanel button:active {
     border: 2px solid black;
-}
-
-.notification-fail {
-    color: red;
-}
-
-.notification-success {
-    color: green;
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import '../css/ProfilePage.css';
 import {Flex} from "antd";
 
 const ProfilePage = () => {
