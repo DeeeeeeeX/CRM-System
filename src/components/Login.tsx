@@ -12,6 +12,8 @@ const Login = () => {
     remember?: string;
   };
 
+  const [form] = Form.useForm();
+
   const onFinish: FormProps<FieldType>['onFinish'] = () => {
     message.success('Successful login');
   };
@@ -39,6 +41,7 @@ const Login = () => {
             <span>See what is going on with your business</span>
           </div>
           <Form
+            form={form}
             name="basic"
             layout="vertical"
             initialValues={{ remember: true }}

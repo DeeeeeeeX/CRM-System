@@ -4,20 +4,25 @@ import ToDoListPage from './pages/ToDoListPage';
 import React from 'react';
 import ProfilePage from './pages/ProfilePage';
 import Login from './components/Login';
-import Register from './components/Register';
 import Navigation from './components/Navigation';
 import {Layout} from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import {Content, Header} from 'antd/es/layout/layout';
+import Auth from "./components/Auth";
 
 const App: React.FC = () => {
+  const registerMode = {
+    word: 'Login',
+    isLogin: false,
+  }
+
   const location = useLocation();
 
   return (
     <>
       <Routes>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
+        <Route path="/login" element={<Auth authMode={registerMode}/>}/>
+        <Route path="/register" element={<Auth authMode={registerMode}/>}/>
       </Routes>
       {location.pathname === '/login' ? (
         ''
