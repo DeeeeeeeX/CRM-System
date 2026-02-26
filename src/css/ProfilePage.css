@@ -1,0 +1,7 @@
+.hi {
+    align-items: start;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
