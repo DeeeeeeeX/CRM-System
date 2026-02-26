@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {deleteToDo, editToDo} from '../api/api.ts';
 import {FetchFunc, FieldType, Todo} from '../types/types';
 import {Button, Checkbox, Form, FormProps, Input, message} from 'antd';
-import {validating} from "../functions/functions";
+import {validatingTrim} from "../functions/functions";
 
 const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({task, updateToDos}) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  const handleSave = async (modifiedTodoTitle: FieldType) => {
+  const handleSaveTitle = async (modifiedTodoTitle: FieldType) => {
     try {
       await editToDo(task.id, {title: modifiedTodoTitle.task?.trim()});
       setIsEditing(false);
@@ -41,7 +41,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({task, updat
   };
 
   const onFinish: FormProps<FieldType>['onFinish'] = (modifiedTodoTitle) => {
-    handleSave(modifiedTodoTitle);
+    handleSaveTitle(modifiedTodoTitle);
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -76,7 +76,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({task, updat
             rules={[
               {
                 validator(_, value) {
-                  return validating(value)
+                  return validatingTrim(value)
                 },
               },
             ]}

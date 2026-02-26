@@ -5,8 +5,9 @@ import loginImg from '../assets/auth/loginImg.svg';
 import {Link} from 'react-router-dom';
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
+import {authProps} from "../types/types";
 
-const Auth = ({authMode}) => {
+const Auth: React.FC = ({authMode, word}: authProps) => {
 
   return (
     <div>
@@ -23,15 +24,16 @@ const Auth = ({authMode}) => {
 
         <div className="formBlock">
           <div className="loginTitle">
-            <h3>{`${authMode.word}`} your Account</h3>
+            <h3>{`${word}`} your Account</h3>
             <span>See what is going on with your business</span>
           </div>
-          {authMode.isLogin ? <LoginForm authMode={authMode}/> : <RegisterForm authMode={authMode}/>
+          {authMode ? <LoginForm authMode={authMode} word={word}/> : <RegisterForm authMode={authMode} word={word}/>
           }
         </div>
         <div className="createTitle">
-          <span>{authMode.isLogin ? 'Not Registered Yet?' : 'Already have an account? Log in'}</span>
-          {authMode.isLogin ? <Link to="/register">Create an account</Link> : <Link to="/login">Login</Link>}
+          <span>{authMode ? 'Not Registered Yet?' : 'Already have an account? Log in'}</span>
+          {authMode ? <Link to="/register">Create an account</Link> :
+            <Link to="/login">Login</Link>}
         </div>
       </div>
     </div>

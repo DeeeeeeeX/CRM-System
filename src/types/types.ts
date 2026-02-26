@@ -28,46 +28,62 @@ export type FieldType = {
   task?: string;
 };
 
-interface UserRegistration {
+export interface UserRegistration {
   login: string;
   username: string;
   password: string;
   email: string;
-  phoneNumber: string;
+  phoneNumber?: string;
 }
 
-interface AuthData {
+export interface AuthData {
   login: string;
   password: string;
 }
 
-interface RefreshToken {
+export interface RefreshToken {
   refreshToken: string;
 }
 
-interface Profile {
+export interface Profile {
   id: number;
   username: string;
   email: string;
   date: string;
   isBlocked: boolean;
   roles: Role[];
-  phoneNumber: string;
+  phoneNumber?: string;
 }
 
-interface ProfileRequest {
+export interface ProfileRequest {
   username: string;
   email: string;
   phoneNumber: string;
 }
 
-interface PasswordRequest {
+export interface PasswordRequest {
   password: string;
 }
 
-interface Token {
+export interface Token {
   accessToken: string
   refreshToken: string
 }
 
-type Role = ADMIN | USER | MODERATOR
+type AuthMode = 'register' | 'login'
+
+
+export interface AuthConfig {
+  isAuth: Record<AuthMode, boolean>
+  word: Record<AuthMode, string>,
+  isLoading: boolean,
+  error: string,
+  profile: Profile
+}
+
+export type Role = 'ADMIN' | 'USER' | 'MODERATOR'
+
+export type authProps = {
+  authMode: boolean,
+  word: string
+}

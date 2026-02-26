@@ -1,48 +1,88 @@
-import {ActiveTabs, MetaResponse, Todo, TodoInfo} from '../types/types';
+import {ActiveTabs, AuthData, MetaResponse, Profile, Todo, TodoInfo, Token, UserRegistration} from '../types/types';
 import axios from 'axios';
+import {logout} from "../functions/functions";
 
-const baseFetch = axios.create({
-  baseURL: 'https://easydev.club/api/v1/todos',
+const axiosInstance = axios.create({
+  baseURL: 'https://easydev.club/api/v1/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-export async function getToDos(activeTab?: ActiveTabs): Promise<MetaResponse<Todo, TodoInfo>> {
-  try {
-    let response = await baseFetch.get('', {
-      params: {
-        filter: activeTab,
-      },
-    });
-    return response.data;
+const axiosRefresh = axios.create({
+  baseURL: 'https://easydev.club/api/v1/'
+})
 
-  } catch (error) {
-    throw error;
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
   }
+  return config
+})
+
+axiosInstance.interceptors.response.use((response) => {
+    return response
+  },
+  async (error) => {
+    const originalRequest = error.config
+    if (error.response?.status === 401) {
+      try {
+        const newAccessToken = await refreshToken()
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
+        return axiosInstance(originalRequest)
+      } catch (refreshError) {
+        console.error('Refresh token failed', refreshError)
+        logout()
+        return Promise.reject(refreshError);
+      }
+    }
+    return Promise.reject(error)
+  }
+)
+
+export async function getToDos(activeTab?: ActiveTabs): Promise<MetaResponse<Todo, TodoInfo>> {
+  const response = await axiosInstance.get('todos', {
+    params: {
+      filter: activeTab,
+    },
+  });
+  return response.data;
 }
 
 export async function deleteToDo(id: number): Promise<void> {
-  try {
-    await baseFetch.delete(`/${id}`);
-  } catch (error) {
-    throw error
-  }
+  await axiosInstance.delete(`todos/${id}`);
 }
 
-export async function editToDo(id: number, taskState: Partial<Pick<Todo, 'title' | 'isDone'>>): Promise<void> {
-  try {
-    await baseFetch.put(`/${id}`, taskState);
-  } catch (error) {
-    throw error;
-  }
+export async function editToDo(id: number, taskState: Partial<Pick<Todo, 'title' | 'isDone'>>)
+  : Promise<void> {
+  await axiosInstance.put(`todos/${id}`, taskState);
 }
 
 export async function createToDo(title: string): Promise<void> {
-  try {
-    await baseFetch.post('', {isDone: false, title});
-  } catch (error) {
-    throw error;
-  }
+  await axiosInstance.post('todos', {isDone: false, title});
+}
+
+export async function registerUser(regData: UserRegistration): Promise<void> {
+  await axiosInstance.post('auth/signup', regData);
+}
+
+export async function loginUser(authData: AuthData): Promise<void> {
+  const response = await axiosInstance.post('auth/signin', authData);
+  localStorage.setItem('accessToken', response.data.accessToken)
+  localStorage.setItem('refreshToken', response.data.refreshToken)
+}
+
+export async function refreshToken(): Promise<Token> {
+  const response = await axiosRefresh.post('auth/refresh',
+    {refreshToken: localStorage.getItem('refreshToken')});
+  const {accessToken, refreshToken} = response.data;
+  localStorage.setItem('accessToken', accessToken)
+  localStorage.setItem("refreshToken", refreshToken)
+  return accessToken
+}
+
+export async function getProfile(): Promise<Profile> {
+  return await axiosInstance.get('user/profile')
 }

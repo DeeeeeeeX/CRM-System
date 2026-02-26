@@ -2,7 +2,7 @@ import {createToDo} from '../api/api.ts';
 import {FetchFunc, FieldType} from '../types/types';
 import {Button, Form, FormProps, Input, message} from 'antd';
 import React, {memo} from 'react';
-import {validating} from "../functions/functions";
+import {validatingTrim} from "../functions/functions";
 
 const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({onUpdate}) => {
   async function handleCreateTodo(title: string): Promise<void> {
@@ -10,7 +10,7 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({onUpdate}) => {
       await createToDo(title);
       await onUpdate();
     } catch (error) {
-      message.error(`Failed:, ${error.message}`);
+      message.error(`Не удалось создать задачу:, ${error.message}`);
     }
   }
 
@@ -38,7 +38,7 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({onUpdate}) => {
           rules={[
             {
               validator(_, value) {
-                return validating(value)
+                return validatingTrim(value)
               },
             },
           ]}
