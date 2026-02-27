@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import TabsToDos from '../components/TabsToDos';
 import ToDoList from '../components/ToDoList';
-import { getToDos } from '../api/api';
+import {getToDo} from '../api/api';
 import AddToDo from '../components/AddToDo';
-import { ActiveTabs, MetaResponse, Todo, TodoInfo, ValidatorFunc } from '../types/types';
+import {MetaResponse, TaskStatus, Todo, TodoInfo} from '../types/types';
 
 const ToDoListPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTabs>('all');
+  const [activeTab, setActiveTab] = useState<TaskStatus>(TaskStatus.ALL);
   const [dataTasks, setDataTasks] = useState<MetaResponse<Todo, TodoInfo>>({
     data: [],
     info: {
@@ -23,7 +23,7 @@ const ToDoListPage: React.FC = () => {
 
   const updateToDos = async (): Promise<void> => {
     try {
-      const dataTask = await getToDos(activeTab);
+      const dataTask = await getToDo(activeTab);
       setDataTasks(dataTask);
     } catch (error) {
       alert(`Не удалось запросить данные с сервера ${error}`);

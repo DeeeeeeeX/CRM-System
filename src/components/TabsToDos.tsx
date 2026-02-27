@@ -1,27 +1,30 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import '../css/TabTasks.css';
-import { TodoInfo } from '../types/types';
+import {TaskStatus, TodoInfo} from '../types/types';
 
-const TabsToDos: React.FC<{
+interface Props {
   quantity: TodoInfo;
-  setActiveTab: Dispatch<SetStateAction<string>>;
-  activeTab: string;
-}> = ({ quantity = {}, setActiveTab, activeTab }) => {
+  setActiveTab: (value: TaskStatus) => void ;
+  activeTab: TaskStatus;
+}
+
+const TabsToDos: React.FC<Props> = ({ quantity = {}, setActiveTab, activeTab }) => {
+
   const { all = 0, completed = 0, inWork = 0 } = quantity;
 
   return (
     <nav>
-      <div onClick={() => setActiveTab('all')} className={activeTab === 'all' ? 'active' : ''}>
+      <div onClick={() => setActiveTab(TaskStatus.ALL)} className={activeTab === 'all' ? 'active' : ''}>
         Всё ({all})
       </div>
       <div
-        onClick={() => setActiveTab('inWork')}
+        onClick={() => setActiveTab(TaskStatus.IN_WORK)}
         className={activeTab === 'inWork' ? 'active' : ''}
       >
         В работе ({inWork})
       </div>
       <div
-        onClick={() => setActiveTab('completed')}
+        onClick={() => setActiveTab(TaskStatus.COMPLETED)}
         className={activeTab === 'completed' ? 'active' : ''}
       >
         Сделано ({completed})

@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import '../css/AddTask.css';
-import { createToDo } from '../api/api.ts';
-import { FetchFunc } from '../types/types';
-import { validator } from '../functions/helpersFunc';
+import {createToDo} from '../api/api.ts';
+import {FetchFunc} from '../types/types';
+import {validator} from '../functions/helpersFunc';
 
-const AddToDo: React.FC<{
-  onUpdate: FetchFunc;
-}> = ({ onUpdate }) => {
+interface Props {
+  onUpdate: FetchFunc
+}
+
+const AddToDo: React.FC<Props> = ({onUpdate}) => {
   const [textTask, setTextTask] = useState<string>('');
 
   async function handleCreateTodo(event: React.SubmitEvent<HTMLFormElement>): Promise<void> {
@@ -24,7 +26,7 @@ const AddToDo: React.FC<{
   }
 
   return (
-    <form onSubmit={handleCreateTodo} className="addPanel">
+    <form onSubmit={handleCreateTodo} className="add-panel">
       <input
         type="text"
         value={textTask}

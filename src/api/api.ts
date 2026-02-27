@@ -1,8 +1,9 @@
-import {ActiveTabs, MetaResponse, Todo, TodoInfo} from '../types/types';
+import {MetaResponse, TaskStatus, Todo, TodoInfo} from '../types/types';
 
 export const baseUrl = 'https://easydev.club/api/v1/todos';
 
-export async function getToDos(activeTab: ActiveTabs): Promise<MetaResponse<Todo, TodoInfo>> {
+export async function getToDo(activeTab: TaskStatus): Promise<MetaResponse<Todo, TodoInfo>> {
+
   try {
     let response = await fetch(baseUrl + `?filter=${activeTab}`, {method: 'GET'});
     return await response.json();

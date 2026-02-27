@@ -1,4 +1,8 @@
-export type ActiveTabs = 'all' | 'inWork' | 'completed';
+export enum TaskStatus {
+  ALL = 'all',
+  IN_WORK = 'inWork',
+  COMPLETED = 'completed'
+}
 
 export interface Todo {
   id: number;
@@ -22,4 +26,4 @@ export interface MetaResponse<T, N> {
 }
 
 export type FetchFunc = () => Promise<void>;
-export type ValidatorFunc = (string) => string;
+export type ValidatorFunc = (value: string) => string;

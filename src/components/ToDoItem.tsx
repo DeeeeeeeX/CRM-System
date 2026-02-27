@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import { deleteToDo, editToDo } from '../api/api.ts';
-import { FetchFunc, Todo } from '../types/types';
-import { validator } from '../functions/helpersFunc';
+import React, {useState} from 'react';
+import {deleteToDo, editToDo} from '../api/api.ts';
+import {FetchFunc, Todo} from '../types/types';
+import {validator} from '../functions/helpersFunc';
 
-const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, updateToDos }) => {
+interface Props {
+  task: Todo;
+  updateToDos: FetchFunc
+}
+
+const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(task.title);
 
@@ -21,7 +26,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
     }
   };
 
-  const handleCompleted = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleToggleStatus  = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       await editToDo(task.id, { isDone: e.target.checked });
       await updateToDos();
@@ -45,14 +50,14 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
   };
 
   return (
-    <li className="taskEl">
+    <li className="item">
       <label className="checkbox">
         <input
-          className="checkbox"
           checked={task.isDone}
-          onChange={handleCompleted}
+          onChange={handleToggleStatus }
           type="checkbox"
         />
+        <span></span>
       </label>
       {isEditing ? (
         <input
@@ -66,25 +71,25 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
       )}
       {isEditing ? (
         <>
-          <button className="buttonEdit" onClick={handleSave}>
-            <div className="saveSvg"></div>
+          <button className="button-edit" onClick={handleSave}>
+            <div className="save-svg"></div>
           </button>
-          <button className="buttonBack" onClick={handleBackEditing}>
-            <div className="backSvg"></div>
+          <button className="button-back" onClick={handleBackEditing}>
+            <div className="back-svg"></div>
           </button>
         </>
       ) : (
         <>
           <button
-            className="buttonEdit"
+            className="button-edit"
             onClick={() => {
               setIsEditing(true);
             }}
           >
-            <div className="editSvg"></div>
+            <div className="edit-svg"></div>
           </button>
-          <button className="buttonDelete" onClick={handleDeleting}>
-            <div className="deleteSvg"></div>
+          <button className="button-delete" onClick={handleDeleting}>
+            <div className="delete-svg"></div>
           </button>
         </>
       )}

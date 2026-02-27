@@ -1,4 +1,4 @@
-.addPanel {
+.add-panel {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -15,7 +15,7 @@
 .addPanel button {
     width: 80px;
     height: 30px;
-    background-color: #5593f8;
+    background-color: var(--blue-color);
     border: 0;
     border-radius: 3px;
     color: white;
