@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
-import {deleteToDo, editToDo} from '../api/api.ts';
-import {FetchFunc, Todo} from '../types/types';
-import {validator} from '../functions/helpersFunc';
+import React, { useState } from 'react';
+import { deleteToDo, editToDo } from '../api/api.ts';
+import { FetchFunc, Todo } from '../types/types';
+import { validator } from '../functions/helpersFunc';
 
 interface Props {
   task: Todo;
-  updateToDos: FetchFunc
+  updateToDos: FetchFunc;
 }
 
 const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(task.title);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>(task.title);
 
   const handleSave = async (): Promise<void> => {
     if (validator(title)) {
@@ -26,7 +26,7 @@ const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
     }
   };
 
-  const handleToggleStatus  = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleToggleStatus = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       await editToDo(task.id, { isDone: e.target.checked });
       await updateToDos();
@@ -52,11 +52,7 @@ const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
   return (
     <li className="item">
       <label className="checkbox">
-        <input
-          checked={task.isDone}
-          onChange={handleToggleStatus }
-          type="checkbox"
-        />
+        <input checked={task.isDone} onChange={handleToggleStatus} type="checkbox" />
         <span></span>
       </label>
       {isEditing ? (

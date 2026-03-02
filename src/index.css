@@ -1,6 +1,6 @@
 :root {
-    --blue-color: rgba(86,149,243,0.8);
-    --red-color: rgba(254,106,91,0.8);
+    --color-primary: rgba(86, 149, 243, 0.8);
+    --color-secondary: rgba(254, 106, 91, 0.8);
 }
 
 
