@@ -1,16 +1,20 @@
-.taskEl {
+.item {
     box-sizing: border-box;
     margin-top: 15px;
     display: flex;
     align-items: center;
-    width: 350px;
+    flex: 1;
     min-height: 60px;
     box-shadow: 3px 3px #8d8080;
     border: 1px solid black;
     border-radius: 10px;
 }
 
-.title  {
+ul {
+    padding: 0;
+}
+
+.title {
     padding: 10px;
     display: flex;
     width: 154px;
@@ -27,28 +31,28 @@
     word-break: break-all;
 }
 
-.buttonEdit {
+.button-edit {
     margin-left: 30px;
     height: 50px;
     width: 15%;
     border-radius: 5px;
-    background-color: rgba(86,149,243,0.8);
+    background-color: var(--color-primary);
 }
 
-.buttonBack {
+.button-back {
     width: 15%;
     margin-left: 10px;
     height: 50px;
     border-radius: 5px;
-    background-color: rgba(254,106,91,0.8)
+    background-color: var(--color-secondary)
 }
 
-.buttonDelete {
+.button-delete {
     margin-left: 10px;
     width: 15%;
     height: 50px;
     border-radius: 5px;
-    background-color: rgba(254,106,91,0.8)
+    background-color: var(--color-secondary)
 }
 
 .text-editing {
@@ -59,52 +63,71 @@
     word-break: break-all;
 }
 
+.checkbox {
+    margin-left: 3px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox input {
+    position: absolute;
+    opacity: 0;
+}
+
 .checkbox label {
-    width: 27px;
-    height: 27px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
 
-.checkbox input {
-appearance: none;
-}
-
-.checkbox input {
+.checkbox span {
     width: 20px;
     height: 20px;
-    background-image: url("../assets/checkbox-off.svg");
-    background-size: 20px 20px;
-}
-.checkbox input:checked {
-    width: 20px;
-    height: 20px;
-    background-image: url("../assets/checkbox-on.svg");
-    background-size: 20px 20px;
-    background-color: #5196f5;
-    border-radius: 10px;
+    border: 2px solid #343434;
+    border-radius: 6px;
 }
 
-.editSvg {
+.checkbox input:checked + span {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.checkbox input:checked + span::after {
+    content: '✔';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    color: white;
+    font-size: 14px;
+}
+
+.edit-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
     background: url("../assets/edit.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-.deleteSvg {
+
+.delete-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
     background: url("../assets/trash.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-.saveSvg {
+
+.save-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
     background: url("../assets/ok.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-.backSvg {
+
+.back-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
@@ -113,9 +136,5 @@ appearance: none;
 }
 
 button {
-    cursor: pointer;
-}
-
-input[type=checkbox] {
     cursor: pointer;
 }
