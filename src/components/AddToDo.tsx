@@ -25,7 +25,7 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
-      validateTrigger={['onChange']}
+      validateTrigger={['submit']}
       layout="inline"
     >
       <Form.Item<FieldType>

@@ -63,7 +63,6 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
-          validateTrigger={['onChange']}
           initialValues={{ task: task.title }}
           className="editingForm"
         >
