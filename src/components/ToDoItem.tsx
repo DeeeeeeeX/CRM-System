@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { deleteToDo, editToDo } from '../api/api.ts';
 import { FetchFunc, FieldType, Todo } from '../types/types';
 import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
-import {validating} from "../functions/functions";
+import { validating } from '../functions/functions';
 
 const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, updateToDos }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  const handleSaveTitle = async (modifiedTodoTitle: FieldType) => {
+  const onSaveTitle = async (modifiedTodoTitle: FieldType) => {
     try {
       await editToDo(task.id, { title: modifiedTodoTitle.task?.trim() });
       setIsEditing(false);
@@ -18,11 +18,11 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
     }
   };
 
-  const handleBackEditing = () => {
+  const onBackEditing = () => {
     setIsEditing(false);
   };
 
-  const handleCompleted = async (targetValue: boolean) => {
+  const onCompleted = async (targetValue: boolean) => {
     try {
       await editToDo(task.id, { isDone: targetValue });
       await updateToDos();
@@ -31,7 +31,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
     }
   };
 
-  const handleDeleting = async () => {
+  const onDeleting = async () => {
     try {
       await deleteToDo(task.id);
       await updateToDos();
@@ -41,7 +41,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
   };
 
   const onFinish: FormProps<FieldType>['onFinish'] = (modifiedTodoTitle) => {
-    handleSaveTitle(modifiedTodoTitle);
+    onSaveTitle(modifiedTodoTitle);
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -54,10 +54,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
 
   return (
     <li className="taskEl">
-      <Checkbox
-        checked={task.isDone}
-        onChange={(e) => handleCompleted(e.target.checked)}
-      ></Checkbox>
+      <Checkbox checked={task.isDone} onChange={(e) => onCompleted(e.target.checked)}></Checkbox>
 
       {isEditing ? (
         <Form
@@ -76,7 +73,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
             rules={[
               {
                 validator(_, value) {
-                  return validating(value)
+                  return validating(value);
                 },
               },
             ]}
@@ -90,7 +87,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
               </Button>
             </Form.Item>
 
-            <Button type="primary" className="buttonBack" onClick={handleBackEditing}>
+            <Button type="primary" className="buttonBack" onClick={onBackEditing}>
               <div className="backSvg"></div>
             </Button>
           </>
@@ -102,7 +99,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
             <div className="editSvg"></div>
           </Button>
 
-          <Button type="primary" className="buttonDelete" onClick={handleDeleting}>
+          <Button type="primary" className="buttonDelete" onClick={onDeleting}>
             <div className="deleteSvg"></div>
           </Button>
         </>

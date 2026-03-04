@@ -1,22 +1,18 @@
-import {createToDo} from '../api/api.ts';
-import {FetchFunc, FieldType} from '../types/types';
-import {Button, Form, FormProps, Input, message} from 'antd';
-import React, {memo} from 'react';
-import {validating} from "../functions/functions";
+import { createToDo } from '../api/api.ts';
+import { FetchFunc, FieldType } from '../types/types';
+import { Button, Form, FormProps, Input, message } from 'antd';
+import React, { memo } from 'react';
+import { validating } from '../functions/functions';
 
-const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({onUpdate}) => {
-  async function handleCreateTodo(title: string): Promise<void> {
+const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
+  const onFinish: FormProps<FieldType>['onFinish'] = async (values: FieldType): Promise<void> => {
+    if (!values.task) return;
     try {
-      await createToDo(title);
+      await createToDo(values.task);
       await onUpdate();
     } catch (error) {
       message.error(`Не удалось создать задачу:, ${error.message}`);
     }
-  }
-
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    if (!values.task) return;
-    handleCreateTodo(values.task);
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -37,14 +33,14 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({onUpdate}) => {
         rules={[
           {
             validator(_, value) {
-             return validating(value)
+              return validating(value);
             },
           },
         ]}
       >
-        <Input placeholder="Task To Be Done"/>
+        <Input placeholder="Task To Be Done" />
       </Form.Item>
-      <Form.Item style={{textAlign: 'right'}}>
+      <Form.Item style={{ textAlign: 'right' }}>
         <Button type="primary" htmlType="submit">
           Add
         </Button>
