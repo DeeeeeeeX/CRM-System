@@ -1,6 +1,16 @@
-import {ActiveTabs, AuthData, MetaResponse, Profile, Todo, TodoInfo, Token, UserRegistration} from '../types/types';
+import {
+  ActiveTabs,
+  AuthData,
+  MetaResponse,
+  Profile,
+  Todo,
+  TodoInfo,
+  UserRegistration,
+} from '../types/types';
 import axios from 'axios';
-import {logout} from "../functions/functions";
+import { store } from '../store/store';
+import { setToken } from '../store/reducers/ActionCreators';
+import { logout } from '../functions/functions';
 
 const axiosInstance = axios.create({
   baseURL: 'https://easydev.club/api/v1/',
@@ -11,36 +21,41 @@ const axiosInstance = axios.create({
 });
 
 const axiosRefresh = axios.create({
-  baseURL: 'https://easydev.club/api/v1/'
-})
+  baseURL: 'https://easydev.club/api/v1/',
+});
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken')
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+  const accessToken = store.getState().authReducer.accessToken;
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
-  return config
-})
+  return config;
+});
 
-axiosInstance.interceptors.response.use((response) => {
-    return response
-  },
+let refreshPromise: null | Promise<string> = null;
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
   async (error) => {
-    const originalRequest = error.config
-    if (error.response?.status === 401) {
-      try {
-        const newAccessToken = await refreshToken()
-        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
-        return axiosInstance(originalRequest)
-      } catch (refreshError) {
-        console.error('Refresh token failed', refreshError)
-        logout()
-        return Promise.reject(refreshError);
-      }
+    const originalRequest = error.config;
+    if (error.response?.status !== 401) {
+      return Promise.reject(error);
     }
-    return Promise.reject(error)
-  }
-)
+    try {
+      if (!refreshPromise) {
+        refreshPromise = refreshToken().finally(() => {
+          refreshPromise = null;
+        });
+      }
+      const newAccessToken = await refreshPromise;
+      originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+      return axiosInstance(originalRequest);
+    } catch (e) {
+      logout();
+      return Promise.reject(e);
+    }
+  },
+);
 
 export async function getToDos(activeTab?: ActiveTabs): Promise<MetaResponse<Todo, TodoInfo>> {
   const response = await axiosInstance.get('todos', {
@@ -55,13 +70,15 @@ export async function deleteToDo(id: number): Promise<void> {
   await axiosInstance.delete(`todos/${id}`);
 }
 
-export async function editToDo(id: number, taskState: Partial<Pick<Todo, 'title' | 'isDone'>>)
-  : Promise<void> {
+export async function editToDo(
+  id: number,
+  taskState: Partial<Pick<Todo, 'title' | 'isDone'>>,
+): Promise<void> {
   await axiosInstance.put(`todos/${id}`, taskState);
 }
 
 export async function createToDo(title: string): Promise<void> {
-  await axiosInstance.post('todos', {isDone: false, title});
+  await axiosInstance.post('todos', { isDone: false, title });
 }
 
 export async function registerUser(regData: UserRegistration): Promise<void> {
@@ -70,19 +87,20 @@ export async function registerUser(regData: UserRegistration): Promise<void> {
 
 export async function loginUser(authData: AuthData): Promise<void> {
   const response = await axiosInstance.post('auth/signin', authData);
-  localStorage.setItem('accessToken', response.data.accessToken)
-  localStorage.setItem('refreshToken', response.data.refreshToken)
+  store.dispatch(setToken(response.data.accessToken));
+  localStorage.setItem('refreshToken', response.data.refreshToken);
 }
 
-export async function refreshToken(): Promise<Token> {
-  const response = await axiosRefresh.post('auth/refresh',
-    {refreshToken: localStorage.getItem('refreshToken')});
-  const {accessToken, refreshToken} = response.data;
-  localStorage.setItem('accessToken', accessToken)
-  localStorage.setItem("refreshToken", refreshToken)
-  return accessToken
+export async function refreshToken(): Promise<string> {
+  const response = await axiosRefresh.post('auth/refresh', {
+    refreshToken: localStorage.getItem('refreshToken'),
+  });
+  const { accessToken, refreshToken } = response.data;
+  localStorage.setItem('refreshToken', refreshToken);
+  store.dispatch(setToken(accessToken));
+  return accessToken;
 }
 
 export async function getProfile(): Promise<Profile> {
-  return await axiosInstance.get('user/profile')
+  return await axiosInstance.get('user/profile');
 }

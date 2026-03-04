@@ -66,24 +66,24 @@ export interface PasswordRequest {
 }
 
 export interface Token {
-  accessToken: string
-  refreshToken: string
+  accessToken: string;
+  refreshToken: string;
 }
 
-type AuthMode = 'register' | 'login'
-
+type AuthMode = 'register' | 'login';
 
 export interface AuthConfig {
-  isAuth: Record<AuthMode, boolean>
-  word: Record<AuthMode, string>,
-  isLoading: boolean,
-  error: string,
-  profile: Profile
+  isAuth: Record<AuthMode, boolean>;
+  word: Record<AuthMode, string>;
+  accessToken: string | null;
+  isLoading: boolean;
+  error: string;
+  profile: Profile;
 }
 
-export type Role = 'ADMIN' | 'USER' | 'MODERATOR'
+export type Role = 'ADMIN' | 'USER' | 'MODERATOR';
 
 export type authProps = {
-  authMode: boolean,
-  word: string
-}
+  authMode: boolean;
+  word: string;
+};
