@@ -42,7 +42,7 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
       </Form.Item>
       <Form.Item style={{ textAlign: 'right' }}>
         <Button type="primary" htmlType="submit">
-          Add
+          Добавить
         </Button>
       </Form.Item>
     </Form>
