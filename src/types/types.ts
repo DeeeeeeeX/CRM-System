@@ -21,7 +21,6 @@ export interface MetaResponse<T, N> {
   };
 }
 
-export type FetchFunc = (tabTask?: ActiveTabs) => Promise<void>;
 export type FieldType = {
   taskInput?: string;
   title?: string;

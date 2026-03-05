@@ -1,12 +1,15 @@
 import { createToDo } from '../api/api.ts';
-import { FetchFunc, FieldType } from '../types/types';
+import { FieldType } from '../types/types';
 import { Button, Form, FormProps, Input, message } from 'antd';
 import React, { memo } from 'react';
 import { validating } from '../functions/functions';
 
-const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({ onUpdate }) => {
+interface Props {
+  onUpdate: () => void;
+}
+
+const AddToDo: React.FC<Props> = ({ onUpdate }) => {
   const onFinish: FormProps<FieldType>['onFinish'] = async (values: FieldType): Promise<void> => {
-    if (!values.task) return;
     try {
       await createToDo(values.task);
       await onUpdate();

@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { deleteToDo, editToDo } from '../api/api.ts';
-import { FetchFunc, FieldType, Todo } from '../types/types';
-import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
+import { Button, Checkbox, Form, FormProps, Input, List, message } from 'antd';
 import { validating } from '../functions/functions';
+import { FieldType, Todo } from '../types/types';
 
-const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, updateToDos }) => {
+interface Props {
+  task: Todo;
+  updateToDos: () => void;
+}
+
+const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [form] = Form.useForm();
-
-  const onSaveTitle = async (modifiedTodoTitle: FieldType) => {
-    try {
-      await editToDo(task.id, { title: modifiedTodoTitle.task?.trim() });
-      setIsEditing(false);
-      await updateToDos();
-    } catch (error) {
-      message.error(`Не удалось отправить запрос ${error}`);
-    }
-  };
 
   const onBackEditing = () => {
     setIsEditing(false);
@@ -40,8 +35,14 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
     }
   };
 
-  const onFinish: FormProps<FieldType>['onFinish'] = (modifiedTodoTitle) => {
-    onSaveTitle(modifiedTodoTitle);
+  const onFinish: FormProps<FieldType>['onFinish'] = async (modifiedTodoTitle: FieldType) => {
+    try {
+      await editToDo(task.id, { title: modifiedTodoTitle.task });
+      setIsEditing(false);
+      await updateToDos();
+    } catch (error) {
+      message.error(`Не удалось отправить запрос ${error}`);
+    }
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -53,7 +54,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
   }, [isEditing]);
 
   return (
-    <li className="taskEl">
+    <List.Item>
       <Checkbox checked={task.isDone} onChange={(e) => onCompleted(e.target.checked)}></Checkbox>
 
       {isEditing ? (
@@ -64,7 +65,7 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
           onFinishFailed={onFinishFailed}
           autoComplete="off"
           initialValues={{ task: task.title }}
-          className="editingForm"
+          className="editing-form"
         >
           <Form.Item<FieldType>
             name="task"
@@ -81,29 +82,29 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({ task, upda
           </Form.Item>
           <>
             <Form.Item style={{ margin: 0 }}>
-              <Button type="primary" htmlType="submit" className="buttonEdit">
-                <div className="saveSvg"></div>
+              <Button type="primary" htmlType="submit" className="button-edit">
+                <div className="save-svg"></div>
               </Button>
             </Form.Item>
 
-            <Button type="primary" className="buttonBack" onClick={onBackEditing}>
-              <div className="backSvg"></div>
+            <Button type="primary" className="button-back" onClick={onBackEditing}>
+              <div className="back-svg"></div>
             </Button>
           </>
         </Form>
       ) : (
         <>
-          <div className={!task.isDone ? 'title' : 'titleCompleted'}>{task.title}</div>
-          <Button type="primary" className="buttonEdit" onClick={() => setIsEditing(true)}>
-            <div className="editSvg"></div>
+          <div className={!task.isDone ? 'title' : 'title-completed'}>{task.title}</div>
+          <Button type="primary" className="button-edit" onClick={() => setIsEditing(true)}>
+            <div className="edit-svg"></div>
           </Button>
 
-          <Button type="primary" className="buttonDelete" onClick={onDeleting}>
-            <div className="deleteSvg"></div>
+          <Button type="primary" className="button-delete" onClick={onDeleting}>
+            <div className="delete-svg"></div>
           </Button>
         </>
       )}
-    </li>
+    </List.Item>
   );
 };
 

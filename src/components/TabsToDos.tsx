@@ -2,11 +2,13 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { ActiveTabs, TodoInfo } from '../types/types';
 import { Tabs } from 'antd';
 
-const TabsToDos: React.FC<{
+interface Props {
   quantity: TodoInfo;
   setActiveTab: Dispatch<SetStateAction<ActiveTabs>>;
   activeTab: ActiveTabs;
-}> = ({ quantity = {}, setActiveTab, activeTab }) => {
+}
+
+const TabsToDos: React.FC<Props> = ({ quantity = {}, setActiveTab, activeTab }) => {
   const { all = 0, completed = 0, inWork = 0 } = quantity;
 
   const items = [

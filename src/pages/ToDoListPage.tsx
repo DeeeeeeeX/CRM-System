@@ -1,10 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import TabsToDos from '../components/TabsToDos';
 import ToDoList from '../components/ToDoList';
-import {getToDos} from '../api/api';
+import { getToDo } from '../api/api';
 import AddToDo from '../components/AddToDo';
-import {ActiveTabs, MetaResponse, Todo, TodoInfo} from '../types/types';
-import {Flex, message} from 'antd';
+import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
+import { Flex, message } from 'antd';
 
 const ToDoListPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTabs>('all');
@@ -15,12 +15,12 @@ const ToDoListPage: React.FC = () => {
       completed: 0,
       inWork: 0,
     },
-    meta: {totalAmount: 0},
+    meta: { totalAmount: 0 },
   });
 
   const updateToDos = useCallback(async (): Promise<void> => {
     try {
-      let dataTask = await getToDos(activeTab);
+      let dataTask = await getToDo(activeTab);
       setDataTasks(dataTask);
     } catch (error) {
       message.error(`Не удалось запросить данные с сервера ${error}`);
@@ -36,10 +36,10 @@ const ToDoListPage: React.FC = () => {
   }, [updateToDos]);
 
   return (
-    <Flex vertical align='center'>
-      <AddToDo onUpdate={updateToDos}/>
-      <TabsToDos quantity={dataTasks.info} activeTab={activeTab} setActiveTab={setActiveTab}/>
-      <ToDoList dataTasksAll={dataTasks} updateToDos={updateToDos} className="tasks"/>
+    <Flex vertical align="center" gap="large" style={{ paddingTop: 50 }}>
+      <AddToDo onUpdate={updateToDos} />
+      <TabsToDos quantity={dataTasks.info} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <ToDoList dataTasksAll={dataTasks} updateToDos={updateToDos} className="tasks" />
     </Flex>
   );
 };
