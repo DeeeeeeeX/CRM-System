@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/ProfilePage.css';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchProfile, isLogOut, refreshAuth } from '../store/reducers/ActionCreators';
+import { isLogOut } from '../store/reducers/ActionCreators';
 import { Button, Card, Space, Spin } from 'antd';
 import { removeRefreshToken, token } from '../functions/functions';
 import { selectProfile } from '../store/selectors/authSelectors';
@@ -29,9 +29,6 @@ const ProfilePage = () => {
         <p>Телефон: {profile?.data?.phoneNumber}</p>
       </Card>
       <Button onClick={logout}>logout</Button>
-      <Button onClick={() => dispatch(refreshAuth())}>sendRefreshToken</Button>
-      <Button onClick={() => dispatch(fetchProfile())}>getProfile</Button>
-      <Button onClick={() => token.clearAccessToken()}>clearAccessToken</Button>
     </Space>
   );
 };
