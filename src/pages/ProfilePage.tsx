@@ -1,40 +1,38 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import '../css/ProfilePage.css';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchProfile } from '../store/reducers/ActionCreators';
-import { Button, Card, message, Space } from 'antd';
-import { logout } from '../functions/functions';
+import { fetchProfile, isLogOut, refreshAuth } from '../store/reducers/ActionCreators';
+import { Button, Card, Space, Spin } from 'antd';
+import { removeRefreshToken, token } from '../functions/functions';
+import { selectProfile } from '../store/selectors/authSelectors';
 
 const ProfilePage = () => {
   const dispatch = useAppDispatch();
 
-  const profile = useAppSelector((state) => state.authReducer);
+  const profile = useAppSelector(selectProfile);
 
-  useEffect(() => {
-    dispatch(fetchProfile());
-  }, []);
+  const logout = () => {
+    removeRefreshToken();
+    token.clearAccessToken();
+    dispatch(isLogOut());
+  };
 
-  useEffect(() => {
-    if (profile.error) {
-      message.error(profile.error);
-    }
-  }, [profile.error]);
+  if (profile.status === 'pending') {
+    return <Spin />;
+  }
 
   return (
-    <>
-      {profile.isLoading ? (
-        'Loading...'
-      ) : (
-        <Space vertical style={{ paddingLeft: '60px' }}>
-          <Card title="Данные пользователя" style={{ width: 300 }}>
-            <p>Имя пользователя: {profile.profile.username}</p>
-            <p>Почтовый адрес: {profile.profile.email}</p>
-            <p>Телефон: {profile.profile.phoneNumber}</p>
-          </Card>
-          <Button onClick={logout}>logout</Button>
-        </Space>
-      )}
-    </>
+    <Space vertical style={{ paddingLeft: '60px' }}>
+      <Card title="Данные пользователя" style={{ width: 300 }}>
+        <p>Имя пользователя: {profile?.data?.username}</p>
+        <p>Почтовый адрес: {profile?.data?.email}</p>
+        <p>Телефон: {profile?.data?.phoneNumber}</p>
+      </Card>
+      <Button onClick={logout}>logout</Button>
+      <Button onClick={() => dispatch(refreshAuth())}>sendRefreshToken</Button>
+      <Button onClick={() => dispatch(fetchProfile())}>getProfile</Button>
+      <Button onClick={() => token.clearAccessToken()}>clearAccessToken</Button>
+    </Space>
   );
 };
 

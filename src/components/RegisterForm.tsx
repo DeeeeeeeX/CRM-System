@@ -1,22 +1,27 @@
-import React, {useState} from 'react';
-import {Button, Checkbox, Form, FormProps, Input, message, Modal} from "antd";
-import {registerUser} from "../api/api";
-import {validateEmail, validateLogin, validateNumberPhone, validateUserName,} from "../functions/functions";
-import {useNavigate} from "react-router-dom";
-import {authProps} from "../types/types";
+import React, { useState } from 'react';
+import { Button, Checkbox, Form, FormProps, Input, message, Modal } from 'antd';
+import { registerUser } from '../api/api';
+import {
+  validateEmail,
+  validateLogin,
+  validateNumberPhone,
+  validateUserName,
+} from '../functions/functions';
+import { useNavigate } from 'react-router-dom';
+import { authProps } from '../types/types';
 
-const RegisterForm: React.FC = ({authMode, word}: authProps) => {
+const RegisterForm: React.FC = ({ authMode, word }: authProps) => {
   type FieldType = {
-    username: string,
-    login: string,
-    password: string,
-    repeatPassword: string,
-    email: string,
-    phoneNumber?: string
-    remember?: boolean
+    username: string;
+    login: string;
+    password: string;
+    repeatPassword: string;
+    email: string;
+    phoneNumber?: string;
+    remember?: boolean;
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [form] = Form.useForm();
 
@@ -34,21 +39,23 @@ const RegisterForm: React.FC = ({authMode, word}: authProps) => {
   };
 
   const handleRegUser = async (userData: FieldType): Promise<void> => {
-    const {
-      email, login, password, phoneNumber, username
-    } = userData
+    const { email, login, password, phoneNumber, username } = userData;
     await registerUser({
-      email, login, password, phoneNumber, username
-    })
-  }
+      email,
+      login,
+      password,
+      phoneNumber,
+      username,
+    });
+  };
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (userData: FieldType) => {
     try {
-      await handleRegUser(userData)
+      await handleRegUser(userData);
       message.success(`Successful ${word}`);
-      showModal()
+      showModal();
     } catch (e) {
-      message.error(e.response?.data || 'Registration Failed')
+      message.error(e.response?.data || 'Registration Failed');
     }
   };
 
@@ -60,7 +67,7 @@ const RegisterForm: React.FC = ({authMode, word}: authProps) => {
       form={form}
       name="basic"
       layout="vertical"
-      initialValues={{remember: true}}
+      initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
@@ -68,45 +75,50 @@ const RegisterForm: React.FC = ({authMode, word}: authProps) => {
       <Form.Item<FieldType>
         label="User name"
         name="username"
-        rules={[{required: true, message: 'Please input your user name!'},
+        rules={[
+          { required: true, message: 'Please input your user name!' },
           {
             validator(_, value) {
-              return validateUserName(value)
-            },
-          }]}
-      >
-        <Input size="large" placeholder="User name"/>
-      </Form.Item>
-      <Form.Item<FieldType>
-        label="Login"
-        name="login"
-        rules={[{required: true, message: 'Please input your login!'},
-          {
-            validator(_, value) {
-              return validateLogin(value)
+              return validateUserName(value);
             },
           },
         ]}
       >
-        <Input size="large" placeholder="User name"/>
+        <Input size="large" placeholder="User name" />
+      </Form.Item>
+      <Form.Item<FieldType>
+        label="Login"
+        name="login"
+        rules={[
+          { required: true, message: 'Please input your login!' },
+          {
+            validator(_, value) {
+              return validateLogin(value);
+            },
+          },
+        ]}
+      >
+        <Input size="large" placeholder="User name" />
       </Form.Item>
       <Form.Item<FieldType>
         layout="vertical"
         label="Password"
         name="password"
-        rules={[{required: true, message: 'Please input your password!'},
-          {min: 6, message: 'Minimum 6 characters'},
-          {max: 60, message: 'Maximum 60 characters'}]}
+        rules={[
+          { required: true, message: 'Please input your password!' },
+          { min: 6, message: 'Minimum 6 characters' },
+          { max: 60, message: 'Maximum 60 characters' },
+        ]}
       >
-        <Input.Password size="large" placeholder="*****************"/>
+        <Input.Password size="large" placeholder="*****************" />
       </Form.Item>
       <Form.Item<FieldType>
         layout="vertical"
         label="Repeat Password"
         name="repeatPassword"
         rules={[
-          {required: true, message: 'Please confirm your password!',},
-          ({getFieldValue}) => ({
+          { required: true, message: 'Please confirm your password!' },
+          ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('password') === value) {
                 return Promise.resolve();
@@ -116,47 +128,52 @@ const RegisterForm: React.FC = ({authMode, word}: authProps) => {
           }),
         ]}
       >
-        <Input.Password size="large" placeholder="*****************"/>
+        <Input.Password size="large" placeholder="*****************" />
       </Form.Item>
       <Form.Item<FieldType>
         label="Email"
         name="email"
-        rules={[{required: true, message: 'Please input your email!'},
+        rules={[
+          { required: true, message: 'Please input your email!' },
           {
             validator(_, value) {
-              return validateEmail(value)
+              return validateEmail(value);
             },
-          }]}
+          },
+        ]}
       >
-        <Input size="large" placeholder="mail@abc.com"/>
+        <Input size="large" placeholder="mail@abc.com" />
       </Form.Item>
       <Form.Item<FieldType>
         label="Phone number"
         name="phoneNumber"
-        type='tel'
+        type="tel"
         rules={[
           {
             validator(_, value) {
-              return validateNumberPhone(value)
+              return validateNumberPhone(value);
             },
-          }]}
+          },
+        ]}
       >
-        <Input size="large" placeholder="+71234567890"/>
+        <Input size="large" placeholder="+71234567890" />
       </Form.Item>
 
-      {authMode ? <div className="underAuthData">
+      {authMode ? (
+        <div className="under-auth-data">
           <Form.Item<FieldType>
-            style={{margin: 0}}
+            style={{ margin: 0 }}
             name="remember"
             valuePropName="checked"
             label={null}
           >
-            <Checkbox style={{color: 'rgba(161, 161, 161, 1)'}}>Remember me</Checkbox>
+            <Checkbox style={{ color: 'rgba(161, 161, 161, 1)' }}>Remember me</Checkbox>
           </Form.Item>
           <a href="#">Forgot Password?</a>
         </div>
-        : ''
-      }
+      ) : (
+        ''
+      )}
 
       <Form.Item label={null}>
         <Button type="primary" htmlType="submit">
@@ -165,7 +182,7 @@ const RegisterForm: React.FC = ({authMode, word}: authProps) => {
       </Form.Item>
       <Modal
         title="loginLink"
-        closable={{'aria-label': 'Custom Close Button'}}
+        closable={{ 'aria-label': 'Custom Close Button' }}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}

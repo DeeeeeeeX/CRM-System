@@ -1,17 +1,38 @@
 import { AppDispatch } from '../store';
-import { getProfile } from '../../api/api';
+import { getProfile, sendRefreshToken } from '../../api/api';
 import { authSlice } from './AuthSlice';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { token } from '../../functions/functions';
 
-export const fetchProfile = () => async (dispatch: AppDispatch) => {
+export const fetchProfile = createAsyncThunk(
+  'auth/fetchProfile',
+  async (_, { rejectWithValue }) => {
+    try {
+      const profile = await getProfile();
+      return profile;
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  },
+);
+
+export const isLogin = () => (dispatch: AppDispatch) => {
+  dispatch(authSlice.actions.authorization(true));
+};
+export const isLogOut = () => (dispatch: AppDispatch) => {
+  dispatch(authSlice.actions.authorization(false));
+};
+
+export const refreshAuth = createAsyncThunk('auth/refreshAuth', async (_, { rejectWithValue }) => {
+  const refreshTokenValue = localStorage.getItem('refreshToken');
+  if (!refreshTokenValue) return rejectWithValue('Refresh token missing');
+
   try {
-    dispatch(authSlice.actions.profileFetching());
-    const response = await getProfile();
-    dispatch(authSlice.actions.profileFetchingSuccess(response.data));
+    const { accessToken, refreshToken } = await sendRefreshToken();
+    localStorage.setItem('refreshToken', refreshToken);
+    token.setAccessToken(accessToken);
+    return accessToken;
   } catch (e) {
-    dispatch(authSlice.actions.profileFetchingError(e.message));
+    return rejectWithValue(e?.message || 'Error refreshing token');
   }
-};
-
-export const setToken = (accessToken: string) => (dispatch: AppDispatch) => {
-  dispatch(authSlice.actions.setAccessToken(accessToken));
-};
+});

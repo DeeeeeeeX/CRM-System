@@ -32,7 +32,7 @@ ul {
     word-break: break-all;
 }
 
-.buttonEdit {
+.button-edit {
     margin-left: 30px;
     height: 50px;
     width: 55px;
@@ -40,7 +40,7 @@ ul {
     background-color: rgba(86,149,243,0.8);
 }
 
-.buttonBack {
+.button-back {
     width: 55px;
     margin-left: 10px;
     height: 50px;
@@ -48,7 +48,7 @@ ul {
     background-color: rgba(254,106,91,0.8)
 }
 
-.buttonDelete {
+.button-delete {
     margin-left: 10px;
     width: 55px;
     height: 50px;
@@ -88,28 +88,28 @@ appearance: none;
     border-radius: 10px;
 }
 
-.editSvg {
+.edit-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
     background: url("../assets/edit.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-.deleteSvg {
+.delete-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
     background: url("../assets/trash.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-.saveSvg {
+.save-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
     background: url("../assets/ok.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-.backSvg {
+.back-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
@@ -132,7 +132,7 @@ input[type=checkbox] {
     align-items: center;
 }
 
-.editingForm {
+.editing-form {
     display: flex;
     box-sizing: border-box;
     justify-content: center;

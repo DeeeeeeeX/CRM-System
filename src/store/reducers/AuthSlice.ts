@@ -1,42 +1,32 @@
-import { AuthConfig, Profile } from '../../types/types';
+import { AuthConfig } from '../../types/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-const initialState: AuthConfig = {
-  isAuth: { register: false, login: true },
-  word: { register: 'register', login: 'login' },
-  accessToken: null,
-  isLoading: false,
-  error: '',
-  profile: {
-    id: 0,
-    username: 'failed loading',
-    email: 'failed loading...',
-    date: 'failed loading',
-    isBlocked: false,
-    roles: ['USER', 'ADMIN', 'MODERATOR'],
-    phoneNumber: 'failed loading...',
-  },
-};
+import { fetchProfile, refreshAuth } from './ActionCreators';
+import { initialAuthState } from '../initialState';
+import { addAsyncBuilderCases } from '../utils';
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: initialAuthState,
+
   reducers: {
-    profileFetching(state: AuthConfig) {
-      state.isLoading = true;
+    authorization(state: AuthConfig, action: PayloadAction<boolean>) {
+      state.isLogin = action.payload;
     },
-    profileFetchingSuccess(state: AuthConfig, action: PayloadAction<Profile>) {
-      state.isLoading = false;
-      state.error = '';
-      state.profile = action.payload;
-    },
-    profileFetchingError(state: AuthConfig, action: PayloadAction<string>) {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    setAccessToken(state: AuthConfig, action: PayloadAction<string>) {
-      state.accessToken = action.payload;
-    },
+  },
+
+  extraReducers: (builder) => {
+    addAsyncBuilderCases(builder, fetchProfile, 'profile');
+
+    builder
+      .addCase(refreshAuth.fulfilled, (state: AuthConfig) => {
+        state.isLogin = true;
+        state.isLoginChecked = true;
+      })
+
+      .addCase(refreshAuth.rejected, (state: AuthConfig) => {
+        state.isLogin = false;
+        state.isLoginChecked = true;
+      });
   },
 });
 

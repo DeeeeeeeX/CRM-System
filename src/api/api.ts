@@ -5,12 +5,11 @@ import {
   Profile,
   Todo,
   TodoInfo,
+  Token,
   UserRegistration,
 } from '../types/types';
 import axios from 'axios';
-import { store } from '../store/store';
-import { setToken } from '../store/reducers/ActionCreators';
-import { logout } from '../functions/functions';
+import { token } from '../functions/functions';
 
 const axiosInstance = axios.create({
   baseURL: 'https://easydev.club/api/v1/',
@@ -24,34 +23,43 @@ const axiosRefresh = axios.create({
   baseURL: 'https://easydev.club/api/v1/',
 });
 
+export async function sendRefreshToken(): Promise<Token> {
+  const response = await axiosRefresh.post('auth/refresh', {
+    refreshToken: localStorage.getItem('refreshToken'),
+  });
+  return response.data;
+}
+
 axiosInstance.interceptors.request.use((config) => {
-  const accessToken = store.getState().authReducer.accessToken;
+  const accessToken = token.getAccessToken();
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 });
 
-let refreshPromise: null | Promise<string> = null;
+let refreshPromise: null | Promise<Token> = null;
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response?.status !== 401) {
-      return Promise.reject(error);
+    if (error.response?.status !== 401) return Promise.reject(error);
+
+    if (!refreshPromise) {
+      refreshPromise = sendRefreshToken().finally(() => {
+        refreshPromise = null;
+      });
     }
     try {
-      if (!refreshPromise) {
-        refreshPromise = refreshToken().finally(() => {
-          refreshPromise = null;
-        });
-      }
-      const newAccessToken = await refreshPromise;
+      const { accessToken, refreshToken } = await refreshPromise;
+      token.setAccessToken(accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      const newAccessToken = (await refreshPromise).accessToken;
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
       return axiosInstance(originalRequest);
     } catch (e) {
-      logout();
       return Promise.reject(e);
     }
   },
@@ -85,22 +93,12 @@ export async function registerUser(regData: UserRegistration): Promise<void> {
   await axiosInstance.post('auth/signup', regData);
 }
 
-export async function loginUser(authData: AuthData): Promise<void> {
+export async function loginUser(authData: AuthData): Promise<Token> {
   const response = await axiosInstance.post('auth/signin', authData);
-  store.dispatch(setToken(response.data.accessToken));
-  localStorage.setItem('refreshToken', response.data.refreshToken);
-}
-
-export async function refreshToken(): Promise<string> {
-  const response = await axiosRefresh.post('auth/refresh', {
-    refreshToken: localStorage.getItem('refreshToken'),
-  });
-  const { accessToken, refreshToken } = response.data;
-  localStorage.setItem('refreshToken', refreshToken);
-  store.dispatch(setToken(accessToken));
-  return accessToken;
+  return response.data;
 }
 
 export async function getProfile(): Promise<Profile> {
-  return await axiosInstance.get('user/profile');
+  const response = await axiosInstance.get('user/profile');
+  return response.data;
 }

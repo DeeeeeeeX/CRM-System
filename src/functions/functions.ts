@@ -1,10 +1,10 @@
-export const validatingTrim = (value?: string): Promise<void> => {
+export const validating = (value?: string) => {
   const noSpaceValue = value?.trim();
   if (!noSpaceValue || noSpaceValue.length < 2) {
-    return Promise.reject(new Error(`must be at least 2characters.`));
+    return Promise.reject(new Error('must be at least 2 characters'));
   }
   if (noSpaceValue.length > 64) {
-    return Promise.reject(new Error(`cannot be longer than 64characters.`));
+    return Promise.reject(new Error('cannot be longer than 64 characters'));
   }
   return Promise.resolve();
 };
@@ -53,7 +53,24 @@ export const validateNumberPhone = (numberPhone?: string): Promise<void> => {
   );
 };
 
-export const logout = (): void => {
+export const removeRefreshToken = (): void => {
   localStorage.removeItem('refreshToken');
-  window.location.href = '/login';
 };
+
+const createTokenStorage = () => {
+  let accessToken: string | null = null;
+
+  return {
+    getAccessToken() {
+      return accessToken;
+    },
+    setAccessToken(token: string | null) {
+      accessToken = token;
+    },
+    clearAccessToken() {
+      accessToken = null;
+    },
+  };
+};
+
+export const token = createTokenStorage();

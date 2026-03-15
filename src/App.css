@@ -155,7 +155,7 @@ a:hover {
     color: black;
 }
 
-.imgBack {
+.img-back {
     position: absolute;
     top: 0;
     left: 0;
@@ -163,13 +163,13 @@ a:hover {
     height: 1080px;
 }
 
-.authBack {
+.auth-back {
     font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
 
 }
 
-.authBack h3 {
+.auth-back h3 {
     position: absolute;
     z-index: 1;
     top: 879px;
@@ -180,7 +180,7 @@ a:hover {
     color: rgba(115, 17, 75, 1);
 }
 
-.authBack span {
+.auth-back span {
     position: absolute;
     z-index: 1;
     color: rgba(115, 17, 75, 1);
@@ -198,17 +198,17 @@ a:hover {
     left: 1003px;
 }
 
-.loginLayer {
+.login-layer {
     margin-left: 1109px;
     width: 811px;
     height: 1080px;
 }
 
-.loginImg {
+.login-img {
     margin: 170px 0 0 201px;
 }
 
-.formBlock {
+.form-block {
     display: flex;
     flex-wrap: wrap;
     width: 420px;
@@ -216,7 +216,7 @@ a:hover {
     justify-content: center;
 }
 
-.loginTitle {
+.login-title {
     margin-bottom: 36px;
     width: 370px;
     height: 74px;
@@ -224,7 +224,7 @@ a:hover {
     font-family: "Nunito Sans", sans-serif;
 }
 
-.loginTitle h3 {
+.login-title h3 {
     display: block;
     margin: 0;
     font-weight: 700;
@@ -234,7 +234,7 @@ a:hover {
 
 }
 
-.loginTitle span {
+.login-title span {
     display: block;
     margin-top: 3px;
     font-weight: 400;
@@ -243,16 +243,17 @@ a:hover {
     height: 22px;
 }
 
-.formBlock form {
+.form-block form {
     width: 100%;
 }
-.formBlock button {
+
+.form-block button {
     width: 100%;
     height: 50px;
     background-color: rgba(127, 38, 91, 1);
 }
 
-.underAuthData {
+.under-auth-data {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -260,34 +261,34 @@ a:hover {
     margin: 8px 0 32px 0;
 }
 
-.underAuthData a {
+.under-auth-data a {
     color: rgba(127, 38, 91, 1);
 }
 
-.underAuthData input {
+.under-auth-data input {
     color: rgba(161, 161, 161, 1);
 }
 
-.loginLayer .ant-checkbox-checked .ant-checkbox-inner {
+.login-layer .ant-checkbox-checked .ant-checkbox-inner {
     background-color: rgba(127, 38, 91, 1);
     border-color: rgba(127, 38, 91, 1);
 }
 
-.createTitle {
+.create-title {
     margin: 20px 0 0 253px;
     width: 317px;
     height: 25px;
     font-family: "Nunito Sans", sans-serif;
 }
 
-.createTitle span {
+.create-title span {
     font-weight: 400;
     color: rgba(130, 130, 130, 1);
     font-size: 18px;
     line-height: 100%;
 }
 
-.createTitle a {
+.create-title a {
     margin-left: 10px;
     font-weight: 600;
     color: rgba(127, 38, 91, 1);

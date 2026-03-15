@@ -1,37 +1,32 @@
-import React, {useEffect, useState} from 'react';
-import {deleteToDo, editToDo} from '../api/api.ts';
-import {FetchFunc, FieldType, Todo} from '../types/types';
-import {Button, Checkbox, Form, FormProps, Input, message} from 'antd';
-import {validatingTrim} from "../functions/functions";
+import React, { useEffect, useState } from 'react';
+import { deleteToDo, editToDo } from '../api/api.ts';
+import { Button, Checkbox, Form, FormProps, Input, List, message } from 'antd';
+import { validating } from '../functions/functions';
+import { FieldType, Todo } from '../types/types';
 
-const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({task, updateToDos}) => {
+interface Props {
+  task: Todo;
+  updateToDos: () => void;
+}
+
+const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  const handleSaveTitle = async (modifiedTodoTitle: FieldType) => {
-    try {
-      await editToDo(task.id, {title: modifiedTodoTitle.task?.trim()});
-      setIsEditing(false);
-      await updateToDos();
-    } catch (error) {
-      message.error(`Не удалось отправить запрос ${error}`);
-    }
-  };
-
-  const handleBackEditing = () => {
+  const onBackEditing = () => {
     setIsEditing(false);
   };
 
-  const handleCompleted = async (targetValue: boolean) => {
+  const onCompleted = async (targetValue: boolean) => {
     try {
-      await editToDo(task.id, {isDone: targetValue});
+      await editToDo(task.id, { isDone: targetValue });
       await updateToDos();
     } catch (error) {
       message.error(`не удалось отправить запрос о смене статуса задачи ${error}`);
     }
   };
 
-  const handleDeleting = async () => {
+  const onDeleting = async () => {
     try {
       await deleteToDo(task.id);
       await updateToDos();
@@ -40,8 +35,14 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({task, updat
     }
   };
 
-  const onFinish: FormProps<FieldType>['onFinish'] = (modifiedTodoTitle) => {
-    handleSaveTitle(modifiedTodoTitle);
+  const onFinish: FormProps<FieldType>['onFinish'] = async (modifiedTodoTitle: FieldType) => {
+    try {
+      await editToDo(task.id, { title: modifiedTodoTitle.task });
+      setIsEditing(false);
+      await updateToDos();
+    } catch (error) {
+      message.error(`Не удалось отправить запрос ${error}`);
+    }
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -49,15 +50,12 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({task, updat
   };
 
   useEffect(() => {
-    form.setFieldsValue({task: task.title});
+    form.setFieldsValue({ task: task.title });
   }, [isEditing]);
 
   return (
-    <li className="taskEl">
-      <Checkbox
-        checked={task.isDone}
-        onChange={(e) => handleCompleted(e.target.checked)}
-      ></Checkbox>
+    <List.Item>
+      <Checkbox checked={task.isDone} onChange={(e) => onCompleted(e.target.checked)}></Checkbox>
 
       {isEditing ? (
         <Form
@@ -66,48 +64,47 @@ const ToDoItem: React.FC<{ task: Todo; updateToDos: FetchFunc }> = ({task, updat
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
-          validateTrigger={['onChange']}
-          initialValues={{task: task.title}}
-          className="editingForm"
+          initialValues={{ task: task.title }}
+          className="editing-form"
         >
           <Form.Item<FieldType>
             name="task"
-            style={{width: 174, paddingLeft: 5, marginBottom: 0}}
+            style={{ width: 174, paddingLeft: 5, marginBottom: 0 }}
             rules={[
               {
                 validator(_, value) {
-                  return validatingTrim(value)
+                  return validating(value);
                 },
               },
             ]}
           >
-            <Input/>
+            <Input />
           </Form.Item>
           <>
-            <Form.Item style={{margin: 0}}>
-              <Button type="primary" htmlType="submit" className="buttonEdit">
-                <div className="saveSvg"></div>
+            <Form.Item style={{ margin: 0 }}>
+              <Button type="primary" htmlType="submit" className="button-edit">
+                <div className="save-svg"></div>
               </Button>
             </Form.Item>
 
-            <Button type="primary" className="buttonBack" onClick={handleBackEditing}>
-              <div className="backSvg"></div>
+            <Button type="primary" className="button-back" onClick={onBackEditing}>
+              <div className="back-svg"></div>
             </Button>
           </>
         </Form>
       ) : (
         <>
           <div className={!task.isDone ? 'title' : 'title-completed'}>{task.title}</div>
-          <Button type="primary" className="buttonEdit" onClick={() => setIsEditing(true)}>
-            <div className="editSvg"></div>
+          <Button type="primary" className="button-edit" onClick={() => setIsEditing(true)}>
+            <div className="edit-svg"></div>
           </Button>
 
-          <Button type="primary" className="buttonDelete" onClick={handleDeleting}>
-            <div className="deleteSvg"></div>
+          <Button type="primary" className="button-delete" onClick={onDeleting}>
+            <div className="delete-svg"></div>
           </Button>
         </>
       )}
-    </li>
+    </List.Item>
   );
 };
 

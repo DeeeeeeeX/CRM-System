@@ -1,28 +1,35 @@
 import React from 'react';
-import {Button, Checkbox, Form, FormProps, Input, message} from "antd";
-import {validateLogin} from "../functions/functions";
-import {loginUser} from "../api/api";
-import {AuthData, authProps} from "../types/types";
-import {useNavigate} from "react-router-dom";
+import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
+import { token, validateLogin } from '../functions/functions';
+import { loginUser } from '../api/api';
+import { AuthData, authProps } from '../types/types';
+import { useNavigate } from 'react-router-dom';
+import { fetchProfile, isLogin } from '../store/reducers/ActionCreators';
+import { useAppDispatch } from '../hooks/redux';
 
-const LoginForm: React.FC = ({authMode, word}: authProps) => {
+const LoginForm: React.FC = ({ authMode, word }: authProps) => {
   type FieldType = {
     login?: string;
     password?: string;
     remember?: boolean;
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [form] = Form.useForm();
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (authData: AuthData) => {
     try {
-      await loginUser(authData)
+      const response = await loginUser(authData);
+      token.setAccessToken(response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
+      dispatch(isLogin());
+      dispatch(fetchProfile());
       message.success(`Successful ${word}`);
-      navigate('/')
+      navigate('/');
     } catch (e) {
-      message.error(e.response?.data || 'Login Failed')
+      message.error(e.response?.data || 'Login Failed');
     }
   };
 
@@ -34,7 +41,7 @@ const LoginForm: React.FC = ({authMode, word}: authProps) => {
       form={form}
       name="basic"
       layout="vertical"
-      initialValues={{remember: true}}
+      initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
@@ -42,35 +49,39 @@ const LoginForm: React.FC = ({authMode, word}: authProps) => {
       <Form.Item<FieldType>
         label="Login"
         name="login"
-        rules={[{required: true, message: 'Please input your Login!'},
+        rules={[
+          { required: true, message: 'Please input your Login!' },
           {
             validator(_, value) {
-              return validateLogin(value)
+              return validateLogin(value);
             },
-          },]}
+          },
+        ]}
       >
-        <Input size="large" placeholder="login"/>
+        <Input size="large" placeholder="login" />
       </Form.Item>
 
       <Form.Item<FieldType>
         layout="vertical"
         label="Password"
         name="password"
-        rules={[{required: true, message: 'Please input your password!'},
-          {min: 6, message: 'Minimum 6 characters'},
-          {max: 60, message: 'Maximum 60 characters'}]}
+        rules={[
+          { required: true, message: 'Please input your password!' },
+          { min: 6, message: 'Minimum 6 characters' },
+          { max: 60, message: 'Maximum 60 characters' },
+        ]}
       >
-        <Input.Password size="large" placeholder="*****************"/>
+        <Input.Password size="large" placeholder="*****************" />
       </Form.Item>
 
-      <div className="underAuthData">
+      <div className="under-auth-data">
         <Form.Item<FieldType>
-          style={{margin: 0}}
+          style={{ margin: 0 }}
           valuePropName="checked"
           label={null}
-          name='remember'
+          name="remember"
         >
-          <Checkbox style={{color: 'rgba(161, 161, 161, 1)'}}>Remember me</Checkbox>
+          <Checkbox style={{ color: 'rgba(161, 161, 161, 1)' }}>Remember me</Checkbox>
         </Form.Item>
         {authMode ? <a href="#">Forgot Password?</a> : ''}
       </div>

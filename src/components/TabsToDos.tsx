@@ -1,33 +1,32 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import '../css/TabTasks.css';
 import { ActiveTabs, TodoInfo } from '../types/types';
+import { Tabs } from 'antd';
 
-const TabsToDos: React.FC<{
+interface Props {
   quantity: TodoInfo;
   setActiveTab: Dispatch<SetStateAction<ActiveTabs>>;
   activeTab: ActiveTabs;
-}> = ({ quantity = {}, setActiveTab, activeTab }) => {
+}
+
+const TabsToDos: React.FC<Props> = ({ quantity = {}, setActiveTab, activeTab }) => {
   const { all = 0, completed = 0, inWork = 0 } = quantity;
 
-  return (
-    <nav className="tabTasks">
-      <div onClick={() => setActiveTab('all')} className={activeTab === 'all' ? 'active' : ''}>
-        Всё ({all})
-      </div>
-      <div
-        onClick={() => setActiveTab('inWork')}
-        className={activeTab === 'inWork' ? 'active' : ''}
-      >
-        В работе ({inWork})
-      </div>
-      <div
-        onClick={() => setActiveTab('completed')}
-        className={activeTab === 'completed' ? 'active' : ''}
-      >
-        Сделано ({completed})
-      </div>
-    </nav>
-  );
+  const items = [
+    {
+      key: 'all',
+      label: `Всё (${all})`,
+    },
+    {
+      key: 'inWork',
+      label: `В работе (${inWork})`,
+    },
+    {
+      key: 'completed',
+      label: `Сделано (${completed})`,
+    },
+  ];
+
+  return <Tabs activeKey={activeTab} onChange={(key) => setActiveTab(key)} items={items} />;
 };
 
 export default TabsToDos;

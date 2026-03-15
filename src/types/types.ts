@@ -1,3 +1,5 @@
+import { IAsyncParticle } from '../store/utils';
+
 export type ActiveTabs = 'all' | 'inWork' | 'completed' | null;
 
 export interface Todo {
@@ -21,7 +23,6 @@ export interface MetaResponse<T, N> {
   };
 }
 
-export type FetchFunc = (tabTask?: ActiveTabs) => Promise<void>;
 export type FieldType = {
   taskInput?: string;
   title?: string;
@@ -74,11 +75,10 @@ type AuthMode = 'register' | 'login';
 
 export interface AuthConfig {
   isAuth: Record<AuthMode, boolean>;
-  word: Record<AuthMode, string>;
-  accessToken: string | null;
-  isLoading: boolean;
+  isLoginChecked: boolean;
+  isLogin: boolean;
   error: string;
-  profile: Profile;
+  profile: IAsyncParticle<Profile>;
 }
 
 export type Role = 'ADMIN' | 'USER' | 'MODERATOR';

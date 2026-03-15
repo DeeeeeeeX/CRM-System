@@ -15,6 +15,6 @@ nav {
     text-underline-offset: 3px
 }
 
-.tabTasks div {
+.tab-tasks div {
     cursor: pointer;
 }

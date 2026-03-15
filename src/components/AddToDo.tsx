@@ -1,22 +1,21 @@
-import {createToDo} from '../api/api.ts';
-import {FetchFunc, FieldType} from '../types/types';
-import {Button, Form, FormProps, Input, message} from 'antd';
-import React, {memo} from 'react';
-import {validatingTrim} from "../functions/functions";
+import { createToDo } from '../api/api.ts';
+import { FieldType } from '../types/types';
+import { Button, Form, FormProps, Input, message } from 'antd';
+import React, { memo } from 'react';
+import { validating } from '../functions/functions';
 
-const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({onUpdate}) => {
-  async function handleCreateTodo(title: string): Promise<void> {
+interface Props {
+  onUpdate: () => void;
+}
+
+const AddToDo: React.FC<Props> = ({ onUpdate }) => {
+  const onFinish: FormProps<FieldType>['onFinish'] = async (values: FieldType): Promise<void> => {
     try {
-      await createToDo(title);
+      await createToDo(values.task);
       await onUpdate();
     } catch (error) {
       message.error(`Не удалось создать задачу:, ${error.message}`);
     }
-  }
-
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    if (!values.task) return;
-    handleCreateTodo(values.task);
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -24,34 +23,32 @@ const AddToDo: React.FC<{ onUpdate: FetchFunc }> = ({onUpdate}) => {
   };
 
   return (
-    <div>
-      <Form
-        name="basic"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-        validateTrigger={['onChange']}
-        layout="inline"
-      >
-        <Form.Item<FieldType>
-          name="task"
-          rules={[
-            {
-              validator(_, value) {
-                return validatingTrim(value)
-              },
+    <Form
+      name="basic"
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete="off"
+      validateTrigger={['submit']}
+      layout="inline"
+    >
+      <Form.Item<FieldType>
+        name="task"
+        rules={[
+          {
+            validator(_, value) {
+              return validating(value);
             },
-          ]}
-        >
-          <Input placeholder="Task To Be Done"/>
-        </Form.Item>
-        <Form.Item style={{textAlign: 'right'}}>
-          <Button type="primary" htmlType="submit">
-            Add
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+          },
+        ]}
+      >
+        <Input placeholder="Task To Be Done" />
+      </Form.Item>
+      <Form.Item style={{ textAlign: 'right' }}>
+        <Button type="primary" htmlType="submit">
+          Добавить
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 
