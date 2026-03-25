@@ -1,14 +1,168 @@
-.wrapper {
-  width: 350px;
-  height: 100%;
-  background-color: #fff;
-  margin: 50px auto;
-  border-radius: 10px;
-  max-width: 1400px;
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+body {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
 }
 
 .tasks {
-  display: flex;
-  justify-content: center;
-  align-items: start;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+a {
+    text-decoration: none;
+    margin-left: 12px;
+}
+
+a:visited {
+    color: rgba(114, 114, 114, 1);;
+}
+
+a:hover {
+    color: rgb(26, 26, 26);;
+}
+
+.img-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1109px;
+    height: 1080px;
+}
+
+.auth-back {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+
+}
+
+.auth-back h3 {
+    position: absolute;
+    z-index: 1;
+    top: 879px;
+    left: 295px;
+    font-size: 40px;
+    line-height: 100%;
+    font-weight: 800;
+    color: rgba(115, 17, 75, 1);
+}
+
+.auth-back span {
+    position: absolute;
+    z-index: 1;
+    color: rgba(115, 17, 75, 1);
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 100%;
+    top: 968px;
+    left: 223px;
+}
+
+.circle {
+    position: absolute;
+    z-index: 1;
+    top: 998px;
+    left: 1003px;
+}
+
+.login-layer {
+    margin-left: 1109px;
+    width: 811px;
+    height: 1080px;
+}
+
+.login-img {
+    margin: 170px 0 0 201px;
+}
+
+.form-block {
+    display: flex;
+    flex-wrap: wrap;
+    width: 420px;
+    margin: 36px 0 0 201px;
+    justify-content: center;
+}
+
+.login-title {
+    margin-bottom: 36px;
+    width: 370px;
+    height: 74px;
+    color: rgba(82, 82, 82, 1);
+    font-family: "Nunito Sans", sans-serif;
+}
+
+.login-title h3 {
+    display: block;
+    margin: 0;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+    height: 49px;
+
+}
+
+.login-title span {
+    display: block;
+    margin-top: 3px;
+    font-weight: 400;
+    line-height: 100%;
+    font-size: 16px;
+    height: 22px;
+}
+
+.form-block form {
+    width: 100%;
+}
+
+.form-block button {
+    width: 100%;
+    height: 50px;
+    background-color: rgba(127, 38, 91, 1);
+}
+
+.under-auth-data {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 16px;
+    margin: 8px 0 32px 0;
+}
+
+.under-auth-data a {
+    color: rgba(127, 38, 91, 1);
+}
+
+.under-auth-data input {
+    color: rgba(161, 161, 161, 1);
+}
+
+.login-layer .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: rgba(127, 38, 91, 1);
+    border-color: rgba(127, 38, 91, 1);
+}
+
+.create-title {
+    margin: 20px 0 0 253px;
+    width: 317px;
+    height: 25px;
+    font-family: "Nunito Sans", sans-serif;
+}
+
+.create-title span {
+    font-weight: 400;
+    color: rgba(130, 130, 130, 1);
+    font-size: 18px;
+    line-height: 100%;
+}
+
+.create-title a {
+    margin-left: 10px;
+    font-weight: 600;
+    color: rgba(127, 38, 91, 1);
+    font-size: 18px;
+    line-height: 100%;
 }

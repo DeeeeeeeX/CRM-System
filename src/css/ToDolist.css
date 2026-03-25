@@ -3,11 +3,16 @@
     margin-top: 15px;
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 350px;
     min-height: 60px;
     box-shadow: 3px 3px #8d8080;
     border: 1px solid black;
     border-radius: 10px;
+}
+
+ul {
+    padding: 0;
 }
 
 .title  {
@@ -27,25 +32,25 @@
     word-break: break-all;
 }
 
-.buttonEdit {
+.button-edit {
     margin-left: 30px;
     height: 50px;
-    width: 15%;
+    width: 55px;
     border-radius: 5px;
     background-color: rgba(86,149,243,0.8);
 }
 
-.buttonBack {
-    width: 15%;
+.button-back {
+    width: 55px;
     margin-left: 10px;
     height: 50px;
     border-radius: 5px;
     background-color: rgba(254,106,91,0.8)
 }
 
-.buttonDelete {
+.button-delete {
     margin-left: 10px;
-    width: 15%;
+    width: 55px;
     height: 50px;
     border-radius: 5px;
     background-color: rgba(254,106,91,0.8)
@@ -83,28 +88,28 @@ appearance: none;
     border-radius: 10px;
 }
 
-.editSvg {
+.edit-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
     background: url("../assets/edit.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-.deleteSvg {
+.delete-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
     background: url("../assets/trash.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-.saveSvg {
+.save-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
     background: url("../assets/ok.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-.backSvg {
+.back-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
@@ -118,4 +123,18 @@ button {
 
 input[type=checkbox] {
     cursor: pointer;
+}
+
+.todo-box {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editing-form {
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
 }

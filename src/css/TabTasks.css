@@ -1,16 +1,12 @@
 nav {
+    margin-top: 20px;
+    width: 350px;
     height: 50px;
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
-nav div {
-    font-weight: 600;
-    color: gray;
-    text-decoration: none;
-    cursor: pointer;
-}
 
 .active {
     color: #5594f1;
@@ -19,6 +15,6 @@ nav div {
     text-underline-offset: 3px
 }
 
-.inActive {
-
+.tab-tasks div {
+    cursor: pointer;
 }
