@@ -1,50 +1,34 @@
-import { MetaResponse, TaskStatus, Todo, TodoInfo } from '../types/types';
+import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
+import axios from 'axios';
 
-export const baseUrl = 'https://easydev.club/api/v1/todos';
+const baseInstance = axios.create({
+  baseURL: 'https://easydev.club/api/v1/todos',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-export async function getToDo(activeTab: TaskStatus): Promise<MetaResponse<Todo, TodoInfo>> {
-  try {
-    let response = await fetch(baseUrl + `?filter=${activeTab}`, { method: 'GET' });
-    return await response.json();
-  } catch (error) {
-    throw error;
-  }
+export async function getToDo(activeTab?: ActiveTabs): Promise<MetaResponse<Todo, TodoInfo>> {
+  const response = await baseInstance.get('', {
+    params: {
+      filter: activeTab,
+    },
+  });
+  return response.data;
 }
 
 export async function deleteToDo(id: number): Promise<void> {
-  try {
-    await fetch(`${baseUrl}/${id}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (error) {
-    throw error;
-  }
+  await baseInstance.delete(`/${id}`);
 }
 
 export async function editToDo(
   id: number,
   taskState: Partial<Pick<Todo, 'title' | 'isDone'>>,
 ): Promise<void> {
-  try {
-    await fetch(`${baseUrl}/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(taskState),
-    });
-  } catch (error) {
-    throw error;
-  }
+  await baseInstance.put(`/${id}`, taskState);
 }
 
 export async function createToDo(title: string): Promise<void> {
-  try {
-    await fetch(baseUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ isDone: false, title }),
-    });
-  } catch (error) {
-    throw error;
-  }
+  await baseInstance.post('', { isDone: false, title });
 }

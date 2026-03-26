@@ -1,20 +1,21 @@
-import React from 'react';
 import '../css/ToDolist.css';
 import ToDoItem from './ToDoItem';
-import {FetchFunc, MetaResponse, Todo, TodoInfo} from '../types/types';
+import { MetaResponse, Todo, TodoInfo } from '../types/types';
+import React from 'react';
+import { List } from 'antd';
 
 interface Props {
   dataTasksAll: MetaResponse<Todo, TodoInfo>;
-  updateToDos: FetchFunc;
+  updateToDos: () => void;
 }
 
-const ToDoList: React.FC<Props> = ({dataTasksAll, updateToDos}) => {
+const ToDoList: React.FC<Props> = ({ dataTasksAll, updateToDos }) => {
   return (
-    <ul>
+    <List bordered className="todoBox">
       {dataTasksAll.data.map((task) => (
-        <ToDoItem key={task.id} task={task} updateToDos={updateToDos}/>
+        <ToDoItem key={task.id} task={task} updateToDos={updateToDos} />
       ))}
-    </ul>
+    </List>
   );
 };
 

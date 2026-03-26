@@ -3,6 +3,7 @@
     margin-top: 15px;
     display: flex;
     align-items: center;
+    justify-content: center;
     flex: 1;
     min-height: 60px;
     box-shadow: 3px 3px #8d8080;
@@ -14,7 +15,7 @@ ul {
     padding: 0;
 }
 
-.title {
+.title  {
     padding: 10px;
     display: flex;
     width: 154px;
@@ -34,73 +35,49 @@ ul {
 .button-edit {
     margin-left: 30px;
     height: 50px;
-    width: 15%;
+    width: 55px;
     border-radius: 5px;
-    background-color: var(--color-primary);
+    background-color: rgba(86,149,243,0.8);
 }
 
 .button-back {
-    width: 15%;
+    width: 55px;
     margin-left: 10px;
     height: 50px;
     border-radius: 5px;
-    background-color: var(--color-secondary)
+    background-color: rgba(254,106,91,0.8)
 }
 
 .button-delete {
     margin-left: 10px;
-    width: 15%;
+    width: 55px;
     height: 50px;
     border-radius: 5px;
-    background-color: var(--color-secondary)
-}
-
-.text-editing {
-    padding: 10px;
-    display: flex;
-    width: 150px;
-    align-items: center;
-    word-break: break-all;
-}
-
-.checkbox {
-    margin-left: 3px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-}
-
-.checkbox input {
-    position: absolute;
-    opacity: 0;
+    background-color: rgba(254,106,91,0.8)
 }
 
 .checkbox label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+    width: 27px;
+    height: 27px;
 }
 
-.checkbox span {
+.checkbox input {
+appearance: none;
+}
+
+.checkbox input {
     width: 20px;
     height: 20px;
-    border: 2px solid #343434;
-    border-radius: 6px;
+    background-image: url("../assets/checkbox-off.svg");
+    background-size: 20px 20px;
 }
-
-.checkbox input:checked + span {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-}
-
-.checkbox input:checked + span::after {
-    content: '✔';
-    position: absolute;
-    left: 6px;
-    top: 2px;
-    color: white;
-    font-size: 14px;
+.checkbox input:checked {
+    width: 20px;
+    height: 20px;
+    background-image: url("../assets/checkbox-on.svg");
+    background-size: 20px 20px;
+    background-color: #5196f5;
+    border-radius: 10px;
 }
 
 .edit-svg {
@@ -110,7 +87,6 @@ ul {
     background: url("../assets/edit.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-
 .delete-svg {
     padding-left: 6px;
     width: 30px;
@@ -118,7 +94,6 @@ ul {
     background: url("../assets/trash.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-
 .save-svg {
     padding-left: 6px;
     width: 30px;
@@ -126,7 +101,6 @@ ul {
     background: url("../assets/ok.svg") no-repeat center center;
     background-size: 22px 22px;
 }
-
 .back-svg {
     padding-left: 6px;
     width: 30px;
@@ -137,4 +111,22 @@ ul {
 
 button {
     cursor: pointer;
+}
+
+input[type=checkbox] {
+    cursor: pointer;
+}
+
+.todo-box {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editing-form {
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
 }

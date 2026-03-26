@@ -1,8 +1,4 @@
-export enum TaskStatus {
-  ALL = 'all',
-  IN_WORK = 'inWork',
-  COMPLETED = 'completed'
-}
+export type ActiveTabs = 'all' | 'inWork' | 'completed' | null;
 
 export interface Todo {
   id: number;
@@ -25,5 +21,8 @@ export interface MetaResponse<T, N> {
   };
 }
 
-export type FetchFunc = () => Promise<void>;
-export type ValidatorFunc = (value: string) => string;
+export type FieldType = {
+  taskInput?: string;
+  title?: string;
+  task?: string;
+};
