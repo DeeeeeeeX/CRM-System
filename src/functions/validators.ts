@@ -1,4 +1,4 @@
-export const validating = (value?: string) => {
+export const validateToDoLength = (value?: string) => {
   const noSpaceValue = value?.trim();
   if (!noSpaceValue || noSpaceValue.length < 2) {
     return Promise.reject(new Error('must be at least 2 characters'));
@@ -52,25 +52,3 @@ export const validateNumberPhone = (numberPhone?: string): Promise<void> => {
     new Error('The phone number must begin with + and contain from 6 to 18 digits.'),
   );
 };
-
-export const removeRefreshToken = (): void => {
-  localStorage.removeItem('refreshToken');
-};
-
-const createTokenStorage = () => {
-  let accessToken: string | null = null;
-
-  return {
-    getAccessToken() {
-      return accessToken;
-    },
-    setAccessToken(token: string | null) {
-      accessToken = token;
-    },
-    clearAccessToken() {
-      accessToken = null;
-    },
-  };
-};
-
-export const token = createTokenStorage();

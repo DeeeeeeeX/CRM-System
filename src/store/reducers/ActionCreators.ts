@@ -2,7 +2,7 @@ import { AppDispatch } from '../store';
 import { getProfile, sendRefreshToken } from '../../api/api';
 import { authSlice } from './AuthSlice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { token } from '../../functions/functions';
+import { token } from '../../functions/workWithTokens';
 
 export const fetchProfile = createAsyncThunk(
   'auth/fetchProfile',
@@ -16,16 +16,16 @@ export const fetchProfile = createAsyncThunk(
   },
 );
 
-export const isLogin = () => (dispatch: AppDispatch) => {
-  dispatch(authSlice.actions.authorization(true));
+export const authorize = () => (dispatch: AppDispatch) => {
+  dispatch(authSlice.actions.authorize(true));
 };
-export const isLogOut = () => (dispatch: AppDispatch) => {
-  dispatch(authSlice.actions.authorization(false));
+export const unauthorize = () => (dispatch: AppDispatch) => {
+  dispatch(authSlice.actions.authorize(false));
 };
 
 export const refreshAuth = createAsyncThunk('auth/refreshAuth', async (_, { rejectWithValue }) => {
   const refreshTokenValue = localStorage.getItem('refreshToken');
-  if (!refreshTokenValue) return rejectWithValue('Refresh token missing');
+  if (!refreshTokenValue) return rejectWithValue('Refresh workWithTokens missing');
 
   try {
     const { accessToken, refreshToken } = await sendRefreshToken();
@@ -33,6 +33,6 @@ export const refreshAuth = createAsyncThunk('auth/refreshAuth', async (_, { reje
     token.setAccessToken(accessToken);
     return accessToken;
   } catch (e) {
-    return rejectWithValue(e?.message || 'Error refreshing token');
+    return rejectWithValue(e?.message || 'Error refreshing workWithTokens');
   }
 });

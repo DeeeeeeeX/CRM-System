@@ -1,9 +1,9 @@
 import React from 'react';
 import '../css/ProfilePage.css';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { isLogOut } from '../store/reducers/ActionCreators';
 import { Button, Card, Space, Spin } from 'antd';
-import { removeRefreshToken, token } from '../functions/functions';
+import { removeRefreshToken, token } from '../functions/workWithTokens';
 import { selectProfile } from '../store/selectors/authSelectors';
 
 const ProfilePage = () => {

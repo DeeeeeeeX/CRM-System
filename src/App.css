@@ -200,11 +200,11 @@ a:hover {
 
 .login-layer {
     margin-left: 1109px;
-    width: 811px;
-    height: 1080px;
 }
 
 .login-img {
+    width: 72px;
+    height: 72px;
     margin: 170px 0 0 201px;
 }
 

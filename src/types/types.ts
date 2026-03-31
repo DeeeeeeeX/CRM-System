@@ -23,12 +23,6 @@ export interface MetaResponse<T, N> {
   };
 }
 
-export type FieldType = {
-  taskInput?: string;
-  title?: string;
-  task?: string;
-};
-
 export interface UserRegistration {
   login: string;
   username: string;
@@ -40,10 +34,6 @@ export interface UserRegistration {
 export interface AuthData {
   login: string;
   password: string;
-}
-
-export interface RefreshToken {
-  refreshToken: string;
 }
 
 export interface Profile {
@@ -82,8 +72,3 @@ export interface AuthConfig {
 }
 
 export type Role = 'ADMIN' | 'USER' | 'MODERATOR';
-
-export type authProps = {
-  authMode: boolean;
-  word: string;
-};

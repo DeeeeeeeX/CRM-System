@@ -3,11 +3,11 @@ import { Route, Routes } from 'react-router-dom';
 import ToDoListPage from './pages/ToDoListPage';
 import React, { useEffect } from 'react';
 import ProfilePage from './pages/ProfilePage';
-import Auth from './components/Auth';
-import { useAppDispatch, useAppSelector } from './hooks/redux';
+import AuthorizationPage from './pages/AuthorizationPage';
+import { useAppDispatch, useAppSelector } from './store/hooks';
 import GeneralLayout from './components/GeneralLayout';
-import AuthProtection from './components/AuthProtection';
-import { fetchProfile, isLogOut, refreshAuth } from './store/reducers/ActionCreators';
+import AuthProtection from './components/Authorization/AuthProtection';
+import { fetchProfile, refreshAuth, unauthorize } from './store/reducers/ActionCreators';
 import { selectAuth } from './store/selectors/authSelectors';
 import { message, Spin } from 'antd';
 
@@ -21,7 +21,7 @@ const App: React.FC = () => {
         dispatch(fetchProfile());
       } catch (e) {
         message.error('Не удалось обновить информацию', e);
-        dispatch(isLogOut());
+        dispatch(unauthorize());
       }
     }
 
@@ -36,8 +36,11 @@ const App: React.FC = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={<Auth authMode={isAuth.login} word="login" />} />
-      <Route path="/register" element={<Auth authMode={isAuth.register} word="register" />} />
+      <Route path="/login" element={<AuthorizationPage isAuthMode={isAuth.login} word="login" />} />
+      <Route
+        path="/register"
+        element={<AuthorizationPage isAuthMode={isAuth.register} word="register" />}
+      />
       <Route element={<AuthProtection />}>
         <Route element={<GeneralLayout />}>
           <Route path="/" element={<ToDoListPage />} />

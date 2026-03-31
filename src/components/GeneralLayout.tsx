@@ -4,9 +4,9 @@ import Sider from 'antd/es/layout/Sider';
 import { Content, Header } from 'antd/es/layout/layout';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
-const GeneralLayout: React.FC = () => {
-  type MenuItem = Required<MenuProps>['items'][number];
+type MenuItem = Required<MenuProps>['items'][number];
 
+const GeneralLayout: React.FC = () => {
   const location = useLocation();
 
   function getItem(
@@ -24,8 +24,8 @@ const GeneralLayout: React.FC = () => {
   }
 
   const items: MenuItem[] = [
-    getItem('Список задач', '/', <Link to="/" />),
-    getItem('профиль', '/profile', <Link to="/profile" />),
+    getItem(<Link to="/">Список задач,</Link>, '/'),
+    getItem(<Link to="/profile">Профиль</Link>, '/profile'),
   ];
 
   return (

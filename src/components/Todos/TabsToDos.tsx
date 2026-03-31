@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { ActiveTabs, TodoInfo } from '../types/types';
+import { ActiveTabs, TodoInfo } from '../../types/types';
 import { Tabs } from 'antd';
 
 interface Props {

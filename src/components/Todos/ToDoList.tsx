@@ -1,6 +1,6 @@
-import '../css/ToDolist.css';
+import '../../css/ToDolist.css';
 import ToDoItem from './ToDoItem';
-import { MetaResponse, Todo, TodoInfo } from '../types/types';
+import { MetaResponse, Todo, TodoInfo } from '../../types/types';
 import React from 'react';
 import { List } from 'antd';
 

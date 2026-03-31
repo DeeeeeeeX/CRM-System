@@ -1,46 +1,50 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Form, FormProps, Input, message, Modal } from 'antd';
-import { registerUser } from '../api/api';
 import {
   validateEmail,
   validateLogin,
   validateNumberPhone,
   validateUserName,
-} from '../functions/functions';
+} from '../../functions/validators';
 import { useNavigate } from 'react-router-dom';
-import { authProps } from '../types/types';
+import { registrationUser } from '../../api/api';
 
-const RegisterForm: React.FC = ({ authMode, word }: authProps) => {
-  type FieldType = {
-    username: string;
-    login: string;
-    password: string;
-    repeatPassword: string;
-    email: string;
-    phoneNumber?: string;
-    remember?: boolean;
-  };
+type authProps = {
+  isAuthMode: boolean;
+  word: string;
+};
 
+type FieldType = {
+  username: string;
+  login: string;
+  password: string;
+  repeatPassword: string;
+  email: string;
+  phoneNumber?: string;
+  remember?: boolean;
+};
+
+const RegisterForm: React.FC = ({ isAuthMode, word }: authProps) => {
   const navigate = useNavigate();
 
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<FieldType>();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
+  const onTransitionAuthorization = () => {
     navigate('/login');
   };
 
-  const handleCancel = () => {
+  const onCancelModal = () => {
     setIsModalOpen(false);
   };
 
-  const handleRegUser = async (userData: FieldType): Promise<void> => {
+  const onRegistrationUser = async (userData: FieldType): Promise<void> => {
     const { email, login, password, phoneNumber, username } = userData;
-    await registerUser({
+    await registrationUser({
       email,
       login,
       password,
@@ -49,18 +53,22 @@ const RegisterForm: React.FC = ({ authMode, word }: authProps) => {
     });
   };
 
-  const onFinish: FormProps<FieldType>['onFinish'] = async (userData: FieldType) => {
+  const onSubmitRegisterForm: FormProps<FieldType>['onSubmitRegisterForm'] = async (
+    userData: FieldType,
+  ) => {
     try {
-      await handleRegUser(userData);
-      message.success(`Successful ${word}`);
+      await onRegistrationUser(userData);
+      message.success(`Успешно ${word}`);
       showModal();
     } catch (e) {
-      message.error(e.response?.data || 'Registration Failed');
+      message.error(e.response?.data || 'Регистрация провалена');
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    message.error(`Failed:, ${errorInfo.message}`);
+  const onSubmitRegisterFormFailed: FormProps<FieldType>['onSubmitRegisterFormFailed'] = (
+    errorInfo,
+  ) => {
+    message.error(`Ошибка:, ${errorInfo.message}`);
   };
   return (
     <Form
@@ -68,15 +76,15 @@ const RegisterForm: React.FC = ({ authMode, word }: authProps) => {
       name="basic"
       layout="vertical"
       initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
+      onFinish={onSubmitRegisterForm}
+      onFinishFailed={onSubmitRegisterFormFailed}
       autoComplete="off"
     >
       <Form.Item<FieldType>
         label="User name"
         name="username"
         rules={[
-          { required: true, message: 'Please input your user name!' },
+          { required: true, message: 'Пожалуйста, введите имя пользователя' },
           {
             validator(_, value) {
               return validateUserName(value);
@@ -90,7 +98,7 @@ const RegisterForm: React.FC = ({ authMode, word }: authProps) => {
         label="Login"
         name="login"
         rules={[
-          { required: true, message: 'Please input your login!' },
+          { required: true, message: 'Пожалуйста введите ваш логин' },
           {
             validator(_, value) {
               return validateLogin(value);
@@ -105,9 +113,9 @@ const RegisterForm: React.FC = ({ authMode, word }: authProps) => {
         label="Password"
         name="password"
         rules={[
-          { required: true, message: 'Please input your password!' },
-          { min: 6, message: 'Minimum 6 characters' },
-          { max: 60, message: 'Maximum 60 characters' },
+          { required: true, message: 'Пожалуйста, введите пароль' },
+          { min: 6, message: 'Минимум 6 символов' },
+          { max: 60, message: 'Максимум 60 символов' },
         ]}
       >
         <Input.Password size="large" placeholder="*****************" />
@@ -117,13 +125,13 @@ const RegisterForm: React.FC = ({ authMode, word }: authProps) => {
         label="Repeat Password"
         name="repeatPassword"
         rules={[
-          { required: true, message: 'Please confirm your password!' },
+          { required: true, message: 'Пожалуйста, повторите ваш пароль' },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('password') === value) {
                 return Promise.resolve();
               }
-              return Promise.reject(new Error('The new password that you entered do not match!'));
+              return Promise.reject(new Error('Пароли не совпадают'));
             },
           }),
         ]}
@@ -134,7 +142,7 @@ const RegisterForm: React.FC = ({ authMode, word }: authProps) => {
         label="Email"
         name="email"
         rules={[
-          { required: true, message: 'Please input your email!' },
+          { required: true, message: 'Пожалуйста, введите вашу почту' },
           {
             validator(_, value) {
               return validateEmail(value);
@@ -159,7 +167,7 @@ const RegisterForm: React.FC = ({ authMode, word }: authProps) => {
         <Input size="large" placeholder="+71234567890" />
       </Form.Item>
 
-      {authMode ? (
+      {isAuthMode ? (
         <div className="under-auth-data">
           <Form.Item<FieldType>
             style={{ margin: 0 }}
@@ -169,7 +177,7 @@ const RegisterForm: React.FC = ({ authMode, word }: authProps) => {
           >
             <Checkbox style={{ color: 'rgba(161, 161, 161, 1)' }}>Remember me</Checkbox>
           </Form.Item>
-          <a href="#">Forgot Password?</a>
+          <a href="src/components/Authorization/RegisterForm#">Forgot Password?</a>
         </div>
       ) : (
         ''
@@ -177,15 +185,15 @@ const RegisterForm: React.FC = ({ authMode, word }: authProps) => {
 
       <Form.Item label={null}>
         <Button type="primary" htmlType="submit">
-          {authMode ? 'Login' : 'Register'}
+          {isAuthMode ? 'Login' : 'Register'}
         </Button>
       </Form.Item>
       <Modal
         title="loginLink"
         closable={{ 'aria-label': 'Custom Close Button' }}
         open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onOk={onTransitionAuthorization}
+        onCancel={onCancelModal}
       >
         перейти на страницу авторизации для входа в систему?
       </Modal>

@@ -1,40 +1,48 @@
 import React from 'react';
 import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
-import { token, validateLogin } from '../functions/functions';
-import { loginUser } from '../api/api';
-import { AuthData, authProps } from '../types/types';
+import { validateLogin } from '../../functions/validators';
+import { loginUser } from '../../api/api';
+import { token } from '../../functions/workWithTokens';
+import { AuthData } from '../../types/types';
 import { useNavigate } from 'react-router-dom';
-import { fetchProfile, isLogin } from '../store/reducers/ActionCreators';
-import { useAppDispatch } from '../hooks/redux';
+import { authorize, fetchProfile } from '../../store/reducers/ActionCreators';
+import { useAppDispatch } from '../../store/hooks';
 
-const LoginForm: React.FC = ({ authMode, word }: authProps) => {
-  type FieldType = {
-    login?: string;
-    password?: string;
-    remember?: boolean;
-  };
+type authProps = {
+  isAuthMode: boolean;
+  word: string;
+};
 
+type FieldType = {
+  login?: string;
+  password?: string;
+  remember?: boolean;
+};
+
+const LoginForm: React.FC = ({ isAuthMode, word }: authProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const [form] = Form.useForm();
 
-  const onFinish: FormProps<FieldType>['onFinish'] = async (authData: AuthData) => {
+  const onSubmitLoginForm: FormProps<FieldType>['onSubmitLoginForm'] = async (
+    authData: AuthData,
+  ) => {
     try {
       const response = await loginUser(authData);
       token.setAccessToken(response.accessToken);
       localStorage.setItem('refreshToken', response.refreshToken);
-      dispatch(isLogin());
+      dispatch(authorize());
       dispatch(fetchProfile());
-      message.success(`Successful ${word}`);
+      message.success(`Успешно ${word}`);
       navigate('/');
     } catch (e) {
-      message.error(e.response?.data || 'Login Failed');
+      message.error(e.response?.data || 'Авторизация провалена');
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    message.error(`Failed:, ${errorInfo.message}`);
+  const onSubmitLoginFormFailed: FormProps<FieldType>['onSubmitLoginFormFailed'] = (errorInfo) => {
+    message.error(`Ошибка:, ${errorInfo.message}`);
   };
   return (
     <Form
@@ -42,15 +50,15 @@ const LoginForm: React.FC = ({ authMode, word }: authProps) => {
       name="basic"
       layout="vertical"
       initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
+      onFinish={onSubmitLoginForm}
+      onFinishFailed={onSubmitLoginFormFailed}
       autoComplete="off"
     >
       <Form.Item<FieldType>
         label="Login"
         name="login"
         rules={[
-          { required: true, message: 'Please input your Login!' },
+          { required: true, message: 'Пожалуйста, введите ваш логин' },
           {
             validator(_, value) {
               return validateLogin(value);
@@ -66,9 +74,9 @@ const LoginForm: React.FC = ({ authMode, word }: authProps) => {
         label="Password"
         name="password"
         rules={[
-          { required: true, message: 'Please input your password!' },
-          { min: 6, message: 'Minimum 6 characters' },
-          { max: 60, message: 'Maximum 60 characters' },
+          { required: true, message: 'Пожалуйста, введите пароль' },
+          { min: 6, message: 'Минимум 6 символов' },
+          { max: 60, message: 'Максимум 60 символов' },
         ]}
       >
         <Input.Password size="large" placeholder="*****************" />
@@ -83,12 +91,12 @@ const LoginForm: React.FC = ({ authMode, word }: authProps) => {
         >
           <Checkbox style={{ color: 'rgba(161, 161, 161, 1)' }}>Remember me</Checkbox>
         </Form.Item>
-        {authMode ? <a href="#">Forgot Password?</a> : ''}
+        {isAuthMode ? <a href="src/components/Authorization/LoginForm#">Forgot Password?</a> : ''}
       </div>
 
       <Form.Item label={null}>
         <Button type="primary" htmlType="submit">
-          {authMode ? 'Login' : 'Register'}
+          {isAuthMode ? 'Login' : 'Register'}
         </Button>
       </Form.Item>
     </Form>

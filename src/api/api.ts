@@ -9,7 +9,7 @@ import {
   UserRegistration,
 } from '../types/types';
 import axios from 'axios';
-import { token } from '../functions/functions';
+import { logout, token } from '../functions/workWithTokens';
 
 const axiosInstance = axios.create({
   baseURL: 'https://easydev.club/api/v1/',
@@ -46,20 +46,24 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response?.status !== 401) return Promise.reject(error);
 
+    if (originalRequest._retry) return Promise.reject(error);
+    originalRequest._retry = true;
+
     if (!refreshPromise) {
       refreshPromise = sendRefreshToken().finally(() => {
         refreshPromise = null;
       });
     }
+
     try {
       const { accessToken, refreshToken } = await refreshPromise;
       token.setAccessToken(accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      const newAccessToken = (await refreshPromise).accessToken;
-      originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+      originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
       return axiosInstance(originalRequest);
     } catch (e) {
+      logout();
       return Promise.reject(e);
     }
   },
@@ -89,7 +93,7 @@ export async function createToDo(title: string): Promise<void> {
   await axiosInstance.post('todos', { isDone: false, title });
 }
 
-export async function registerUser(regData: UserRegistration): Promise<void> {
+export async function registrationUser(regData: UserRegistration): Promise<void> {
   await axiosInstance.post('auth/signup', regData);
 }
 

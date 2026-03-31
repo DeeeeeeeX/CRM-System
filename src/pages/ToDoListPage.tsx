@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import TabsToDos from '../components/TabsToDos';
-import ToDoList from '../components/ToDoList';
+import TabsToDos from '../components/Todos/TabsToDos';
+import ToDoList from '../components/Todos/ToDoList';
 import { getToDos } from '../api/api';
-import AddToDo from '../components/AddToDo';
+import AddToDo from '../components/Todos/AddToDo';
 import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
 import { Flex, message } from 'antd';
-import { useAppSelector } from '../hooks/redux';
+import { useAppSelector } from '../store/hooks';
 
 const ToDoListPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTabs>('all');
