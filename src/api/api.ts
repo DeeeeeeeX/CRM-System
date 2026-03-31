@@ -27,6 +27,57 @@ const axiosRefresh = axios.create({
   baseURL: 'https://easydev.club/api/v1/',
 });
 
+axiosRefresh.interceptors.request.use((config) => {
+  const accessToken = token.getAccessToken();
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
+});
+
+axiosInstance.interceptors.request.use((config) => {
+  const accessToken = token.getAccessToken();
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
+});
+
+let refreshPromise: null | Promise<Token> = null;
+
+const refreshInterceptor = async (error) => {
+  const originalRequest = error.config;
+  if (error.response?.status !== 401) return Promise.reject(error);
+
+  if (originalRequest._retry) return Promise.reject(error);
+  originalRequest._retry = true;
+
+  if (!refreshPromise) {
+    refreshPromise = sendRefreshToken().finally(() => {
+      refreshPromise = null;
+    });
+  }
+
+  try {
+    const { accessToken, refreshToken } = await refreshPromise;
+    token.setAccessToken(accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+
+    return axiosInstance(originalRequest);
+  } catch (e) {
+    logout();
+    return Promise.reject(e);
+  }
+};
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    return await refreshInterceptor(error);
+  },
+);
+
 export async function getUsers(params?: UserFilters): Promise<UserMetaResponse<User>> {
   return await axiosInstance.get('/admin/users', {
     params: {
@@ -73,57 +124,6 @@ export async function sendRefreshToken(): Promise<Token> {
   });
   return response.data;
 }
-
-axiosInstance.interceptors.request.use((config) => {
-  const accessToken = token.getAccessToken();
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
-  return config;
-});
-
-axiosRefresh.interceptors.request.use((config) => {
-  const accessToken = token.getAccessToken();
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
-  return config;
-});
-
-let refreshPromise: null | Promise<Token> = null;
-
-const refreshInterceptor = async (error) => {
-  const originalRequest = error.config;
-  if (error.response?.status !== 401) return Promise.reject(error);
-
-  if (originalRequest._retry) return Promise.reject(error);
-  originalRequest._retry = true;
-
-  if (!refreshPromise) {
-    refreshPromise = sendRefreshToken().finally(() => {
-      refreshPromise = null;
-    });
-  }
-
-  try {
-    const { accessToken, refreshToken } = await refreshPromise;
-    token.setAccessToken(accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-
-    return axiosInstance(originalRequest);
-  } catch (e) {
-    logout();
-    return Promise.reject(e);
-  }
-};
-
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    return await refreshInterceptor(error);
-  },
-);
 
 export async function getToDos(activeTab?: ActiveTabs): Promise<MetaResponse<Todo, TodoInfo>> {
   const response = await axiosInstance.get('todos', {
