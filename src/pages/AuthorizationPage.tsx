@@ -7,12 +7,12 @@ import LoginForm from '../components/Authorization/LoginForm';
 import RegisterForm from '../components/Authorization/RegisterForm';
 import { Flex } from 'antd';
 
-type authProps = {
+type AuthProps = {
   isAuthMode: boolean;
   word: string;
 };
 
-const AuthorizationPage: React.FC<authProps> = ({ isAuthMode, word }) => {
+const AuthorizationPage: React.FC<AuthProps> = ({ isAuthMode, word }) => {
   return (
     <>
       <Flex className="auth-back">

@@ -1,7 +1,7 @@
 import React from 'react';
-import '../css/ProfilePage.css';
+import './ProfilePage.css';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { isLogOut } from '../store/reducers/ActionCreators';
+import { unauthorize } from '../store/reducers/ActionCreators';
 import { Button, Card, Space, Spin } from 'antd';
 import { removeRefreshToken, token } from '../functions/workWithTokens';
 import { selectProfile } from '../store/selectors/authSelectors';
@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const logout = () => {
     removeRefreshToken();
     token.clearAccessToken();
-    dispatch(isLogOut());
+    dispatch(unauthorize());
   };
 
   if (profile.status === 'pending') {

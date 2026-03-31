@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { deleteToDo, editToDo } from '../../api/api.ts';
 import { Button, Checkbox, Form, FormProps, Input, List, message } from 'antd';
 import { Todo } from '../../types/types';
-import { validateToDoLength } from '../../functions/validators';
 
 interface Props {
   task: Todo;
@@ -77,11 +76,10 @@ const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
             name="task"
             style={{ width: 174, paddingLeft: 5, marginBottom: 0 }}
             rules={[
-              {
-                validator(_, value) {
-                  return validateToDoLength(value);
-                },
-              },
+              { required: true, message: 'Введите задачу' },
+              { min: 2, message: 'Минимум 2 символа' },
+              { max: 64, message: 'Максимум 64 символа' },
+              { whitespace: true, message: 'Не может быть пустым' },
             ]}
           >
             <Input />

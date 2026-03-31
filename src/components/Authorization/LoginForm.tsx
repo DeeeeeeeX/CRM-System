@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
-import { validateLogin } from '../../functions/validators';
 import { loginUser } from '../../api/api';
 import { token } from '../../functions/workWithTokens';
 import { AuthData } from '../../types/types';
@@ -8,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { authorize, fetchProfile } from '../../store/reducers/ActionCreators';
 import { useAppDispatch } from '../../store/hooks';
 
-type authProps = {
+type AuthProps = {
   isAuthMode: boolean;
   word: string;
 };
@@ -19,7 +18,7 @@ type FieldType = {
   remember?: boolean;
 };
 
-const LoginForm: React.FC = ({ isAuthMode, word }: authProps) => {
+const LoginForm: React.FC = ({ isAuthMode, word }: AuthProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -59,11 +58,9 @@ const LoginForm: React.FC = ({ isAuthMode, word }: authProps) => {
         name="login"
         rules={[
           { required: true, message: 'Пожалуйста, введите ваш логин' },
-          {
-            validator(_, value) {
-              return validateLogin(value);
-            },
-          },
+          { min: 2 },
+          { max: 60 },
+          { pattern: /^[a-z]+$/i, message: 'Только английские буквы' },
         ]}
       >
         <Input size="large" placeholder="login" />

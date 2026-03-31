@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Form, FormProps, Input, message, Modal } from 'antd';
-import {
-  validateEmail,
-  validateLogin,
-  validateNumberPhone,
-  validateUserName,
-} from '../../functions/validators';
 import { useNavigate } from 'react-router-dom';
 import { registrationUser } from '../../api/api';
 
-type authProps = {
+type AuthProps = {
   isAuthMode: boolean;
   word: string;
 };
@@ -24,7 +18,7 @@ type FieldType = {
   remember?: boolean;
 };
 
-const RegisterForm: React.FC = ({ isAuthMode, word }: authProps) => {
+const RegisterForm: React.FC = ({ isAuthMode, word }: AuthProps) => {
   const navigate = useNavigate();
 
   const [form] = Form.useForm<FieldType>();
@@ -85,11 +79,9 @@ const RegisterForm: React.FC = ({ isAuthMode, word }: authProps) => {
         name="username"
         rules={[
           { required: true, message: 'Пожалуйста, введите имя пользователя' },
-          {
-            validator(_, value) {
-              return validateUserName(value);
-            },
-          },
+          { min: 1 },
+          { max: 60 },
+          { pattern: /^[a-zа-яё]+$/i, message: 'Только буквы' },
         ]}
       >
         <Input size="large" placeholder="User name" />
@@ -98,12 +90,10 @@ const RegisterForm: React.FC = ({ isAuthMode, word }: authProps) => {
         label="Login"
         name="login"
         rules={[
-          { required: true, message: 'Пожалуйста введите ваш логин' },
-          {
-            validator(_, value) {
-              return validateLogin(value);
-            },
-          },
+          { required: true, message: 'Пожалуйста, введите ваш логин' },
+          { min: 2 },
+          { max: 60 },
+          { pattern: /^[a-z]+$/i, message: 'Только английские буквы' },
         ]}
       >
         <Input size="large" placeholder="User name" />
@@ -143,11 +133,7 @@ const RegisterForm: React.FC = ({ isAuthMode, word }: authProps) => {
         name="email"
         rules={[
           { required: true, message: 'Пожалуйста, введите вашу почту' },
-          {
-            validator(_, value) {
-              return validateEmail(value);
-            },
-          },
+          { type: 'email', message: 'Не верный email' },
         ]}
       >
         <Input size="large" placeholder="mail@abc.com" />
@@ -157,11 +143,7 @@ const RegisterForm: React.FC = ({ isAuthMode, word }: authProps) => {
         name="phoneNumber"
         type="tel"
         rules={[
-          {
-            validator(_, value) {
-              return validateNumberPhone(value);
-            },
-          },
+          { pattern: /^\+\d{7,15}$/, message: 'Номер телефона должен быть в формате +123...' },
         ]}
       >
         <Input size="large" placeholder="+71234567890" />

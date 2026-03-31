@@ -1,7 +1,6 @@
 import { createToDo } from '../../api/api.ts';
 import { Button, Form, FormProps, Input, message } from 'antd';
 import React, { memo } from 'react';
-import { validateToDoLength } from '../../functions/validators';
 
 interface Props {
   onUpdate: () => Promise<void>;
@@ -39,11 +38,10 @@ const AddToDo: React.FC<Props> = ({ onUpdate }) => {
       <Form.Item<FieldType>
         name="task"
         rules={[
-          {
-            validator(_, value) {
-              return validateToDoLength(value);
-            },
-          },
+          { required: true, message: 'Введите задачу' },
+          { min: 2, message: 'Минимум 2 символа' },
+          { max: 64, message: 'Максимум 64 символа' },
+          { whitespace: true, message: 'Не может быть пустым' },
         ]}
       >
         <Input placeholder="Task To Be Done" />
