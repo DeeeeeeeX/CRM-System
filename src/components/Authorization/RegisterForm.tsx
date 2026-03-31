@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, Form, FormProps, Input, message, Modal } from 'antd';
+import { Button, Form, FormProps, Input, message, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { registrationUser } from '../../api/api';
-
-type AuthProps = {
-  isAuthMode: boolean;
-  word: string;
-};
 
 type FieldType = {
   username: string;
@@ -18,7 +13,7 @@ type FieldType = {
   remember?: boolean;
 };
 
-const RegisterForm: React.FC = ({ isAuthMode, word }: AuthProps) => {
+const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
 
   const [form] = Form.useForm<FieldType>();
@@ -47,21 +42,17 @@ const RegisterForm: React.FC = ({ isAuthMode, word }: AuthProps) => {
     });
   };
 
-  const onSubmitRegisterForm: FormProps<FieldType>['onSubmitRegisterForm'] = async (
-    userData: FieldType,
-  ) => {
+  const onSubmitRegisterForm: FormProps<FieldType>['onFinish'] = async (userData: FieldType) => {
     try {
       await onRegistrationUser(userData);
-      message.success(`Успешно ${word}`);
+      message.success(`Успешная регистрация`);
       showModal();
     } catch (e) {
       message.error(e.response?.data || 'Регистрация провалена');
     }
   };
 
-  const onSubmitRegisterFormFailed: FormProps<FieldType>['onSubmitRegisterFormFailed'] = (
-    errorInfo,
-  ) => {
+  const onSubmitRegisterFormFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
     message.error(`Ошибка:, ${errorInfo.message}`);
   };
   return (
@@ -149,25 +140,9 @@ const RegisterForm: React.FC = ({ isAuthMode, word }: AuthProps) => {
         <Input size="large" placeholder="+71234567890" />
       </Form.Item>
 
-      {isAuthMode ? (
-        <div className="under-auth-data">
-          <Form.Item<FieldType>
-            style={{ margin: 0 }}
-            name="remember"
-            valuePropName="checked"
-            label={null}
-          >
-            <Checkbox style={{ color: 'rgba(161, 161, 161, 1)' }}>Remember me</Checkbox>
-          </Form.Item>
-          <a href="src/components/Authorization/RegisterForm#">Forgot Password?</a>
-        </div>
-      ) : (
-        ''
-      )}
-
       <Form.Item label={null}>
         <Button type="primary" htmlType="submit">
-          {isAuthMode ? 'Login' : 'Register'}
+          Register
         </Button>
       </Form.Item>
       <Modal

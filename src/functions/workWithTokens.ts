@@ -5,23 +5,23 @@ export const removeRefreshToken = (): void => {
   localStorage.removeItem('refreshToken');
 };
 
-const createTokenStorage = () => {
-  let accessToken: string | null = null;
+class TokenStorage {
+  private accessToken: string | null = null;
 
-  return {
-    getAccessToken() {
-      return accessToken;
-    },
-    setAccessToken(token: string | null) {
-      accessToken = token;
-    },
-    clearAccessToken() {
-      accessToken = null;
-    },
-  };
-};
+  getAccessToken(): string | null {
+    return this.accessToken;
+  }
 
-export const token = createTokenStorage();
+  setAccessToken(token: string | null): void {
+    this.accessToken = token;
+  }
+
+  clearAccessToken(): void {
+    this.accessToken = null;
+  }
+}
+
+export const token = new TokenStorage();
 
 export const logout = () => {
   localStorage.removeItem('refreshToken');

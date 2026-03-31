@@ -3,13 +3,14 @@ import { Route, Routes } from 'react-router-dom';
 import ToDoListPage from './pages/ToDoListPage';
 import React, { useEffect } from 'react';
 import ProfilePage from './pages/ProfilePage';
-import AuthorizationPage from './pages/AuthorizationPage';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import GeneralLayout from './components/GeneralLayout';
 import AuthProtection from './components/Authorization/AuthProtection';
 import { fetchProfile, refreshAuth, unauthorize } from './store/reducers/ActionCreators';
 import { selectAuth } from './store/selectors/authSelectors';
 import { message, Spin } from 'antd';
+import LoginPage from './pages/LoginPage';
+import RegistrationPage from './pages/RegistrationPage';
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -28,7 +29,7 @@ const App: React.FC = () => {
     init();
   }, [dispatch]);
 
-  const { isLoginChecked, isAuth } = useAppSelector(selectAuth);
+  const { isLoginChecked } = useAppSelector(selectAuth);
 
   if (!isLoginChecked) {
     return <Spin />;
@@ -36,11 +37,8 @@ const App: React.FC = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={<AuthorizationPage isAuthMode={isAuth.login} word="login" />} />
-      <Route
-        path="/register"
-        element={<AuthorizationPage isAuthMode={isAuth.register} word="register" />}
-      />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegistrationPage />} />
       <Route element={<AuthProtection />}>
         <Route element={<GeneralLayout />}>
           <Route path="/" element={<ToDoListPage />} />

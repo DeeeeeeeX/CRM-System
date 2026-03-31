@@ -24,7 +24,7 @@ const GeneralLayout: React.FC = () => {
   }
 
   const items: MenuItem[] = [
-    getItem(<Link to="/">Список задач,</Link>, '/'),
+    getItem(<Link to="/">Список задач</Link>, '/'),
     getItem(<Link to="/profile">Профиль</Link>, '/profile'),
   ];
 

@@ -7,18 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { authorize, fetchProfile } from '../../store/reducers/ActionCreators';
 import { useAppDispatch } from '../../store/hooks';
 
-type AuthProps = {
-  isAuthMode: boolean;
-  word: string;
-};
-
 type FieldType = {
   login?: string;
   password?: string;
   remember?: boolean;
 };
 
-const LoginForm: React.FC = ({ isAuthMode, word }: AuthProps) => {
+const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -33,7 +28,7 @@ const LoginForm: React.FC = ({ isAuthMode, word }: AuthProps) => {
       localStorage.setItem('refreshToken', response.refreshToken);
       dispatch(authorize());
       dispatch(fetchProfile());
-      message.success(`Успешно ${word}`);
+      message.success(`Успешная авторизация`);
       navigate('/');
     } catch (e) {
       message.error(e.response?.data || 'Авторизация провалена');
@@ -88,12 +83,12 @@ const LoginForm: React.FC = ({ isAuthMode, word }: AuthProps) => {
         >
           <Checkbox style={{ color: 'rgba(161, 161, 161, 1)' }}>Remember me</Checkbox>
         </Form.Item>
-        {isAuthMode ? <a href="src/components/Authorization/LoginForm#">Forgot Password?</a> : ''}
+        <a href="src/components/Authorization/LoginForm#">Forgot Password?</a>
       </div>
 
       <Form.Item label={null}>
         <Button type="primary" htmlType="submit">
-          {isAuthMode ? 'Login' : 'Register'}
+          Login
         </Button>
       </Form.Item>
     </Form>
