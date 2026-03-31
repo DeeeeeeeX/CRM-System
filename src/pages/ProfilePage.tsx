@@ -7,9 +7,8 @@ import { removeRefreshToken, token } from '../functions/workWithTokens';
 import { selectProfile } from '../store/selectors/authSelectors';
 
 const ProfilePage = () => {
-  const dispatch = useAppDispatch();
-
   const profile = useAppSelector(selectProfile);
+  const dispatch = useAppDispatch();
 
   const logout = () => {
     removeRefreshToken();

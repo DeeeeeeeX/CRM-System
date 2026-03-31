@@ -5,7 +5,6 @@ import { getToDos } from '../api/api';
 import AddToDo from '../components/Todos/AddToDo';
 import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
 import { Flex, message } from 'antd';
-import { useAppSelector } from '../store/hooks';
 
 const ToDoListPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTabs>('all');
@@ -19,8 +18,6 @@ const ToDoListPage: React.FC = () => {
     meta: { totalAmount: 0 },
   });
 
-  const { isLoginChecked } = useAppSelector((state) => state.authReducer);
-
   const updateToDos = useCallback(async (): Promise<void> => {
     try {
       let dataTask = await getToDos(activeTab);
@@ -31,13 +28,12 @@ const ToDoListPage: React.FC = () => {
   }, [activeTab]);
 
   useEffect(() => {
-    if (!isLoginChecked) return;
     updateToDos();
     const fetchInterval = setInterval(() => {
       updateToDos();
     }, 5000);
     return () => clearInterval(fetchInterval);
-  }, [updateToDos, isLoginChecked]);
+  }, [updateToDos]);
 
   return (
     <Flex vertical align="center" gap="large" style={{ paddingTop: 50 }}>
