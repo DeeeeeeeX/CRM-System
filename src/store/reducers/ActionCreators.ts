@@ -2,7 +2,7 @@ import { AppDispatch } from '../store';
 import { editUser, getProfile, getUserById, getUsers, sendRefreshToken } from '../../api/api';
 import { authSlice } from './AuthSlice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { token } from '../../functions/functions';
+import { token } from '../../functions/workWithTokens';
 import { UserFilters, UserRequest } from '../../types/types';
 
 export const fetchProfile = createAsyncThunk(
@@ -17,11 +17,11 @@ export const fetchProfile = createAsyncThunk(
   },
 );
 
-export const isLogin = () => (dispatch: AppDispatch) => {
-  dispatch(authSlice.actions.authorization(true));
+export const authorize = () => (dispatch: AppDispatch) => {
+  dispatch(authSlice.actions.authorize(true));
 };
-export const isLogOut = () => (dispatch: AppDispatch) => {
-  dispatch(authSlice.actions.authorization(false));
+export const unauthorize = () => (dispatch: AppDispatch) => {
+  dispatch(authSlice.actions.authorize(false));
 };
 
 export const refreshAuth = createAsyncThunk('auth/refreshAuth', async (_, { rejectWithValue }) => {
@@ -37,7 +37,6 @@ export const refreshAuth = createAsyncThunk('auth/refreshAuth', async (_, { reje
     return rejectWithValue(e?.message || 'Error refreshing token');
   }
 });
-
 export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
   async (params: UserFilters = {}, { rejectWithValue }) => {

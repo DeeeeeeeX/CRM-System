@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { deleteToDo, editToDo } from '../api/api.ts';
+import { deleteToDo, editToDo } from '../../api/api.ts';
 import { Button, Checkbox, Form, FormProps, Input, List, message } from 'antd';
-import { validating } from '../functions/functions';
-import { FieldType, Todo } from '../types/types';
+import { Todo } from '../../types/types';
 
 interface Props {
   task: Todo;
-  updateToDos: () => void;
+  updateToDos: () => Promise<void>;
+}
+
+interface FieldType {
+  task: string;
 }
 
 const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  const onBackEditing = () => {
+  const cancelEditing = () => {
     setIsEditing(false);
   };
 
@@ -35,7 +38,9 @@ const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
     }
   };
 
-  const onFinish: FormProps<FieldType>['onFinish'] = async (modifiedTodoTitle: FieldType) => {
+  const onSubmitEditTodo: FormProps<FieldType>['onFinish'] = async (
+    modifiedTodoTitle: FieldType,
+  ) => {
     try {
       await editToDo(task.id, { title: modifiedTodoTitle.task });
       setIsEditing(false);
@@ -45,7 +50,7 @@ const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+  const onSubmitEditTodoFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
     message.error(`Failed:, ${errorInfo.message}`);
   };
 
@@ -61,20 +66,20 @@ const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
         <Form
           form={form}
           name="edit"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
+          onFinish={onSubmitEditTodo}
+          onFinishFailed={onSubmitEditTodoFailed}
           autoComplete="off"
+          initialValues={{ task: task.title }}
           className="editing-form"
         >
           <Form.Item<FieldType>
             name="task"
             style={{ width: 174, paddingLeft: 5, marginBottom: 0 }}
             rules={[
-              {
-                validator(_, value) {
-                  return validating(value);
-                },
-              },
+              { required: true, message: 'Введите задачу' },
+              { min: 2, message: 'Минимум 2 символа' },
+              { max: 64, message: 'Максимум 64 символа' },
+              { whitespace: true, message: 'Не может быть пустым' },
             ]}
           >
             <Input />
@@ -86,7 +91,7 @@ const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
               </Button>
             </Form.Item>
 
-            <Button type="primary" className="button-back" onClick={onBackEditing}>
+            <Button type="primary" className="button-back" onClick={cancelEditing}>
               <div className="back-svg"></div>
             </Button>
           </>

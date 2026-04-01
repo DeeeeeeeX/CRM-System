@@ -76,13 +76,13 @@ appearance: none;
 .checkbox input {
     width: 20px;
     height: 20px;
-    background-image: url("../assets/checkbox-off.svg");
+    background-image: url("../../assets/checkbox-off.svg");
     background-size: 20px 20px;
 }
 .checkbox input:checked {
     width: 20px;
     height: 20px;
-    background-image: url("../assets/checkbox-on.svg");
+    background-image: url("../../assets/checkbox-on.svg");
     background-size: 20px 20px;
     background-color: #5196f5;
     border-radius: 10px;
@@ -92,28 +92,28 @@ appearance: none;
     padding-left: 6px;
     width: 30px;
     height: 30px;
-    background: url("../assets/edit.svg") no-repeat center center;
+    background: url("../../assets/edit.svg") no-repeat center center;
     background-size: 22px 22px;
 }
 .delete-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
-    background: url("../assets/trash.svg") no-repeat center center;
+    background: url("../../assets/trash.svg") no-repeat center center;
     background-size: 22px 22px;
 }
 .save-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
-    background: url("../assets/ok.svg") no-repeat center center;
+    background: url("../../assets/ok.svg") no-repeat center center;
     background-size: 22px 22px;
 }
 .back-svg {
     padding-left: 6px;
     width: 30px;
     height: 30px;
-    background: url("../assets/back.svg") no-repeat center center;
+    background: url("../../assets/back.svg") no-repeat center center;
     background-size: 22px 22px;
 }
 

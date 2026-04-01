@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import '../css/ProfilePage.css';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import './ProfilePage.css';
 import { Button, Card, Flex, Form, Input, message, Space } from 'antd';
 import { selectUsersData } from '../store/selectors/usersSelectors';
 import { useNavigate, useParams } from 'react-router-dom';
 import { editUserById, fetchUserById } from '../store/reducers/ActionCreators';
 import { UserRequest } from '../types/types';
-import { validateEmail, validateNumberPhone, validateUserName } from '../functions/functions';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 
 interface IsEditing {
   username: boolean;
@@ -78,11 +77,10 @@ const EditUserPage: React.FC = () => {
             <Form.Item
               name="username"
               rules={[
-                {
-                  validator(_, value) {
-                    return validateUserName(value);
-                  },
-                },
+                { required: true, message: 'Пожалуйста, введите имя пользователя' },
+                { min: 1 },
+                { max: 60 },
+                { pattern: /^[a-zа-яё]+$/i, message: 'Только буквы' },
               ]}
             >
               <Flex gap={10}>
@@ -102,11 +100,8 @@ const EditUserPage: React.FC = () => {
             <Form.Item
               name="email"
               rules={[
-                {
-                  validator(_, value) {
-                    return validateEmail(value);
-                  },
-                },
+                { required: true, message: 'Пожалуйста, введите вашу почту' },
+                { type: 'email', message: 'Не верный email' },
               ]}
             >
               <Flex gap={10}>
@@ -127,9 +122,8 @@ const EditUserPage: React.FC = () => {
               name="phoneNumber"
               rules={[
                 {
-                  validator(_, value) {
-                    return validateNumberPhone(value);
-                  },
+                  pattern: /^\+\d{7,15}$/,
+                  message: 'Номер телефона должен быть в формате +123...',
                 },
               ]}
             >

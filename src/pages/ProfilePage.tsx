@@ -1,19 +1,20 @@
-import React, { useEffect } from 'react';
-import '../css/ProfilePage.css';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import React from 'react';
+import './ProfilePage.css';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { unauthorize } from '../store/reducers/ActionCreators';
 import { Button, Card, Space, Spin } from 'antd';
+import { removeRefreshToken, token } from '../functions/workWithTokens';
 import { selectProfile } from '../store/selectors/authSelectors';
-import { logout } from '../functions/functions';
-import { fetchProfile } from '../store/reducers/ActionCreators';
 
 const ProfilePage = () => {
+  const profile = useAppSelector(selectProfile);
   const dispatch = useAppDispatch();
 
-  const profile = useAppSelector(selectProfile);
-
-  useEffect(() => {
-    dispatch(fetchProfile());
-  }, []);
+  const logout = () => {
+    removeRefreshToken();
+    token.clearAccessToken();
+    dispatch(unauthorize());
+  };
 
   if (profile.status === 'pending') {
     return <Spin />;

@@ -7,10 +7,82 @@ body {
     font-style: normal;
 }
 
+.wrapper {
+    width: 400px;
+    height: 100%;
+    margin: 50px auto;
+    border-radius: 10px;
+    max-width: 1400px;
+}
+
 .tasks {
     display: flex;
     justify-content: center;
     align-items: start;
+}
+
+.app-wrapper {
+    display: flex;
+}
+
+.menu {
+    background-color: rgba(249, 249, 249, 1);
+    border: 1px;
+    border-right: 1px solid rgba(228, 228, 228, 1);
+    width: 248px;
+    height: 944px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.pages {
+    background-color: #fff;
+    margin-top: 120px;
+    display: flex;
+    width: 800px;
+}
+
+.menu-header {
+    width: 248px;
+    height: 72px;
+    box-sizing: border-box;
+    padding: 20px 28px;
+    border-bottom: 1px solid rgba(228, 228, 228, 1);
+}
+
+
+.menu-header-item img {
+    display: block;
+    width: 28px;
+    height: 24px;
+}
+
+.menu-header-item span {
+    display: flex;
+    align-items: center;
+    color: rgba(0, 0, 0, 1);
+    margin: 0 0 0 12px;
+    width: 75px;
+    height: 28px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 140%;
+}
+
+.menu-header-item {
+    display: flex;
+    width: 115px;
+    height: 28px;
+}
+
+.menu-navigation {
+    width: 248px;
+    height: 542px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 150%;
+    color: rgba(114, 114, 114, 1);
 }
 
 a {
@@ -24,6 +96,63 @@ a:visited {
 
 a:hover {
     color: rgb(26, 26, 26);;
+}
+
+.menu-main {
+    box-sizing: border-box;
+    height: 236px;
+    margin: 20px 0;
+    border-bottom: 1px solid rgba(228, 228, 228, 1);
+}
+
+.menu-main ul {
+    margin: 0;
+}
+
+.menu-main li {
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    width: 216px;
+    height: 36px;
+}
+
+.menu-main h3 {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 140%;
+    margin: 0 0 9px 24px;
+}
+
+.menu-database {
+    height: 146px;
+}
+
+.menu-settings {
+    height: 80px;
+    padding-bottom: 360px;
+}
+
+.menu-profile {
+    margin-top: 258px;
+    box-sizing: border-box;
+    height: 72px;
+    width: 248px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-profile a {
+    margin: 15px;
+    font-size: 16px;
+    line-height: 150%;
+    color: rgba(0, 0, 0, 1);
+}
+
+.link-active a {
+    color: black;
 }
 
 .img-back {
@@ -71,11 +200,11 @@ a:hover {
 
 .login-layer {
     margin-left: 1109px;
-    width: 811px;
-    height: 1080px;
 }
 
 .login-img {
+    width: 72px;
+    height: 72px;
     margin: 170px 0 0 201px;
 }
 

@@ -3,7 +3,7 @@ import { Layout, Menu, MenuProps } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { Content, Header } from 'antd/es/layout/layout';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { useAppSelector } from '../hooks/redux';
+import { useAppSelector } from '../store/hooks';
 import { selectProfile } from '../store/selectors/authSelectors';
 
 const GeneralLayout: React.FC = () => {

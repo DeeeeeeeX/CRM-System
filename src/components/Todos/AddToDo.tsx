@@ -1,15 +1,19 @@
-import { createToDo } from '../api/api.ts';
-import { FieldType } from '../types/types';
+import { createToDo } from '../../api/api.ts';
 import { Button, Form, FormProps, Input, message } from 'antd';
 import React, { memo } from 'react';
-import { validating } from '../functions/functions';
 
 interface Props {
-  onUpdate: () => void;
+  onUpdate: () => Promise<void>;
+}
+
+interface FieldType {
+  task: string;
 }
 
 const AddToDo: React.FC<Props> = ({ onUpdate }) => {
-  const onFinish: FormProps<FieldType>['onFinish'] = async (values: FieldType): Promise<void> => {
+  const onSubmitTodo: FormProps<FieldType>['onFinish'] = async (
+    values: FieldType,
+  ): Promise<void> => {
     try {
       await createToDo(values.task);
       await onUpdate();
@@ -18,15 +22,15 @@ const AddToDo: React.FC<Props> = ({ onUpdate }) => {
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+  const onSubmitTodoFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
     message.error(`Failed:, ${errorInfo.message}`);
   };
 
   return (
     <Form
       name="basic"
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
+      onFinish={onSubmitTodo}
+      onFinishFailed={onSubmitTodoFailed}
       autoComplete="off"
       validateTrigger={['submit']}
       layout="inline"
@@ -34,11 +38,10 @@ const AddToDo: React.FC<Props> = ({ onUpdate }) => {
       <Form.Item<FieldType>
         name="task"
         rules={[
-          {
-            validator(_, value) {
-              return validating(value);
-            },
-          },
+          { required: true, message: 'Введите задачу' },
+          { min: 2, message: 'Минимум 2 символа' },
+          { max: 64, message: 'Максимум 64 символа' },
+          { whitespace: true, message: 'Не может быть пустым' },
         ]}
       >
         <Input placeholder="Task To Be Done" />

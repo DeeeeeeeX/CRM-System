@@ -14,7 +14,7 @@ import {
   UserRolesRequest,
 } from '../types/types';
 import axios from 'axios';
-import { logout, token } from '../functions/functions';
+import { logout, token } from '../functions/workWithTokens';
 
 const axiosInstance = axios.create({
   baseURL: 'https://easydev.club/api/v1/',

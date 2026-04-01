@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Card, Col, Dropdown, Flex, Input, List, MenuProps, Modal, Row, Space } from 'antd';
 import { Roles, User } from '../types/types';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { selectUsersData } from '../store/selectors/usersSelectors';
 import { fetchUsers } from '../store/reducers/ActionCreators';
 import { useNavigate } from 'react-router-dom';
