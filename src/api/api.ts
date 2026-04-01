@@ -11,6 +11,7 @@ import {
   UserMetaResponse,
   UserRegistration,
   UserRequest,
+  UserRolesRequest,
 } from '../types/types';
 import axios from 'axios';
 import { logout, token } from '../functions/functions';
@@ -107,7 +108,10 @@ export async function deleteUserById(id: number): Promise<UserMetaResponse<User>
   return await axiosInstance.delete(`/admin/users/${id}`);
 }
 
-export async function changeRightsUserById(id: number, userData): Promise<UserMetaResponse<User>> {
+export async function changeRightsUserById(
+  id: number,
+  userData: UserRolesRequest,
+): Promise<UserMetaResponse<User>> {
   return await axiosInstance.post(`/admin/users/${id}/rights`, userData);
 }
 
@@ -149,7 +153,7 @@ export async function createToDo(title: string): Promise<void> {
   await axiosInstance.post('todos', { isDone: false, title });
 }
 
-export async function registerUser(regData: UserRegistration): Promise<void> {
+export async function registrationUser(regData: UserRegistration): Promise<void> {
   await axiosInstance.post('auth/signup', regData);
 }
 

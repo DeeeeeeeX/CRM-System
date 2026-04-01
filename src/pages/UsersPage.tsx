@@ -11,7 +11,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Button, Card, Col, Dropdown, Flex, Input, List, MenuProps, Modal, Row, Space } from 'antd';
-import { User } from '../types/types';
+import { Roles, User } from '../types/types';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { selectUsersData } from '../store/selectors/usersSelectors';
 import { fetchUsers } from '../store/reducers/ActionCreators';
@@ -145,12 +145,12 @@ const UsersPage = () => {
     switch (action) {
       case 'admin':
         await changeRightsUserById(selectedUser.id, {
-          roles: ['USER', 'ADMIN'],
+          roles: [Roles.USER, Roles.ADMIN],
         });
         break;
       case 'unAdmin':
         await changeRightsUserById(selectedUser.id, {
-          roles: ['USER'],
+          roles: [Roles.USER],
         });
         break;
       case 'delete':
