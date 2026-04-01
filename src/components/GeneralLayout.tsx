@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Layout, Menu, MenuProps } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { Content, Header } from 'antd/es/layout/layout';
@@ -27,15 +27,21 @@ const GeneralLayout: React.FC = () => {
 
   const profile = useAppSelector(selectProfile);
 
-  const items: MenuItem[] = [
-    getItem('Список задач', '/', <Link to="/" />),
-    getItem('профиль', '/profile', <Link to="/profile" />),
-  ];
-  const adminItems: MenuItem[] = [
-    getItem('Список задач', '/', <Link to="/" />),
-    getItem('профиль', '/profile', <Link to="/profile" />),
-    getItem('Пользователи', '/users', <Link to="/users" />),
-  ];
+  const items = React.useMemo<MenuItem[]>(
+    () => [
+      getItem(<Link to="/">Список задач</Link>, '/'),
+      getItem(<Link to="/profile">профиль</Link>, '/profile'),
+    ],
+    [],
+  );
+  const adminItems = React.useMemo<MenuItem[]>(
+    () => [
+      getItem(<Link to="/">Список задач</Link>, '/'),
+      getItem(<Link to="/profile">профиль</Link>, '/profile'),
+      getItem(<Link to="/users">Пользователи</Link>, '/users'),
+    ],
+    [],
+  );
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -57,4 +63,4 @@ const GeneralLayout: React.FC = () => {
   );
 };
 
-export default GeneralLayout;
+export default memo(GeneralLayout);
