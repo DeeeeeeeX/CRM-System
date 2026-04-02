@@ -143,6 +143,8 @@ const UsersPage = () => {
   };
 
   const handleOk = async () => {
+    if (!selectedUser) return;
+
     switch (action) {
       case 'admin':
         await changeRightsUserById(selectedUser.id, {
