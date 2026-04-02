@@ -1,9 +1,10 @@
-import { AppDispatch } from '../store';
+import { AppDispatch, RootState } from '../store';
 import { editUser, getProfile, getUserById, getUsers, sendRefreshToken } from '../../api/api';
 import { authSlice } from './AuthSlice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { token } from '../../functions/workWithTokens';
+import { clearTokens, token } from '../../functions/workWithTokens';
 import { UserFilters, UserRequest } from '../../types/types';
+import { usersSlice } from './UsersSlice';
 
 export const fetchProfile = createAsyncThunk(
   'auth/fetchProfile',
@@ -24,27 +25,37 @@ export const unauthorize = () => (dispatch: AppDispatch) => {
   dispatch(authSlice.actions.authorize(false));
 };
 
-export const refreshAuth = createAsyncThunk('auth/refreshAuth', async (_, { rejectWithValue }) => {
-  const refreshTokenValue = localStorage.getItem('refreshToken');
-  if (!refreshTokenValue) return rejectWithValue('Refresh token missing');
+export const refreshAuth = createAsyncThunk(
+  'auth/refreshAuth',
+  async (_, { rejectWithValue, dispatch }) => {
+    const refreshTokenValue = localStorage.getItem('refreshToken');
+    if (!refreshTokenValue) return rejectWithValue('Refresh token missing');
 
-  try {
-    const { accessToken, refreshToken } = await sendRefreshToken();
-    localStorage.setItem('refreshToken', refreshToken);
-    token.setAccessToken(accessToken);
-    return accessToken;
-  } catch (e) {
-    return rejectWithValue(e?.message || 'Error refreshing token');
-  }
-});
+    try {
+      const { accessToken, refreshToken } = await sendRefreshToken();
+      localStorage.setItem('refreshToken', refreshToken);
+      token.setAccessToken(accessToken);
+      return accessToken;
+    } catch (e) {
+      clearTokens();
+      dispatch(authSlice.actions.authorize(false));
+      return rejectWithValue(e?.message || 'Error refreshing token');
+    }
+  },
+);
+
 export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
-  async (params: UserFilters = {}, { rejectWithValue }) => {
-    try {
-      const response = await getUsers(params);
-      return response.data;
-    } catch (e) {
-      return rejectWithValue(e.message);
+  async (_, { rejectWithValue, getState }) => {
+    {
+      try {
+        const state = getState() as RootState;
+        const filters = state.usersReducer.filters;
+        const response = await getUsers(filters);
+        return response.data;
+      } catch (e) {
+        return rejectWithValue(e.message);
+      }
     }
   },
 );
@@ -77,3 +88,8 @@ export const editUserById = createAsyncThunk(
     }
   },
 );
+
+export const setFiltersAndFetchUsers = (filters: UserFilters) => (dispatch: AppDispatch) => {
+  dispatch(usersSlice.actions.setFilters(filters));
+  dispatch(fetchUsers());
+};

@@ -1,5 +1,5 @@
 import { initAsyncParticle } from './utils';
-import { Profile, User } from '../types/types';
+import { Profile, User, UserFilters } from '../types/types';
 
 export const initialAuthState = {
   isAuth: { register: false, login: true },
@@ -11,4 +11,12 @@ export const initialAuthState = {
 
 export const initialUsersState = {
   allUsers: initAsyncParticle<User[]>(),
+  filters: {
+    search: undefined,
+    sortBy: undefined,
+    sortOrder: undefined,
+    isBlocked: undefined,
+    limit: 20,
+    page: 1,
+  } as UserFilters,
 };

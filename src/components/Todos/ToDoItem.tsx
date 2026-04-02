@@ -45,7 +45,7 @@ const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
       await editToDo(task.id, { title: modifiedTodoTitle.task });
       setIsEditing(false);
       await updateToDos();
-    } catch (error) {
+    } catch (error: unknown) {
       message.error(`Не удалось отправить запрос ${error}`);
     }
   };
@@ -56,7 +56,7 @@ const ToDoItem: React.FC<Props> = ({ task, updateToDos }) => {
 
   useEffect(() => {
     form.setFieldsValue({ task: task.title });
-  }, [isEditing]);
+  }, [isEditing, task.title]);
 
   return (
     <List.Item>

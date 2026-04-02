@@ -14,7 +14,7 @@ import {
   UserRolesRequest,
 } from '../types/types';
 import axios from 'axios';
-import { logout, token } from '../functions/workWithTokens';
+import { token } from '../functions/workWithTokens';
 
 const axiosInstance = axios.create({
   baseURL: 'https://easydev.club/api/v1/',
@@ -67,7 +67,6 @@ const refreshInterceptor = async (error) => {
 
     return axiosInstance(originalRequest);
   } catch (e) {
-    logout();
     return Promise.reject(e);
   }
 };

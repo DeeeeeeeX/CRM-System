@@ -1,6 +1,3 @@
-import { store } from '../store/store';
-import { authSlice } from '../store/reducers/AuthSlice';
-
 export const removeRefreshToken = (): void => {
   localStorage.removeItem('refreshToken');
 };
@@ -23,8 +20,7 @@ class TokenStorage {
 
 export const token = new TokenStorage();
 
-export const logout = () => {
+export const clearTokens = () => {
   localStorage.removeItem('refreshToken');
   token.clearAccessToken();
-  store.dispatch(authSlice.actions.authorize(false));
 };

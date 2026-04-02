@@ -83,11 +83,6 @@ export interface AuthConfig {
 
 export type Role = 'ADMIN' | 'USER' | 'MODERATOR';
 
-export type authProps = {
-  authMode: boolean;
-  word: string;
-};
-
 export interface UserFilters {
   search?: string;
   sortBy?: string;

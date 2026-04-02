@@ -21,7 +21,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <Space vertical style={{ paddingLeft: '60px' }}>
+    <Space direction="vertical" style={{ paddingLeft: '60px' }}>
       <Card title="Данные пользователя" style={{ width: 300 }}>
         <p>Имя пользователя: {profile?.data?.username}</p>
         <p>Почтовый адрес: {profile?.data?.email}</p>

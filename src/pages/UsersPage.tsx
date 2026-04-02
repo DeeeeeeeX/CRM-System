@@ -14,7 +14,7 @@ import { Button, Card, Col, Dropdown, Flex, Input, List, MenuProps, Modal, Row, 
 import { Roles, User } from '../types/types';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { selectUsersData } from '../store/selectors/usersSelectors';
-import { fetchUsers } from '../store/reducers/ActionCreators';
+import { fetchUsers, setFiltersAndFetchUsers } from '../store/reducers/ActionCreators';
 import { useNavigate } from 'react-router-dom';
 import { blockUserById, changeRightsUserById, deleteUserById, unblockUserById } from '../api/api';
 
@@ -22,8 +22,9 @@ const UsersPage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchUsers({}));
+    dispatch(fetchUsers());
   }, [dispatch]);
+
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [action, setAction] = useState<string>('');
   const [isUsernameAsc, setIsUsernameAsc] = useState<boolean>(true);
@@ -82,24 +83,24 @@ const UsersPage = () => {
 
   const onUsernameClick = () => {
     isUsernameAsc
-      ? dispatch(fetchUsers({ sortBy: 'username', sortOrder: 'asc' }))
-      : dispatch(fetchUsers({ sortBy: 'username', sortOrder: 'desc' }));
+      ? dispatch(setFiltersAndFetchUsers({ sortBy: 'username', sortOrder: 'asc' }))
+      : dispatch(setFiltersAndFetchUsers({ sortBy: 'username', sortOrder: 'desc' }));
     setIsUsernameAsc(!isUsernameAsc);
   };
 
   const onEmailClick = () => {
     isEmailAsc
-      ? dispatch(fetchUsers({ sortBy: 'email', sortOrder: 'asc' }))
-      : dispatch(fetchUsers({ sortBy: 'email', sortOrder: 'desc' }));
+      ? dispatch(setFiltersAndFetchUsers({ sortBy: 'email', sortOrder: 'asc' }))
+      : dispatch(setFiltersAndFetchUsers({ sortBy: 'email', sortOrder: 'desc' }));
     setIsEmailAsc(!isEmailAsc);
   };
 
   const onSearch = (e) => {
-    dispatch(fetchUsers({ search: e.target.value }));
+    dispatch(setFiltersAndFetchUsers({ search: e.target.value }));
   };
 
   const onChangePage = (page) => {
-    dispatch(fetchUsers({ page: page }));
+    dispatch(setFiltersAndFetchUsers({ page: page }));
   };
 
   const navigateToEditUser = (id) => {
@@ -131,13 +132,13 @@ const UsersPage = () => {
   const onMenuClick: MenuProps['onClick'] = (e) => {
     switch (e.key) {
       case 'blocked':
-        dispatch(fetchUsers({ isBlocked: true }));
+        dispatch(setFiltersAndFetchUsers({ isBlocked: true }));
         break;
       case 'unblocked':
-        dispatch(fetchUsers({ isBlocked: false }));
+        dispatch(setFiltersAndFetchUsers({ isBlocked: false }));
         break;
       case 'all':
-        dispatch(fetchUsers({}));
+        dispatch(setFiltersAndFetchUsers({ isBlocked: undefined }));
     }
   };
 
@@ -163,7 +164,7 @@ const UsersPage = () => {
         await blockUserById(selectedUser.id);
         break;
     }
-    setTimeout(() => dispatch(fetchUsers({})), 100);
+    dispatch(fetchUsers());
     setIsModalOpen(false);
   };
 

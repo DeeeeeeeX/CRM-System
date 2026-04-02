@@ -27,11 +27,11 @@ const EditUserPage: React.FC = () => {
     phoneNumber: false,
   });
 
-  if (!id) return;
+  if (!id) return <div>id undefined</div>;
 
   useEffect(() => {
     dispatch(fetchUserById(id));
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (user) {

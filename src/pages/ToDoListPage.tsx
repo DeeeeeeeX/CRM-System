@@ -4,12 +4,12 @@ import ToDoList from '../components/Todos/ToDoList';
 import { getToDos } from '../api/api';
 import AddToDo from '../components/Todos/AddToDo';
 import { ActiveTabs, MetaResponse, Todo, TodoInfo } from '../types/types';
-import { Flex, message } from 'antd';
+import { Flex, message, Spin } from 'antd';
 
 const ToDoListPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTabs>('all');
   const [dataTasks, setDataTasks] = useState<MetaResponse<Todo, TodoInfo>>({
-    data: [{ id: 1, title: 'loading ...', created: '2026-02-16T13:02:32.953831Z', isDone: false }],
+    data: [],
     info: {
       all: 0,
       completed: 0,
@@ -39,7 +39,11 @@ const ToDoListPage: React.FC = () => {
     <Flex vertical align="center" gap="large" style={{ paddingTop: 50 }}>
       <AddToDo onUpdate={updateToDos} />
       <TabsToDos quantity={dataTasks.info} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <ToDoList dataTasksAll={dataTasks} updateToDos={updateToDos} className="tasks" />
+      {dataTasks?.data[1]?.id ? (
+        <ToDoList dataTasksAll={dataTasks} updateToDos={updateToDos} className="tasks" />
+      ) : (
+        <Spin />
+      )}
     </Flex>
   );
 };
