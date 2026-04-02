@@ -1,10 +1,10 @@
 import React from 'react';
 import './ProfilePage.css';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { unauthorize } from '../store/reducers/ActionCreators';
 import { Button, Card, Space, Spin } from 'antd';
 import { removeRefreshToken, token } from '../functions/workWithTokens';
 import { selectProfile } from '../store/selectors/authSelectors';
+import { authSlice } from '../store/reducers/AuthSlice';
 
 const ProfilePage = () => {
   const profile = useAppSelector(selectProfile);
@@ -13,7 +13,7 @@ const ProfilePage = () => {
   const logout = () => {
     removeRefreshToken();
     token.clearAccessToken();
-    dispatch(unauthorize());
+    dispatch(authSlice.actions.authorize(false));
   };
 
   if (profile.status === 'pending') {

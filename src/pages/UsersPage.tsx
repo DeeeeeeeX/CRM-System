@@ -270,10 +270,7 @@ const UsersPage = () => {
                     <Button
                       type="primary"
                       onClick={(e) =>
-                        onUserOptionsClick(
-                          item.isBlocked ? { key: 'unblock' } : { key: 'block' },
-                          item,
-                        )
+                        onUserOptionsClick(item.isBlocked ? 'unblock' : 'block', item)
                       }
                     >
                       {item.isBlocked ? 'Разблокировать' : 'Заблокировать'}

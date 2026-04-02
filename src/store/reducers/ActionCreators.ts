@@ -18,13 +18,6 @@ export const fetchProfile = createAsyncThunk(
   },
 );
 
-export const authorize = () => (dispatch: AppDispatch) => {
-  dispatch(authSlice.actions.authorize(true));
-};
-export const unauthorize = () => (dispatch: AppDispatch) => {
-  dispatch(authSlice.actions.authorize(false));
-};
-
 export const refreshAuth = createAsyncThunk(
   'auth/refreshAuth',
   async (_, { rejectWithValue, dispatch }) => {

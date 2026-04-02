@@ -4,8 +4,9 @@ import { loginUser } from '../../api/api';
 import { token } from '../../functions/workWithTokens';
 import { AuthData } from '../../types/types';
 import { useNavigate } from 'react-router-dom';
-import { authorize, fetchProfile } from '../../store/reducers/ActionCreators';
+import { fetchProfile } from '../../store/reducers/ActionCreators';
 import { useAppDispatch } from '../../store/hooks';
+import { authSlice } from '../../store/reducers/AuthSlice';
 
 type FieldType = {
   login?: string;
@@ -26,7 +27,7 @@ const LoginForm: React.FC = () => {
       const response = await loginUser(authData);
       token.setAccessToken(response.accessToken);
       localStorage.setItem('refreshToken', response.refreshToken);
-      dispatch(authorize());
+      dispatch(authSlice.actions.authorize(true));
       dispatch(fetchProfile());
       message.success(`Успешная авторизация`);
       navigate('/');

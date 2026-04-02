@@ -3,7 +3,8 @@ import { Navigate, Outlet } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { selectAuth } from '../../store/selectors/authSelectors';
 import { message, Spin } from 'antd';
-import { fetchProfile, refreshAuth, unauthorize } from '../../store/reducers/ActionCreators';
+import { fetchProfile, refreshAuth } from '../../store/reducers/ActionCreators';
+import { authSlice } from '../../store/reducers/AuthSlice';
 
 const AuthProtection: React.FC = () => {
   const { isLogin } = useAppSelector((state) => state.authReducer);
@@ -18,7 +19,7 @@ const AuthProtection: React.FC = () => {
         dispatch(fetchProfile());
       } catch (e) {
         message.error('Не удалось обновить информацию', e);
-        dispatch(unauthorize());
+        dispatch(authSlice.actions.authorize(false));
       }
     }
 
