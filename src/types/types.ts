@@ -1,5 +1,3 @@
-import { IAsyncParticle } from '../store/utils';
-
 export type ActiveTabs = 'all' | 'inWork' | 'completed' | null;
 
 export interface Todo {
@@ -23,12 +21,6 @@ export interface MetaResponse<T, N> {
   };
 }
 
-export type FieldType = {
-  taskInput?: string;
-  title?: string;
-  task?: string;
-};
-
 export interface UserRegistration {
   login: string;
   username: string;
@@ -42,46 +34,20 @@ export interface AuthData {
   password: string;
 }
 
-export interface RefreshToken {
-  refreshToken: string;
-}
-
 export interface Profile {
   id: number;
   username: string;
   email: string;
   date: string;
   isBlocked: boolean;
-  roles: Role[];
+  roles: Roles[];
   phoneNumber?: string;
-}
-
-export interface ProfileRequest {
-  username: string;
-  email: string;
-  phoneNumber: string;
-}
-
-export interface PasswordRequest {
-  password: string;
 }
 
 export interface Token {
   accessToken: string;
   refreshToken: string;
 }
-
-type AuthMode = 'register' | 'login';
-
-export interface AuthConfig {
-  isAuth: Record<AuthMode, boolean>;
-  isLoginChecked: boolean;
-  isLogin: boolean;
-  error: string;
-  profile: IAsyncParticle<Profile>;
-}
-
-export type Role = 'ADMIN' | 'USER' | 'MODERATOR';
 
 export interface UserFilters {
   search?: string;

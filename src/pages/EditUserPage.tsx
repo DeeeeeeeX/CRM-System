@@ -21,7 +21,7 @@ const EditUserPage: React.FC = () => {
   const [form] = Form.useForm<UserRequest>();
   const { id } = useParams();
 
-  const [isEditing, setIsEditing] = useState<IsEditing>({
+  const [isEditingUser, setIsEditingUser] = useState<IsEditing>({
     username: false,
     email: false,
     phoneNumber: false,
@@ -43,7 +43,7 @@ const EditUserPage: React.FC = () => {
     }
   }, [form, user]);
 
-  const onEdit = async (field: keyof UserRequest) => {
+  const onEditUserInfo = async (field: keyof UserRequest) => {
     try {
       const values = await form.validateFields([field]);
 
@@ -55,14 +55,14 @@ const EditUserPage: React.FC = () => {
           },
         }),
       );
-      setIsEditing((prev) => ({ ...prev, [field]: false }));
+      setIsEditingUser((prev) => ({ ...prev, [field]: false }));
     } catch (e) {
       message.error(e.message);
     }
   };
 
-  const onStartEdit = (field: keyof UserRequest) => {
-    setIsEditing((prev) => ({ ...prev, [field]: true }));
+  const onStartEditUser = (field: keyof UserRequest) => {
+    setIsEditingUser((prev) => ({ ...prev, [field]: true }));
 
     form.setFieldsValue({
       [field]: user[field],
@@ -73,7 +73,7 @@ const EditUserPage: React.FC = () => {
     <Card title="Данные пользователя" style={{ minWidth: 300 }}>
       <Form form={form} autoComplete="off">
         <Space size="large" vertical style={{ width: '30%' }}>
-          {isEditing.username ? (
+          {isEditingUser.username ? (
             <Form.Item
               name="username"
               rules={[
@@ -86,17 +86,20 @@ const EditUserPage: React.FC = () => {
               <Flex gap={10}>
                 <div>Имя пользователя</div>
                 <Input />
-                <CheckOutlined onClick={() => onEdit('username')} />
+                <CheckOutlined onClick={() => onEditUserInfo('username')} />
               </Flex>
             </Form.Item>
           ) : (
             <Flex gap={10}>
               <div>Имя пользователя {user?.username}</div>
-              <EditOutlined style={{ cursor: 'pointer' }} onClick={() => onStartEdit('username')} />
+              <EditOutlined
+                style={{ cursor: 'pointer' }}
+                onClick={() => onStartEditUser('username')}
+              />
             </Flex>
           )}
 
-          {isEditing.email ? (
+          {isEditingUser.email ? (
             <Form.Item
               name="email"
               rules={[
@@ -107,17 +110,20 @@ const EditUserPage: React.FC = () => {
               <Flex gap={10}>
                 <div>Email</div>
                 <Input />
-                <CheckOutlined onClick={() => onEdit('email')} />
+                <CheckOutlined onClick={() => onEditUserInfo('email')} />
               </Flex>
             </Form.Item>
           ) : (
             <Flex gap={10}>
               <div> Email {user?.email} </div>
-              <EditOutlined style={{ cursor: 'pointer' }} onClick={() => onStartEdit('email')} />
+              <EditOutlined
+                style={{ cursor: 'pointer' }}
+                onClick={() => onStartEditUser('email')}
+              />
             </Flex>
           )}
 
-          {isEditing.phoneNumber ? (
+          {isEditingUser.phoneNumber ? (
             <Form.Item
               name="phoneNumber"
               rules={[
@@ -130,7 +136,7 @@ const EditUserPage: React.FC = () => {
               <Flex gap={10}>
                 <div>Телефон</div>
                 <Input />
-                <CheckOutlined onClick={() => onEdit('phoneNumber')} />
+                <CheckOutlined onClick={() => onEditUserInfo('phoneNumber')} />
               </Flex>
             </Form.Item>
           ) : (
@@ -138,7 +144,7 @@ const EditUserPage: React.FC = () => {
               <div> Телефон {user?.phoneNumber}</div>
               <EditOutlined
                 style={{ cursor: 'pointer' }}
-                onClick={() => onStartEdit('phoneNumber')}
+                onClick={() => onStartEditUser('phoneNumber')}
               />
             </Flex>
           )}

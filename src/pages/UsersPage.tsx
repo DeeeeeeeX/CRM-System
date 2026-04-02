@@ -75,13 +75,13 @@ const UsersPage = () => {
   const users = useAppSelector(selectUsersData);
   const navigate = useNavigate();
 
-  const onUserOptionsClick = (key: string, user: User): void => {
+  const onUserOptionsSelected = (key: string, user: User): void => {
     setSelectedUser(user);
     setAction(key);
     setIsModalOpen(true);
   };
 
-  const onUsernameClick = () => {
+  const onUsernameSelected = () => {
     isUsernameAsc
       ? dispatch(setFiltersAndFetchUsers({ sortBy: 'username', sortOrder: 'asc' }))
       : dispatch(setFiltersAndFetchUsers({ sortBy: 'username', sortOrder: 'desc' }));
@@ -107,7 +107,7 @@ const UsersPage = () => {
     navigate(`/editUser/${id}`);
   };
 
-  const handleCancel = () => {
+  const onCancelModal = () => {
     setIsModalOpen(false);
   };
 
@@ -129,7 +129,7 @@ const UsersPage = () => {
     }
   };
 
-  const onMenuClick: MenuProps['onClick'] = (e) => {
+  const onChoiceMenuItem: MenuProps['onClick'] = (e) => {
     switch (e.key) {
       case 'blocked':
         dispatch(setFiltersAndFetchUsers({ isBlocked: true }));
@@ -142,7 +142,7 @@ const UsersPage = () => {
     }
   };
 
-  const handleOk = async () => {
+  const onOkModal = async () => {
     if (!selectedUser) return;
 
     switch (action) {
@@ -183,7 +183,7 @@ const UsersPage = () => {
               placeholder="Поиск по имени или email"
               prefix={<SearchOutlined />}
             />
-            <Dropdown menu={{ items, onClick: onMenuClick }}>
+            <Dropdown menu={{ items, onClick: onChoiceMenuItem }}>
               <a onClick={(e) => e.preventDefault()}>
                 <Flex gap={5}>
                   <FilterOutlined />
@@ -206,7 +206,7 @@ const UsersPage = () => {
           header={
             <Row style={{ width: '100%' }} gutter={16}>
               <Col span={4}>
-                <Space style={{ cursor: 'pointer' }} onClick={onUsernameClick}>
+                <Space style={{ cursor: 'pointer' }} onClick={onUsernameSelected}>
                   <div>Имя</div>
                   <ColumnHeightOutlined />
                 </Space>
@@ -270,7 +270,7 @@ const UsersPage = () => {
                     <Button
                       type="primary"
                       onClick={(e) =>
-                        onUserOptionsClick(item.isBlocked ? 'unblock' : 'block', item)
+                        onUserOptionsSelected(item.isBlocked ? 'unblock' : 'block', item)
                       }
                     >
                       {item.isBlocked ? 'Разблокировать' : 'Заблокировать'}
@@ -281,7 +281,7 @@ const UsersPage = () => {
                     <Dropdown
                       menu={{
                         items: userOptions,
-                        onClick: (e) => onUserOptionsClick(e.key, item),
+                        onClick: (e) => onUserOptionsSelected(e.key, item),
                       }}
                     >
                       <a onClick={(e) => e.preventDefault()}>
@@ -299,8 +299,8 @@ const UsersPage = () => {
         title="Подтверждение:"
         closable={{ 'aria-label': 'Custom Close Button' }}
         open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onOk={onOkModal}
+        onCancel={onCancelModal}
       >
         {getModalText()}
       </Modal>
