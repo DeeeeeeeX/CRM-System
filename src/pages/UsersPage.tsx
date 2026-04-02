@@ -75,9 +75,9 @@ const UsersPage = () => {
   const users = useAppSelector(selectUsersData);
   const navigate = useNavigate();
 
-  const onUserOptionsClick: MenuProps['onClick'] = async (e, user) => {
+  const onUserOptionsClick = (key: string, user: User): void => {
     setSelectedUser(user);
-    setAction(e.key);
+    setAction(key);
     setIsModalOpen(true);
   };
 
@@ -284,7 +284,7 @@ const UsersPage = () => {
                     <Dropdown
                       menu={{
                         items: userOptions,
-                        onClick: (e) => onUserOptionsClick(e, item),
+                        onClick: (e) => onUserOptionsClick(e.key, item),
                       }}
                     >
                       <a onClick={(e) => e.preventDefault()}>
